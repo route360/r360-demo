@@ -1,0 +1,216 @@
+$icon-font-path: "../bower_components/bootstrap-sass-official/assets/fonts/bootstrap/";
+// bower:scss
+@import "bootstrap-sass-official/assets/stylesheets/_bootstrap.scss";
+@import "jeet/scss/jeet/index.scss";
+@import "font-awesome/scss/font-awesome.scss";
+// endbower
+@import url(https://fonts.googleapis.com/css?family=Open+Sans:400,800,700,300);
+
+$dark-accent: #2B3E50;
+$light-accent: #fff;
+
+$break-small: 700px;
+$break-medium: 875px;
+$break-large: 1025px;
+
+@mixin transition($transition-property, $transition-time, $method) {
+    -webkit-transition: $transition-property $transition-time $method;
+    -moz-transition: $transition-property $transition-time $method;
+    -ms-transition: $transition-property $transition-time $method;
+    -o-transition: $transition-property $transition-time $method;
+    transition: $transition-property $transition-time $method;
+}
+
+@mixin bp($media) {
+  @if $media == small {
+    @media only screen and (max-width: $break-small) { @content; }
+  }
+  @else if $media == medium {
+    @media only screen and (max-width: $break-medium) { @content; }
+  }
+  @else if $media == large {
+    @media only screen and (max-width: $break-large) { @content; }
+  }
+}
+
+.browsehappy {
+  margin: 0.2em 0;
+  background: #ccc;
+  color: #000;
+  padding: 0.2em 0;
+}
+
+body {
+  padding: 0;
+  font-family: 'Open Sans', Arial, sans-serif;
+}
+
+.container-fluid {
+  margin: 0;
+  padding:0;
+}
+
+/* PAGE ANIMATION */
+.page        {
+    bottom:0; 
+    position:absolute; 
+    text-align:center;
+    top:0;  
+    width:100%; 
+}
+
+@keyframes slideOutLeft {
+    to      { transform: translateX(-100%); }
+}
+
+@keyframes scaleUp {
+    from    { opacity: 0.3; -webkit-transform: scale(0.6); }
+}
+
+.page.ng-enter           { animation: scaleUp 0.8s both ease-out; z-index: 8888; }
+.page.ng-leave           { animation: slideOutLeft 0.5s both ease-in; z-index: 9999; }
+
+
+/* HOME VIEW */
+
+#home {
+
+  .github-link {
+    position: absolute;
+    top: 4rem;
+    right: 5rem;
+    img { 
+      width: 35px;
+    }
+  }
+
+  background: $dark-accent;
+  color: $light-accent;
+  position: absolute;
+  top: 0;
+  bottom: 0;
+  left: 0;
+  right: 0;
+
+  .logo-wrapper {
+
+    text-align: center;
+
+    .logo {
+      width: 430px;
+      margin: 11rem 0 5rem 0;
+    }
+
+  }
+
+  .page-caption {
+    text-align: center;
+    h1 {
+      font-weight: 100;
+    }
+
+    h4 {
+      font-weight: 300;
+    }
+  }
+
+  .city-grid {
+
+    margin: 6rem 2.5%;
+
+    a.city-cell {
+
+      position: relative;
+      display: inline-block;
+      @include col(1/5);
+      @include bp(medium) {
+        @include col(1/2);
+      }
+
+      &:hover>.overlay {
+        opacity: 1;
+      }
+
+      img {
+        max-width: 100%;
+      }
+
+      .caption {
+        position: absolute;
+        right: 1.5rem;
+        top: 1rem;
+        text-transform: uppercase;
+        font-weight: 800;
+        color: #fff;
+        margin: 0;
+        padding: 0;
+      }
+
+      .overlay {
+        @include transition (opacity, 0.3s, ease);
+        opacity: 0;
+        position: absolute;
+        top: 0;
+        bottom: 0; 
+        left:0;
+        right: 0;
+        background: rgba(0,0,0,0.3);
+        span {
+          background: none;
+          border: 1px solid #fff;
+          border-radius: 3px;
+          font-weight: 800;
+          color: #fff;
+          display: inline-block;
+          padding: 1rem;
+          @include align(both);
+        }
+      }
+    }
+  }
+
+}
+
+
+// needs to be outside of .map-page due to dom load lag
+#map {
+ width: 100%;
+ height: 100%;
+}
+
+.fs-wrapper {
+  position: absolute;
+  top: 0;
+  left: 0;
+  bottom: 0;
+  right: 0;
+  overflow: hidden;
+}
+
+
+.map-page {
+
+  .overlay-btn {
+    position: absolute;
+    top: 2rem;
+    left: 3rem;
+  }
+
+  .overlay-logo {
+    z-index: 20;
+    position: absolute;
+    bottom: 3rem;
+    right: 3rem;
+    width: 250px;
+  }
+
+  md-sidenav,
+  md-sidenav.md-locked-open,
+  md-sidenav.md-closed.md-locked-open-add-active {
+    text-align: left;
+    min-width: 450px !important;
+    width: 450px !important;
+    max-width: 450px !important;
+  }
+
+}

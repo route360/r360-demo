@@ -1,0 +1,115 @@
+<div class="fs-wrapper">
+
+	<section layout="row" flex>
+
+		<md-sidenav class="md-sidenav-left md-whiteframe-z2" md-component-id="options">
+
+		  <md-toolbar ng-controller="RightCtrl" class="md-theme-light">
+		  	<div class="md-toolbar-tools">
+		      <h2>
+		      	<span>Options</span>
+		      </h2>
+		      <span flex></span>
+		      <md-button class="md-icon-button" aria-label="Close" ng-click="close()">
+		        <md-icon md-svg-icon="md-close"></md-icon>
+		      </md-button>
+		  	</div>
+		  </md-toolbar>
+
+		  <md-content layout-padding>
+
+		          <md-list ng-controller="ControlsCtrl">
+
+		          	<md-list-item>
+	        					<p>City</p>
+									  <md-select style="margin: 0" ng-model="options.city">
+		          				<md-option ng-repeat="city in options.cities" value="{{city.value}}">{{city.name}}</md-option>
+		          			</md-select>
+          			</md-list-item>
+
+          			<md-divider></md-divider>
+
+							  <md-list-item>
+							  	<p>
+							  	<span>Travel Time</span>
+							  	<span style="float:right">{{options.travelTime}} Min</span>
+							  	</p>
+							    <md-slider class="md-primary" flex md-discrete ng-change="changeColor()" ng-model="options.travelTime" step="{{options.travelTimes.step}}" min="{{options.travelTimes.min}}" max="{{options.travelTimes.max}}" aria-label="Travel Time"></md-slider>
+							  </md-list-item>
+
+							  <md-divider></md-divider>
+
+								<md-list-item>
+	        					<p>Travel Type</p>
+									  <md-select style="margin: 0" ng-model="options.travelType">
+									  	<md-option ng-if="type.preselected" ng-repeat="type in options.travelTypes" value="{{type.value}}" selected="selected"><i class="fa fa-fw {{type.icon}}"></i> {{type.name}}</md-option>
+		          				<md-option ng-if="!type.preselected" ng-repeat="type in options.travelTypes" value="{{type.value}}"><i class="fa fa-fw {{type.icon}}"></i> {{type.name}}</md-option>
+		          			</md-select>
+          			</md-list-item>
+
+          			<md-divider></md-divider>
+
+          			<md-list-item>
+	        					<p>Travel Date</p>
+									   <md-datepicker ng-model="options.travelDate" md-placeholder="Travel Date"></md-datepicker>
+          			</md-list-item>
+
+          			<md-divider></md-divider>
+
+								<md-list-item>
+	        					<p>Start Time</p>
+	        					<md-input-container flex="15" style="padding-bottom:0">
+									  <input required type="number" step="any" name="Hour" ng-model="options.travelDateTime.hour" min="0" max="23">
+										</md-input-container>
+										<span style="margin: 0 1rem">:</span>
+										<md-input-container flex="15" style="padding-bottom:0">
+									  <input required type="number" step="5" name="Minute" ng-model="options.travelDateTime.minute" min="0" max="55">
+										</md-input-container>
+          			</md-list-item>
+
+          			<md-divider></md-divider>
+
+								<md-list-item>
+	        					<p>Start Time</p>
+	        					<md-select style="margin: 0" ng-model="options.travelDateTime.hour">
+									  	<md-option ng-repeat="hour in options.travelDateTimeRange.hour" value="{{hour}}">{{hour}}</md-option>
+		          			</md-select>
+		          			<span style="margin: 0 1rem">:</span>
+		          			<md-select style="margin: 0" ng-model="options.travelDateTime.minute">
+									  	<md-option ng-repeat="minute in options.travelDateTimeRange.minute" value="{{minute}}">{{minute}}</md-option>
+		          			</md-select>
+          			</md-list-item>
+
+          			<md-divider></md-divider>
+
+          			<md-list-item>
+	        					<p>Color isochrones</p>
+									   <md-switch class="md-primary" ng-model="options.color" aria-label="Color">
+											</md-switch>
+          			</md-list-item>
+
+          			<md-divider></md-divider>
+
+          			<md-list-item>
+	        					<p>Map Provider</p>
+									  <md-select style="margin: 0" ng-model="options.mapProvider">
+		          				<md-option ng-repeat="provider in options.mapProviderList" value="{{provider.value}}">{{provider.name}}</md-option>
+		          			</md-select>
+          			</md-list-item>
+
+							</md-list>
+
+		  </md-content>
+
+		</md-sidenav>
+
+	</section>
+
+	<md-button class="md-fab md-primary overlay-btn" ng-click="toggleMenu()" aria-label="Open Menu">
+	<md-icon md-svg-icon="md-menu"></md-icon>
+		<md-tooltip>Open Menu</md-tooltip>
+	</md-button>
+	<img class="overlay-logo" src="images/r360.svg" alt="Route 360°">
+
+	<section id="map"></section>
+</div>
