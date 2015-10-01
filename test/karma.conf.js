@@ -22,7 +22,7 @@ module.exports = function(config) {
     // list of files / patterns to load in the browser
     files: [
       // bower:js
-      'bower_components/jquery/jquery.js',
+      'bower_components/jquery/dist/jquery.js',
       'bower_components/angular/angular.js',
       'bower_components/angular-animate/angular-animate.js',
       'bower_components/angular-aria/angular-aria.js',
@@ -41,6 +41,8 @@ module.exports = function(config) {
       'bower_components/r360/dist/r360-leaflet-src.js',
       'bower_components/r360/dist/r360-google.js',
       'bower_components/r360/dist/r360-google-src.js',
+      'bower_components/leaflet.contextmenu/dist/leaflet.contextmenu-src.js',
+      'bower_components/Leaflet.awesome-markers/dist/leaflet.awesome-markers.js',
       // endbower
       "app/scripts/**/*.js",
       "test/mock/**/*.js",

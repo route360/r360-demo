@@ -190,10 +190,12 @@ body {
 
 .map-page {
 
-  .overlay-btn {
+  .overlay-controls {
     position: absolute;
     top: 2rem;
     left: 3rem;
+    margin:0;
+    padding:0;
   }
 
   .overlay-logo {
@@ -211,6 +213,15 @@ body {
     min-width: 450px !important;
     width: 450px !important;
     max-width: 450px !important;
+  }
+
+  md-list-item,md-divider {
+    &.ng-hide-add,&.ng-hide-remove {
+    transition: all 0.5s ease;
+    }
+    &.ng-hide {
+      opacity: 0;
+    }
   }
 
 }
