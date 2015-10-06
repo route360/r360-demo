@@ -33,13 +33,6 @@ $break-large: 1025px;
   }
 }
 
-.browsehappy {
-  margin: 0.2em 0;
-  background: #ccc;
-  color: #000;
-  padding: 0.2em 0;
-}
-
 body {
   padding: 0;
   font-family: 'Open Sans', Arial, sans-serif;
@@ -196,6 +189,20 @@ body {
     left: 3rem;
     margin:0;
     padding:0;
+
+  }
+
+  .overlay-legend {
+    position:  absolute;
+    bottom: 3rem;
+    left: 0;
+    right: 0;
+    z-index: 20;
+    .travel-time-legend {
+      width: 400px;
+      z-index: 20;
+    }
+
   }
 
   .overlay-logo {
@@ -221,6 +228,18 @@ body {
     }
     &.ng-hide {
       opacity: 0;
+    }
+  }
+
+  .travel-time-legend {
+    padding: 0;
+    label {
+      display: inline-block;
+      font-size: 1.1rem;
+      margin: 0;
+      padding: 0.5rem;
+      text-align: center;
+      color: rgba(255,255,255,0.8);
     }
   }
 

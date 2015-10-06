@@ -32,7 +32,8 @@ angular
         // map page
         .when('/map', {
             templateUrl: 'views/map.html',
-            controller: 'MapCtrl'
+            controller: 'MapCtrl',
+            reloadOnSearch: false
         });
 
     $mdIconProvider

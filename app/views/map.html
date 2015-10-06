@@ -22,36 +22,56 @@
 
 		          	<md-list-item>
         				<p>City</p>
-						<md-select style="margin: 0" ng-model="options.city"  aria-label="City Select">
-	          				<md-option ng-repeat="city in prefs.cities" value="{{city.value}}">{{city.name}}</md-option>
+						<md-select style="margin: 0" ng-model="options.cityID"  aria-label="City Select" ng-change="flyTo(options.cityID)">
+	          				<md-option ng-repeat="city in prefs.cities" value="{{city.id}}">{{city.name}}</md-option>
 	          			</md-select>
           			</md-list-item>
 
           			<md-divider></md-divider>
 
-					<md-list-item>
-					  	<p>
-						  	<span>Travel Time</span>
-						  	<span style="float:right">{{options.travelTime}} Min </span>
-					  	</p>
-					    <md-slider class="md-primary" flex md-discrete ng-change="changeColor()" ng-model="options.travelTime" step="{{options.travelTimeRange.step}}" min="{{options.travelTimeRange.min}}" max="{{options.travelTimeRange.max}}" aria-label="Travel Time"></md-slider>
+					<md-list-item layout-padding layout="row">
+						<md-whiteframe class="md-whiteframe-z2 travel-time-legend" flex layout layout-align="center center">
+					    	<label ng-if="options.travelTime >= prefs.travelTimeRanges[options.travelTimeRangeID].times[0]" flex style="background: {{prefs.colorRanges[options.colorRangeID].colors[0]}}">
+					    		{{prefs.travelTimeRanges[options.travelTimeRangeID].times[0]}} Min
+					    	</label>
+					    	<label ng-if="options.travelTime >= prefs.travelTimeRanges[options.travelTimeRangeID].times[1]" flex style="background: {{prefs.colorRanges[options.colorRangeID].colors[1]}}">
+					    		{{prefs.travelTimeRanges[options.travelTimeRangeID].times[1]}} Min
+					    	</label>
+					    	<label ng-if="options.travelTime >= prefs.travelTimeRanges[options.travelTimeRangeID].times[2]" flex style="background: {{prefs.colorRanges[options.colorRangeID].colors[2]}}">
+					    		{{prefs.travelTimeRanges[options.travelTimeRangeID].times[2]}} Min
+					    	</label>
+					    	<label ng-if="options.travelTime >= prefs.travelTimeRanges[options.travelTimeRangeID].times[3]" flex style="background: {{prefs.colorRanges[options.colorRangeID].colors[3]}}">
+					    		{{prefs.travelTimeRanges[options.travelTimeRangeID].times[3]}} Min
+					    	</label>
+					    	<label ng-if="options.travelTime >= prefs.travelTimeRanges[options.travelTimeRangeID].times[4]" flex style="background: {{prefs.colorRanges[options.colorRangeID].colors[4]}}">
+					    		{{prefs.travelTimeRanges[options.travelTimeRangeID].times[4]}} Min
+					    	</label>
+					    	<label ng-if="options.travelTime >= prefs.travelTimeRanges[options.travelTimeRangeID].times[5]" flex style="background: {{prefs.colorRanges[options.colorRangeID].colors[5]}}">
+					    		{{prefs.travelTimeRanges[options.travelTimeRangeID].times[5]}} Min
+					    	</label>
+				    	</md-whiteframe>
 					</md-list-item>
 
 					<md-list-item>
-					  	<md-input-container flex style="padding-bottom:0" layout-align="center center">
-					  		<label>Minimum</label>
-							  <input required type="number" name="Minimum" ng-model="options.travelTimeRange.min" min="5" max="30" step="5" aria-label="Minimum TravelTime">
-						 	</md-input-container>
+						<p>Travel Time</p>
+						<md-slider ng-if="options.travelTimeRangeID == 0" flex class="md-primary" md-discrete ng-model="options.travelTime" step="5" min="5" max="30" aria-label="Travel Time"></md-slider>
+						<md-slider ng-if="options.travelTimeRangeID == 1" flex class="md-warn" md-discrete ng-model="options.travelTime" step="10" min="10" max="60" aria-label="Travel Time"></md-slider>
+						<md-slider ng-if="options.travelTimeRangeID == 2" flex class="md-warn" md-discrete ng-model="options.travelTime" step="20" min="20" max="120" aria-label="Travel Time"></md-slider>
+					</md-list-item>
 
-					  	<md-input-container flex style="padding-bottom:0" layout-align="center center">
-					  		<label>Maximum</label>
-							  <input required type="number" name="Minimum" ng-model="options.travelTimeRange.max" min="30" max="120" step="5" aria-label="Minimum TravelTime">
-						 	</md-input-container>
+					<md-list-item>
+						<p>Travel Time Range</p>
+					  	<md-select style="margin: 0" ng-model="options.travelTimeRangeID" aria-label="Travel Time Range">
+							<md-option ng-repeat="range in prefs.travelTimeRanges" value="{{range.id}}">{{range.name}}</md-option>
+          				</md-select>
 
-					  	<md-input-container flex style="padding-bottom:0" layout-align="center center">
-					  		<label>Step</label>
-							  <input required type="number" name="Minimum" ng-model="options.travelTimeRange.step" min="5" max="30" step="5" aria-label="Minimum TravelTime">
-						 	</md-input-container>
+					</md-list-item>
+
+					<md-list-item>
+						<p>Color Range</p>
+					  	<md-select style="margin: 0" ng-model="options.colorRangeID" aria-label="Travel Time Range">
+							<md-option ng-repeat="range in prefs.colorRanges" value="{{range.id}}">{{range.name}}</md-option>
+          				</md-select>
 
 					</md-list-item>
 
@@ -106,14 +126,6 @@
           			</md-list-item>
 
           			<md-divider ng-show="options.travelType == 'transit'"></md-divider>
-
-          			<md-list-item>
-	        					<p>Color isochrones</p>
-								<md-switch class="md-primary" ng-model="options.color" aria-label="Color">
-								</md-switch>
-          			</md-list-item>
-
-          			<md-divider></md-divider>
 
           			<md-list-item>
 	        					<p>Intersection Mode</p>
@@ -217,6 +229,14 @@
 
       			</md-list-item>
 
+      			<md-list-item ng-repeat="poi in prefs.pois">
+
+      			<p>{{poi.name}}</p>
+
+      			<md-switch ng-change="getPlaces()" ng-model="poi.selected" aria-label="Switch {{poi.name}}" class="md-primary">
+
+      			</md-list-item>
+
       			<md-list-item class="md-2-line" ng-repeat="marker in options.sourceMarkers">
 	      				<md-icon md-svg-icon="md:map-marker" style="color: #38A9DC"></md-icon>
 	      				<div class="md-list-item-text" layout="column">
@@ -247,6 +267,8 @@
 
 	</section>
 
+	<md-progress-linear md-mode="indeterminate" ng-show="states.requestPending"></md-progress-linear>
+
 	<section class="overlay-controls">
 		<md-button class="md-fab md-primary overlay-btn" ng-click="togglePrefs()" aria-label="Open Menu">
 		<md-icon md-svg-icon="md-menu"></md-icon>
@@ -258,7 +280,28 @@
 		</md-button>
 	</section>
 
-	<img class="overlay-logo" src="images/r360.svg" alt="Route 360°">
+	<section class="overlay-legend" layout="row" layout-align="center center">
+		<md-whiteframe class="md-whiteframe-z2 travel-time-legend" flex="30" layout layout-align="center center">
+					    	<label ng-if="options.travelTime >= prefs.travelTimeRanges[options.travelTimeRangeID].times[0]" flex style="background: {{prefs.colorRanges[options.colorRangeID].colors[0]}}">
+					    		{{prefs.travelTimeRanges[options.travelTimeRangeID].times[0]}} Min
+					    	</label>
+					    	<label ng-if="options.travelTime >= prefs.travelTimeRanges[options.travelTimeRangeID].times[1]" flex style="background: {{prefs.colorRanges[options.colorRangeID].colors[1]}}">
+					    		{{prefs.travelTimeRanges[options.travelTimeRangeID].times[1]}} Min
+					    	</label>
+					    	<label ng-if="options.travelTime >= prefs.travelTimeRanges[options.travelTimeRangeID].times[2]" flex style="background: {{prefs.colorRanges[options.colorRangeID].colors[2]}}">
+					    		{{prefs.travelTimeRanges[options.travelTimeRangeID].times[2]}} Min
+					    	</label>
+					    	<label ng-if="options.travelTime >= prefs.travelTimeRanges[options.travelTimeRangeID].times[3]" flex style="background: {{prefs.colorRanges[options.colorRangeID].colors[3]}}">
+					    		{{prefs.travelTimeRanges[options.travelTimeRangeID].times[3]}} Min
+					    	</label>
+					    	<label ng-if="options.travelTime >= prefs.travelTimeRanges[options.travelTimeRangeID].times[4]" flex style="background: {{prefs.colorRanges[options.colorRangeID].colors[4]}}">
+					    		{{prefs.travelTimeRanges[options.travelTimeRangeID].times[4]}} Min
+					    	</label>
+					    	<label ng-if="options.travelTime >= prefs.travelTimeRanges[options.travelTimeRangeID].times[5]" flex style="background: {{prefs.colorRanges[options.colorRangeID].colors[5]}}">
+					    		{{prefs.travelTimeRanges[options.travelTimeRangeID].times[5]}} Min
+					    	</label>
+		</md-whiteframe>
+	</section>
 
 	<section id="map"></section>
 </div>
