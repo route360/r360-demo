@@ -1,0 +1,7 @@
+<md-whiteframe class="md-whiteframe-z2" flex layout layout-align="center center">
+
+	<label ng-repeat="tt in travelTimeRange" ng-if="travelTime >= tt" flex style="background: {{colorRange[$index]}}">
+		{{tt}} Min
+	</label>
+
+</md-whiteframe>
