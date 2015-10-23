@@ -13,6 +13,7 @@ $break-small: 700px;
 $break-medium: 875px;
 $break-large: 1025px;
 
+
 @mixin transition($transition-property, $transition-time, $method) {
     -webkit-transition: $transition-property $transition-time $method;
     -moz-transition: $transition-property $transition-time $method;
@@ -66,7 +67,24 @@ body {
 
 /* HOME VIEW */
 
-#home {
+.main-page {
+
+  .abs {
+    position: absolute;
+    top: 0;
+  }
+
+  .bg-image {
+    position: absolute;
+    top: 0;
+    @include transition(opacity,0.5s,ease);
+  }
+
+  .timer-progress {
+    bottom: 0;
+    z-index: 10;
+    position: absolute;
+  }
 
   .github-link {
     position: absolute;
@@ -77,35 +95,43 @@ body {
     }
   }
 
-  background: $dark-accent;
-  color: $light-accent;
-  position: absolute;
-  top: 0;
-  bottom: 0;
-  left: 0;
-  right: 0;
-
-  .logo-wrapper {
-
-    text-align: center;
-
-    .logo {
-      width: 430px;
-      margin: 11rem 0 5rem 0;
-    }
-
+  section {
+    @include transition(all,0.5s, ease);
   }
 
-  .page-caption {
-    text-align: center;
-    h1 {
-      font-weight: 100;
-    }
-
-    h4 {
-      font-weight: 300;
-    }
+  .logo img{
+    max-width: 400px;
   }
+
+  h1 {
+    font-weight: 100;
+  }
+
+  .dark {
+    background: rgba(43,62,80,0.65);
+    color: $light-accent;
+  }
+
+  .nobg {
+    background: transparent;
+    color: $light-accent;
+  }
+
+  .ghostbutton {
+      background: none;
+      border: 1px solid #fff;
+      border-radius: 3px;
+      font-weight: 800;
+      color: #fff;
+      display: inline-block;
+      padding: 1rem;
+      text-transform: uppercase;
+      &:hover {
+        text-decoration: none;
+        color: $dark-accent;
+        background: $light-accent;
+      }
+    }
 
   .city-grid {
 
@@ -193,7 +219,7 @@ body {
     right: 0;
     z-index: 20;
     r360-rainbow {
-      width: 400px;
+      width: 420px;
       z-index: 20;
     }
 
@@ -205,6 +231,29 @@ body {
     position: absolute;
     top: 2rem;
     left: 3rem;
+    margin:0;
+    padding:0;
+  }
+
+  .overlay-speeddials {
+    position: absolute;
+    top: 2rem;
+    right: 3rem;
+    margin:0;
+    padding:0;
+
+    button span {
+      text-transform: none;
+    }
+
+  }
+
+  .overlay-progress {
+    z-index: 99;
+    position: absolute;
+    top: 0;
+    left: 0;
+    right: 0;
     margin:0;
     padding:0;
 
@@ -221,13 +270,19 @@ body {
   md-sidenav,
   md-sidenav.md-locked-open,
   md-sidenav.md-closed.md-locked-open-add-active {
+    // z-index: 1001;
     text-align: left;
     min-width: 550px !important;
     width: 550px !important;
     max-width: 550px !important;
+    overflow-x: hidden;
+    md-content {
+      overflow-x: hidden;
+    }
   }
 
   md-list-item,md-divider {
+    @include transition(all, 0.3s, ease);
     &.ng-hide-add,&.ng-hide-remove {
     transition: all 0.5s ease;
     }
@@ -236,19 +291,46 @@ body {
     }
   }
 
+  .hoverable {
+    cursor: pointer;
+    @include transition(background, 0.3s, ease);
+    margin: 0 -1.5rem;
+    padding: 0 1.5rem;
+    &:hover, .active {
+      background: rgba(0,0,0,0.3);
+    }
+  }
+
 r360-rainbow{
-  min-width: 360px;
+  min-width: 380px;
   md-whiteframe {
     padding: 0;
     label {
       display: inline-block;
       font-size: 1.1rem;
       margin: 0;
-      padding: 0.5rem;
+      padding: 0.5rem 0;
       text-align: center;
       color: rgba(255,255,255,0.8);
     }
   }
 }
+}
 
+
+.r360-autocomplete {
+  li {
+    height: auto;
+    padding-top: 8px;
+    padding-bottom: 8px;
+    white-space: normal;
+  }
+  span {
+    display: block;
+    line-height: 2;
+  }
+}
+
+.leaflet-top, .leaflet-bottom {
+    z-index: 20;
 }

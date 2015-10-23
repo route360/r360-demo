@@ -19,7 +19,7 @@ angular
 
    	$mdThemingProvider.theme('default')
     .primaryPalette('teal')
-    .accentPalette('blue-grey');
+    .accentPalette('red');
 
     $routeProvider
 

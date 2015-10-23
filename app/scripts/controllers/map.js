@@ -10,6 +10,7 @@
 angular.module('r360DemoApp')
     .controller('MapCtrl', function($scope, $routeParams, $location, $timeout, $mdSidenav, $mdUtil, $log, $mdDialog, $http, $q, $mdToast) {
 
+        var init = true;
         // ------------
         // GENERAL SETUP
         // ------------
@@ -41,10 +42,6 @@ angular.module('r360DemoApp')
             );
         }
 
-        // ------------
-        // R360 SETUP
-        // ------------
-
         var now = new Date();
         var hour = now.getHours();
         var minute = (now.getMinutes() + (5 - now.getMinutes() % 5)) % 60;
@@ -75,29 +72,28 @@ angular.module('r360DemoApp')
             "groups" : [],
             "intersection": "union",
             "strokeWidth": 30,
-            "extendWidth": 100,
+            "extendWidth": 500,
             "backgroundColor": 'black',
             "backgroundOpacity": 0,
-            "offset": {
-                "x": 0,
-                "y": 0
-            },
             "minPolygonHoleSize": 1000000,
             "placesLimit" : 100,
+            "transition" : true,
+            "mapstyle" : "mi.0ad4304c",
+            "showAdvanced" : false
         };
 
         $scope.prefs = {
             "cities": [{
                 "id"    : 0,
                 "name"  : "Berlin",
-                "latlng": [52.516389, 13.377778],
-                "url"   : "https://api.route360.net/api_dev/",
+                "latlng": [52.516221,13.386154],
+                "url"   : "https://api2-eu.route360.net/brandenburg/",
 
             }, {
                 "id"    : 1,
                 "name"  : "Oslo",
-                "latlng": [59.8938549,10.7851165],
-                "url"   : "https://api1-eu.route360.net/norway/"
+                "latlng": [59.913041,10.740509],
+                "url"   : "https://api2-eu.route360.net/norway/"
             }, {
                 "id"    : 2,
                 "name": "Paris",
@@ -106,54 +102,50 @@ angular.module('r360DemoApp')
             }, {
                 "id"    : 3,
                 "name": "Vancouver",
-                "latlng": [49.2561267,-123.1239135],
+                "latlng": [49.260635,-123.115540],
                 "url"   : "https://api-us.route360.net/canada/"
             }, {
                 "id"    : 4,
                 "name": "Copenhagen",
-                "latlng": [55.6712674,12.5608388],
-                "url"   : "https://api1-eu.route360.net/denmark/"
+                "latlng": [55.688424,12.576599],
+                "url"   : "https://api2-eu.route360.net/denmark/"
             }, {
                 "id"    : 5,
                 "name": "London",
-                "latlng": [51.5286416,-0.1015987],
-                "url"   : "https://api1-eu.route360.net/britishisles/"
+                "latlng": [51.506606,-0.128403],
+                "url"   : "https://api2-eu.route360.net/britishisles/"
             }, {
                 "id"    : 6,
                 "name": "Zurich",
-                "latlng": [47.377455,8.536715],
+                "latlng": [47.370455,8.538437],
                 "url"   : "https://api2-eu.route360.net/switzerland/"
             }, {
                 "id"    : 7,
                 "name": "Vienna",
-                "latlng": [48.2206849,16.3800599],
+                "latlng": [48.209117,16.369629],
                 "url"   : "https://api2-eu.route360.net/austria/"
             }, {
                 "id"    : 8,
                 "name": "New York",
-                "latlng": [40.7033127,-73.979681],
+                "latlng": [40.731129,-73.987427],
                 "url"   : "https://api-us.route360.net/na_northeast/"
             }],
             "travelTypes": [{
                 "name": "Bike",
-                "icon": "fa-bicycle",
+                "icon": "md:bike",
                 "value": "bike",
-                "preselected": true
             }, {
                 "name": "Walk",
-                "icon": "fa-male",
+                "icon": "md:walk",
                 "value": "walk",
-                "preselected": false
             }, {
                 "name": "Car",
-                "icon": "fa-car",
+                "icon": "md:car",
                 "value": "car",
-                "preselected": false
             }, {
                 "name": "Transit",
-                "icon": "fa-bus",
+                "icon": "md:train",
                 "value": "transit",
-                "preselected": false
             }],
             "queryTimeRange": {
                 "hour": [0, 1, 2, 3, 4, 5, 6, 7, 8, 9, 10, 11, 12, 13, 14, 15, 16, 17, 18, 19, 20, 21, 22, 23],
@@ -198,18 +190,18 @@ angular.module('r360DemoApp')
                 }, {
                 "name"  : "Colorblind",
                 "id"    : 1,
-                "colors": ["#23419A","#4525AB","#9527BC","#CE29A8","#DF2A5C","#F0572C"],
+                "colors": ["#142b66","#4525AB","#9527BC","#CE29A8","#DF2A5C","#F0572C"],
                 "opacities" : [1,1,1,1,1,1]
                 }, {
-                "name"  : "Black and White",
+                "name"  : "Greyscale",
                 "id"    : 2,
                 "colors": ["#d2d2d2","#b2b2b2","#999999","#777777","#555555","#333333"],
                 "opacities" : [1,0.8,0.6,0.4,0.2,0]
                 }, {
-                "name"  : "Inverse Mode",
+                "name"  : "Inverse Mode (B/W)",
                 "id"    : 3,
-                "colors": ["#d2d2d2","#b2b2b2","#999999","#777777","#555555","#333333"],
-                "opacities" : [0,0,0,0,0,0]
+                "colors": ["#333"],
+                "opacities" : [1,1,1,1,1,1]
                 }
             ],
             "pois" : [{
@@ -227,6 +219,13 @@ angular.module('r360DemoApp')
                 "value" : "osm:amenity='restaurant'",
                 "icon"  : "",
                 "selected" : false
+            }],
+            "mapStyles" : [{
+                "name"  : "Grey",
+                "value" : "mi.0ad4304c",
+            }, {
+                "name"  : "Nature",
+                "value" : "mi.0e455ea3",
             }]
         };
 
@@ -234,8 +233,10 @@ angular.module('r360DemoApp')
             "requestPending" : false
         }
 
-        // Update Options from GET Params
-
+        /**
+         * Parse GET parameters to options object
+         * @param  {Object} $routeParams The GET parameters
+         */
         for(var index in $routeParams) {
 
             var value = $routeParams[index];
@@ -257,9 +258,12 @@ angular.module('r360DemoApp')
                     $scope.options[index] = parseInt(value);
                     break;
                 case "travelType" :
+                case "mapstyle" :
                 case "intersection" :
                     $scope.options[index] = value;
                     break;
+                case "transition" :
+                    $scope.options[index] = (value === "true");
                 case "sources":
                 case "targets":
                     break;
@@ -274,31 +278,60 @@ angular.module('r360DemoApp')
         r360.config.serviceKey = "OOWOFUK3OPHLQTA8H5JD";
         r360.config.i18n.language = "de";
 
-
         $scope.map = L.map('map', {
             zoomControl: false,
             scrollWheelZoom: true,
             contextmenu: true,
-            contextmenuWidth: 140,
+            contextmenuWidth: 220,
             contextmenuItems: [{
                 text: 'New Source',
                 callback: addSourceMarkerFromContext,
-                iconFa: 'fa-home'
+                iconFa: 'fa-fw fa-plus'
             }, {
                 text: 'New Target',
                 callback: addTargetMarkerFromContext,
-                iconFa: 'fa-star'
+                iconFa: 'fa-fw fa-plus'
             }]
-        }).setView($scope.prefs.cities[$scope.options.cityID].latlng, 13);
-        var attribution = "<a href='https://www.mapbox.com/about/maps/' target='_blank'>© Mapbox © OpenStreetMap</a> | ÖPNV Daten © <a href='http://www.vbb.de/de/index.html' target='_blank'>VBB</a> | developed by <a href='http://www.route360.net/de/' target='_blank'>Route360°</a>";
-        L.tileLayer('https://a.tiles.mapbox.com/v3/mi.0ad4304c/{z}/{x}/{y}.png', {
-            maxZoom: 18,
-            attribution: attribution
-        }).addTo($scope.map);
+        })
+        .setActiveArea({
+            position: 'absolute',
+            top: '0',
+            left: '0',
+            right: '0',
+            bottom: '0'
+        })
+        .setView($scope.prefs.cities[$scope.options.cityID].latlng, 13)
+        .on('load', function() {
+            showToast('Markers can be added by right-clicking on the map.');
+        });
         L.control.scale({
             metric: true,
             imperial: false
         }).addTo($scope.map);
+        
+        var attribution = "<a href='https://www.mapbox.com/about/maps/' target='_blank'>© Mapbox © OpenStreetMap</a> | © <a href='https://developers.route360.net/#availability' target='_blank'>Transit Data</a> | developed by <a href='http://www.route360.net/de/' target='_blank'>Route360°</a>";
+
+        /**
+         * Collection of all layer groups
+         * @type {Object}
+         */
+        $scope.layerGroups = {
+            tileLayer: L.tileLayer('https://a.tiles.mapbox.com/v3/' + $scope.options.mapstyle + '/{z}/{x}/{y}.png', {maxZoom: 18,attribution: attribution}).addTo($scope.map),
+            markerLayerGroup: L.featureGroup().addTo($scope.map),
+            routeLayerGroup: L.featureGroup().addTo($scope.map),
+            reachableLayerGroup: L.featureGroup().addTo($scope.map),
+            tempLayerGroup: L.featureGroup().addTo($scope.map),
+            polygonLayerGroup: r360.leafletPolygonLayer({extendWidthX: $scope.options.extendWidth, extendWidthY: $scope.options.extendWidth}).addTo($scope.map)
+        };
+
+        /**
+         * Apply a different tile style to thhe map.
+         */
+        $scope.updateTileStyle = updateTileStyle;
+        function updateTileStyle() {
+            $scope.layerGroups.tileLayer.setUrl('https://a.tiles.mapbox.com/v3/' + $scope.options.mapstyle + '/{z}/{x}/{y}.png');
+            $scope.layerGroups.tileLayer.redraw();
+        }
 
         var lastRelatedTarget;
 
@@ -306,67 +339,87 @@ angular.module('r360DemoApp')
             lastRelatedTarget = e.relatedTarget;
         });
 
-        $scope.layerGroups = {
-            markerLayerGroup: L.featureGroup().addTo($scope.map),
-            routeLayerGroup: L.featureGroup().addTo($scope.map),
-            reachableLayerGroup: L.featureGroup().addTo($scope.map),
-            polygonLayerGroup: r360.leafletPolygonLayer().addTo($scope.map)
-        };
+        // Check if sources are available in GET params
 
-        // parse URL params to options object
-
-        if (typeof $routeParams['sources'] != 'undefined') {
-            var array = $routeParams['sources'].split(";");
+        function parseAndAddMarkers(string, type) {
+            var array = string.split(";");
             array.forEach(function(elem,index,array){
                 var coords = elem.split(",");
                 coords[0] = parseFloat(coords[0]);
                 coords[1] = parseFloat(coords[1]);
-                addMarker(coords, 'source', false);
+                addMarker(coords, type, false);
             });
-
-            getPolygons();
         }
 
-        if (typeof $routeParams['targets'] != 'undefined' && $routeParams['targets'] instanceof Array) {
-            var array = $routeParams['targets'].split(";");
-            console.log(array);
-            array.forEach(function(elem,index,array){
-                var coords = elem.split(",");
-                coords[0] = parseFloat(coords[0]);
-                coords[1] = parseFloat(coords[1]);
-                addMarker(coords, 'target', false);
-            });
-
-            getRoutes();
+        if (angular.isDefined($routeParams['targets'])) {
+            parseAndAddMarkers($routeParams['targets'], "target");
         }
 
-        if (typeof $routeParams['sources'] === 'undefined' && typeof $routeParams['targets'] === 'undefined' ) addMarker($scope.prefs.cities[$scope.options.cityID].latlng, 'source');
+        if (angular.isDefined($routeParams['sources'])) {
+            parseAndAddMarkers($routeParams['sources'], "source");
+            getPolygons(function() {getRoutes()});
+        }
 
+        if (!angular.isDefined($routeParams['sources']) && !angular.isDefined($routeParams['targets']) ) addMarker($scope.prefs.cities[$scope.options.cityID].latlng, 'source');
+
+        /**
+         * Helper function to change the city & service url
+         */
         $scope.flyTo = flyTo;
-
         function flyTo(cityID) {
-            $location.search('cityID', cityID);
-            removeAllMarkers();
-            r360.config.serviceUrl = $scope.prefs.cities[cityID].url;
-            $scope.map.setView($scope.prefs.cities[cityID].latlng,10,{animate:true, duration: 1});
-            addMarker($scope.prefs.cities[cityID].latlng,'source');
+            if (init) {
+                $timeout(function() { init = false; });
+            } else {
+                $location.search('cityID', cityID);
+                removeAllMarkers();
+                r360.config.serviceUrl = $scope.prefs.cities[cityID].url;
+                $scope.map.setView($scope.prefs.cities[cityID].latlng,10,{animate:true, duration: 1});
+                addMarker($scope.prefs.cities[cityID].latlng,'source');
+            }
         }
 
+        /**
+         * Helper functions to be used withing the leaflet context menu
+         * @param {Object} e event
+         */
         function addSourceMarkerFromContext(e) {
             addMarker(e.latlng, 'source');
         }
-
         function addTargetMarkerFromContext(e) {
             addMarker(e.latlng, 'target');
         }
+        function removeMarkerFromContext(e) {
+            removeMarker(lastRelatedTarget);
+        }
 
+        /**
+         * General function fo add a new source or target marker on the map
+         * @param {Array} coords The coordinates of the marker in lat,lng
+         * @param {string} type Either 'source' or 'target'
+         * @param {boolean} refresh Optional. If false, the getPolygons/getRoutes functions will not be trigerd. Default: true
+         */
         function addMarker(coords, type, refresh) {
+
+            if (typeof coords[0] != 'undefined' || typeof coords[1] != 'undefined')
+                if (typeof coords.lat != 'undefined' || typeof coords.lng != 'undefined')
+                    return;
+
+            if (typeof coords.lat != 'undefined' && typeof coords.lng != 'undefined') {
+                coords.lat = parseFloat(coords.lat.toFixed(6));
+                coords.lng = parseFloat(coords.lng.toFixed(6));
+            }
+
+            if (typeof coords[0] != 'undefined' && typeof coords[1] != 'undefined') {
+                coords[0] = parseFloat(coords[0].toFixed(6));
+                coords[1] = parseFloat(coords[1].toFixed(6));
+            }
 
             if (typeof refresh === 'undefined') { refresh = true; }
 
             var markerArray = undefined;
             var markerIcon = undefined;
-            var markerLayerGroup = $scope.layerGroups.markerLayerGroup;
+            if (type != 'temp') var markerLayerGroup = $scope.layerGroups.markerLayerGroup;
+            else var markerLayerGroup = $scope.layerGroups.tempLayerGroup;
 
             switch (type) {
                 case 'source':
@@ -376,9 +429,9 @@ angular.module('r360DemoApp')
                     };
                     markerArray = $scope.options.sourceMarkers;
                     markerIcon = L.AwesomeMarkers.icon({
-                        icon: 'fa fa-home',
+                        icon: 'fa fa-circle',
                         prefix: 'fa',
-                        markerColor: 'blue'
+                        markerColor: 'red'
                     })
                     break;
                 case 'target':
@@ -388,9 +441,17 @@ angular.module('r360DemoApp')
                     };
                     markerArray = $scope.options.targetMarkers;
                     markerIcon = L.AwesomeMarkers.icon({
-                        icon: 'fa fa-star',
+                        icon: 'fa fa-circle',
                         prefix: 'fa',
-                        markerColor: 'red'
+                        markerColor: 'blue'
+                    })
+                    break;
+
+                case 'temp' : 
+                    markerIcon = L.AwesomeMarkers.icon({
+                        icon: 'fa fa-circle',
+                        prefix: 'fa',
+                        markerColor: 'green'
                     })
                     break;
                 default:
@@ -399,7 +460,25 @@ angular.module('r360DemoApp')
                     break;
             }
 
-            var newMarker = L.marker(coords, {
+            if (type == 'temp') {
+
+                var newMarker = L.marker(coords, {
+                    icon: markerIcon,
+                }).addTo(markerLayerGroup);
+
+                var promise = reverseGeocode(coords);
+                promise.then(function(properties){
+                    var description = buildPlaceDescription(properties);
+                    newMarker.bindPopup("<strong>" + description.title + "</strong>", {closeButton: false});
+
+                    newMarker.openPopup();
+                })
+
+                $scope.map.setView(coords,15);
+
+            } else {
+
+                var newMarker = L.marker(coords, {
                     draggable: true,
                     icon: markerIcon,
                     contextmenu: true,
@@ -407,7 +486,7 @@ angular.module('r360DemoApp')
                         text: 'Delete Marker',
                         callback: removeMarkerFromContext,
                         index: 0,
-                        iconFa: 'fa-times-circle'
+                        iconFa: 'fa-fw fa-times'
                     }, {
                         separator: true,
                         index: 1
@@ -416,22 +495,141 @@ angular.module('r360DemoApp')
                 .addTo(markerLayerGroup)
                 //.addTo($scope.srcTrgLayer);
 
-            newMarker.on('dragend', function() {
-                getPolygons();
-                getRoutes();
-                updateURL();
-            })
+                newMarker.on('dragend', function() {
+                    this._latlng.lat = this._latlng.lat.toFixed(6);
+                    this._latlng.lng = this._latlng.lng.toFixed(6);
+                    var promise = reverseGeocode(this._latlng);
+                    promise.then(function(properties){
+                        newMarker.description = buildPlaceDescription(properties);
+                    })
+                    getPolygons(function() {
+                        getRoutes();
 
-            markerArray.push(newMarker);
-            updateURL();
-            if (refresh) {
-                getPolygons();
-                getRoutes();
+                    });
+                    updateURL();
+                })
+
+                newMarker.on('click', function() {
+                    if (!$scope.optsOpen) $scope.optsOpen;
+                })
+
+                markerArray.push(newMarker);
+
+                updateURL();
+                if (refresh) {
+                    getPolygons(function() {
+                        getRoutes();
+                    });
+                }
+                var promise = reverseGeocode(coords);
+                promise.then(function(properties){
+                    newMarker.description = buildPlaceDescription(properties);
+                    console.log(markerArray);
+                })
+
             }
+
         }
 
-        $scope.removeMarker = removeMarker;
+        function reverseGeocode(coords) {
 
+            var url = "";
+
+            var deferred = $q.defer();
+
+            if (typeof coords.lat != 'undefined' && typeof coords.lng != 'undefined') 
+                url = "http://photon.komoot.de/reverse?lon=" + coords.lng + "&lat=" + coords.lat;
+
+            if (typeof coords[0] != 'undefined' && typeof coords[1] != 'undefined') 
+                url = "http://photon.komoot.de/reverse?lon=" + coords[1] + "&lat=" + coords[0];
+
+            $http({
+                method: 'GET',
+                url: url
+            }).then(function(response) {
+                console.log(response);
+                if (response.data.features.length > 0) {
+                    var properties = response.data.features[0].properties;
+                    if (typeof properties.name === 'undefined') {
+                        properties.name = "";
+                        if (typeof properties.street != 'undefined') properties.name += properties.street;
+                        if (typeof properties.housenumber != 'undefined') properties.name += " " + properties.housenumber;
+                    }
+                }
+                else {
+                    properties = {
+                        "name" : "Marker",
+                        "city" : "",
+                        "country" : ""
+                    }
+                }
+                deferred.resolve(properties);
+            }, function(response) {
+                showToast("reverse Geocoding failed");
+            });
+
+            return deferred.promise;
+        }
+
+        function buildPlaceDescription(obj) {
+
+            var result = {
+                title : "",
+                meta1 : "",
+                meta2 : "",
+                full  : ""
+            }
+
+            var name = undefined;
+            var adress1 = undefined;
+            var adress2 = undefined;
+
+            if (angular.isDefined(obj['name'])) {
+                name = obj.name;
+            }
+
+            if (angular.isDefined(obj['street'])) {
+                adress1 = obj.street;
+                if (angular.isDefined(obj['housenumber'])){
+                    adress1 += " " + obj.housenumber;
+                }
+            }
+
+            if (angular.isDefined(obj['city'])){
+                adress2 = obj.city;
+                if ((angular.isDefined(obj['postcode']))) {
+                    adress2 = obj.postcode + " " + adress2;
+                }
+                if ((angular.isDefined(obj['country']))) {
+                    adress2 += ", " + obj.country;
+                }
+            } else {
+                if ((angular.isDefined(obj['country']))) {
+                    adress2 = obj.country;
+                }
+            }
+
+            if (angular.isDefined(name)) {
+                result.title = name;
+                result.meta1 = adress1;
+                result.meta2 = adress2;
+            } else {
+                result.title = adress1;
+                result.meta1 = adress2;
+            }
+
+            result.full = result.title;
+            if (result.meta1 != '' && angular.isDefined(result.meta1))  result.full += ", " +  result.meta1;
+            if (result.meta2 != '' && angular.isDefined(result.meta2))  result.full += ", " +  result.meta2;
+
+            return result;
+        }
+
+        /**
+         * General function to remove a single marker from the map
+         * @param  {object} marker Leaflet marker to be removed
+         */
+        $scope.removeMarker = removeMarker;
         function removeMarker(marker) {
 
             $scope.layerGroups.markerLayerGroup.removeLayer(marker);
@@ -454,25 +652,36 @@ angular.module('r360DemoApp')
                 })
             }
 
-            getPolygons();
-            getRoutes();
+            updateURL();
+
+            getPolygons(function() {
+              getRoutes();
+            });
+
 
         }
 
-        function removeMarkerFromContext(e) {
-            removeMarker(lastRelatedTarget);
-        }
-
+        /**
+         * Remove all Markers from the map
+         */
         function removeAllMarkers() {
             $scope.layerGroups.markerLayerGroup.clearLayers();
+            $scope.layerGroups.polygonLayerGroup.clearLayers();
+            $scope.layerGroups.routeLayerGroup.clearLayers();
+            $scope.layerGroups.tempLayerGroup.clearLayers();
             $scope.options.sourceMarkers = [];
             $scope.options.targetMarkers = [];
-            getPolygons();
-            getRoutes();
         }
 
+        /**
+         * Build an r360 TravelOptions object from scope.options
+         * @return {r360.travelOptions} Returns an r360 TravelOptions object
+         */
         function buildTravelOptions() {
 
+            var travelOptions = r360.travelOptions();
+
+            //
             var travelTime = $scope.options.travelTime * 60;
             var travelTimes=[];
             var defaultColors =[];
@@ -493,8 +702,6 @@ angular.module('r360DemoApp')
                 }
             })
 
-            var travelOptions = r360.travelOptions();
-
             travelOptions.setTravelTimes(travelTimes);
 
             travelOptions.setTravelType($scope.options.travelType);
@@ -511,17 +718,13 @@ angular.module('r360DemoApp')
             travelOptions.extendWidthX = $scope.options.extendWidth * 2;
             travelOptions.extendWidthY = $scope.options.extendWidth * 2;
 
-
             if ($scope.options.colorRangeID == 3) {
-                r360.config.defaultPolygonLayerOptions.backgroundColor = 'black';
-                r360.config.defaultPolygonLayerOptions.backgroundOpacity = 0.3;
+                $scope.layerGroups.polygonLayerGroup.setInverse(true);
             } else {
-                r360.config.defaultPolygonLayerOptions.backgroundOpacity = 0;
+                $scope.layerGroups.polygonLayerGroup.setInverse(false);
             };
 
             travelOptions.backgroundColor = $scope.options.backgroundColor;
-
-            r360.config.defaultTravelTimeControlOptions.offset = $scope.options.offset;
 
             travelOptions.setIntersectionMode($scope.options.intersection);
             //travelOptions.setWaitControl($scope.waitControl);
@@ -541,12 +744,16 @@ angular.module('r360DemoApp')
             return travelOptions;
         }
 
-        function getPolygons() {
+        /**
+         * Clear the polygon layer, request and draw new polgons
+         */
+        function getPolygons(callback) {
 
             $scope.states.requestPending = true;
 
             if ($scope.options.sourceMarkers.length == 0) {
                 $scope.layerGroups.polygonLayerGroup.clearLayers();
+                $scope.states.requestPending = false;
                 return;
             }
 
@@ -556,11 +763,9 @@ angular.module('r360DemoApp')
 
                 function(polygons) {
                     $scope.layerGroups.polygonLayerGroup.clearAndAddLayers(polygons, true);
-                    if ($scope.prefsOpen || $scope.optsOpen) {
-                        panMap([275, 0]);
-                    };
                     $scope.states.requestPending = false;
                     $scope.$apply();
+                    if(angular.isDefined(callback)) callback();
                 },
                 function(status,message) {
                     $scope.states.requestPending = false;
@@ -568,8 +773,8 @@ angular.module('r360DemoApp')
                         $mdDialog.alert()
                         .parent(angular.element(document.querySelector('#map')))
                         .clickOutsideToClose(true)
-                        .title('Something went wrong (Status ' + status + ')' )
-                        .content(message + '\nPlease try Again later')
+                        .title('Something went wrong')
+                        .content(message)
                         .ariaLabel('Error Dialog')
                         .ok('Got it!')
                     );
@@ -577,12 +782,17 @@ angular.module('r360DemoApp')
             );
         }
 
+        /**
+         * Clear the route layer, request and draw new routes
+         */
         function getRoutes(callback) {
+
+            $scope.states.requestPending = true;
 
             $scope.layerGroups.routeLayerGroup.clearLayers();
 
             if ($scope.options.targetMarkers.length == 0) {
-                $scope.layerGroups.polygonLayerGroup.clearLayers();
+                $scope.states.requestPending = false;
                 return;
             }
             //$scope.srcTrgLayer.clearLayers();
@@ -593,10 +803,12 @@ angular.module('r360DemoApp')
 
             r360.RouteService.getRoutes(travelOptions, function(routes) {
 
+                $scope.states.requestPending = false;
+
                 routes.forEach(function(elem, index, array) {
                     r360.LeafletUtil.fadeIn($scope.layerGroups.routeLayerGroup, elem, 500, "travelDistance", {
                         color: "red",
-                        haloColor: "#ffffff"
+                        haloColor: "#fff"
                     });
                 })
 
@@ -607,16 +819,25 @@ angular.module('r360DemoApp')
 
                 if (!$scope.$$phase) $scope.$apply();
                 if (typeof callback !== 'undefined') callback();
+
             });
         }
 
         $scope.autocomplete = [];
         $scope.autocomplete.querySearch = querySearch;
+        $scope.autocomplete.selectedItemChange = selectedItemChange;
         $scope.addAs = addAs;
-        $scope.addAsTarget = addAs('target');
+
+        function selectedItemChange(item) {
+            $scope.layerGroups.tempLayerGroup.clearLayers();
+            if (angular.isDefined(item)) addMarker([item.geometry.coordinates[1], item.geometry.coordinates[0]], 'temp');
+        }
 
         function addAs(type) {
-            if (typeof $scope.autocomplete.selectedItem !== 'undefined') addMarker([$scope.autocomplete.selectedItem.geometry.coordinates[1], $scope.autocomplete.selectedItem.geometry.coordinates[0]], type);
+            if (angular.isDefined($scope.autocomplete.selectedItem) && $scope.autocomplete.selectedItem) {
+                addMarker([$scope.autocomplete.selectedItem.geometry.coordinates[1], $scope.autocomplete.selectedItem.geometry.coordinates[0]], type);
+                $scope.autocomplete.selectedItem = undefined;
+            } else showToast('No place defined.');
         }
 
         function querySearch(query) {
@@ -631,6 +852,8 @@ angular.module('r360DemoApp')
             }).then(function(response) {
                 results = response.data.features.map(function(result) {
                     result.value = result.properties.osm_id;
+                    result.description = buildPlaceDescription(result.properties);
+                    console.log(result.description);
                     return result;
                 });
                 deferred.resolve(results);
@@ -646,6 +869,7 @@ angular.module('r360DemoApp')
                 );
             });
 
+            console.log(deferred.promise);
             return deferred.promise;
 
         }
@@ -805,11 +1029,14 @@ angular.module('r360DemoApp')
             }
         }
 
-        function focus(place,add) {
+        $scope.focus = focus;
+        function focus(marker,add) {
             if (add) {
-                $(place.marker._icon).addClass('focused');
+                marker.bindPopup('<strong>' + marker.description.title + '</strong>', {closeButton: false, minWidth: 10});
+                marker.openPopup();
             } else {
-                $(place.marker._icon).removeClass('focused');
+                marker.closePopup();
+                marker.unbindPopup();
             }
         }
 
@@ -830,11 +1057,28 @@ angular.module('r360DemoApp')
             $scope.options.travelTime = nextVal;
         });
 
-        $scope.$watchCollection('options', function() {
-            updateURL();
-            getPolygons();
-            getRoutes();
+        $scope.$watch('options.travelType', function(newVal) {
+
+             $scope.prefs.travelTypes.forEach(function(elem,index,array){
+                if (elem['value'] == newVal) $scope.options.travelTypeIcon = elem['icon'];
+            })
+
         });
+
+        /**
+         * Should be trigered everytime the user changes an options value.
+         */
+        $scope.$watchCollection('options', function(newCollection, oldCollection, scope) {
+            if (init) {
+                $timeout(function() { init = false; });
+            } else {
+                updateURL();
+                getPolygons(function() {
+                    getRoutes();
+                });
+            }
+        });
+
 
 
         function updateURL() {
@@ -842,7 +1086,10 @@ angular.module('r360DemoApp')
             for (var index in $scope.options) {
                 switch (index) {
                     case 'sourceMarkers':
-                        if ($scope.options.sourceMarkers.length == 0) break;
+                        if ($scope.options.sourceMarkers.length == 0)  {
+                            $location.search("sources", null);
+                            break;
+                        }
                         var sources = [];
                         $scope.options.sourceMarkers.forEach(function(elem,index,array){
                             sources.push(elem._latlng.lat + "," + elem._latlng.lng);
@@ -850,26 +1097,28 @@ angular.module('r360DemoApp')
                         $location.search("sources", sources.join(";"));
                         break;
                     case 'targetMarkers': 
-                        if ($scope.options.targetMarkers.length == 0) break;
+                        if ($scope.options.targetMarkers.length == 0) {
+                             $location.search("targets", null);
+                            break;
+                        };
                         var targets = [];
                         $scope.options.targetMarkers.forEach(function(elem,index,array){
                             targets.push(elem._latlng.lat + "," + elem._latlng.lng);
                         });
                         $location.search("targets", targets.join(";"));
                         break;
-                    case 'queryDate':
-                    case 'queryTime':
-                    case 'extendWidth':
-                    case 'strokeWidth':
-                    case 'minPolygonHoleSize':
-                    case 'placesLimit':
-                    case 'offset':
-                    case 'mapProvider':
-                    case 'backgroundColor' :
-                    case 'backgroundOpacity' :
+                    case 'cityID':
+                    case 'travelTime':
+                    case 'travelTimeRangeID':
+                    case 'travelType':
+                    case 'colorRangeID':
+                    case 'intersection':
+                    case 'transition':
+                    case 'mapstyle':
+                        if (angular.isDefined($routeParams[index]) && $routeParams[index] == $scope.options[index]) break;
+                        $location.search(index, String($scope.options[index]));
                         break;
                     default:
-                        $location.search(index, $scope.options[index]);
                         break;
                 }
             }
@@ -877,36 +1126,35 @@ angular.module('r360DemoApp')
         }
 
         $scope.$watch('prefsOpen', function(newVal) {
-            if (newVal) {
-                panMap([275, 0]);
-                //document.getElementById('map').style.margin = "0 0 0 550px"; TODO
-            } else {
-                panMap([-275, 0]);
-                //document.getElementById('map').style.margin = "0";
-            };
-            // if (!$scope.prefsOpen && optionsStateChanged) {
-            //     getPolygons();
-            //     getRoutes();
-            //     optionsStateChanged = false;
-            // }
+            slide(newVal)
         });
-
         $scope.$watch('optsOpen', function(newVal) {
-            if (newVal) {
-                panMap([275, 0]);
-            } else {
-                panMap([-275, 0]);
-            };
+            slide(newVal);
         });
 
-        function panMap(offset) {
+        function slide(open) {
 
-            var centerPoint = $scope.map.getSize().divideBy(2);
-            var targetPoint = centerPoint.subtract(offset);
-            var targetLatLng = $scope.map.containerPointToLatLng(targetPoint);
-            $scope.map.setView(targetLatLng);
+            if (open) {
+
+                if ($scope.options.transition) $scope.map.panBy([-275, 0]);
+                $scope.map.setActiveArea({
+                    position: 'absolute',
+                    top: '0',
+                    left: '550px',
+                    right: '0',
+                    bottom: '0'
+                });
+
+            } else {
+                if ($scope.options.transition) $scope.map.panBy([275, 0]);
+                $scope.map.setActiveArea({
+                    position: 'absolute',
+                    top: '0',
+                    left: '0',
+                    right: '0',
+                    bottom: '0'
+                });
+            };
 
         }
-
-
     });
