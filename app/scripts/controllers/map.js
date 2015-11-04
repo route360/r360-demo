@@ -428,10 +428,14 @@ angular.module('r360DemoApp')
                         return;
                     };
                     markerArray = $scope.options.sourceMarkers;
-                    markerIcon = L.AwesomeMarkers.icon({
-                        icon: 'fa fa-circle',
-                        prefix: 'fa',
-                        markerColor: 'red'
+                    markerIcon = L.icon({
+                        iconUrl: '/styles/icons/marker_source.svg',
+                        shadowUrl: '/styles/icons/marker_shadow.svg',
+                        iconSize:     [28, 40],
+                        shadowSize:   [27, 18],
+                        iconAnchor:   [14, 40],
+                        shadowAnchor: [7, 14],
+                        popupAnchor:  [0, -43]
                     })
                     break;
                 case 'target':
@@ -440,18 +444,24 @@ angular.module('r360DemoApp')
                         return;
                     };
                     markerArray = $scope.options.targetMarkers;
-                    markerIcon = L.AwesomeMarkers.icon({
-                        icon: 'fa fa-circle',
-                        prefix: 'fa',
-                        markerColor: 'blue'
+                    markerIcon = L.icon({
+                        iconUrl: '/styles/icons/marker_target.svg',
+                        shadowUrl: '/styles/icons/marker_shadow.svg',
+                        iconSize:     [28, 40],
+                        shadowSize:   [27, 18],
+                        iconAnchor:   [14, 40],
+                        shadowAnchor: [7, 14],
+                        popupAnchor:  [0, -43]
                     })
                     break;
 
                 case 'temp' : 
-                    markerIcon = L.AwesomeMarkers.icon({
-                        icon: 'fa fa-circle',
-                        prefix: 'fa',
-                        markerColor: 'green'
+                    markerIcon = L.icon({
+                        iconUrl: '/styles/icons/marker_temp.svg',
+                        iconSize:     [15, 15],
+                        iconAnchor:   [7.5, 7.5],
+                        shadowAnchor: [4, 62],
+                        popupAnchor:  [0, -10]
                     })
                     break;
                 default:
@@ -504,7 +514,6 @@ angular.module('r360DemoApp')
                     })
                     getPolygons(function() {
                         getRoutes();
-
                     });
                     updateURL();
                 })
@@ -934,10 +943,14 @@ angular.module('r360DemoApp')
                         place.travelTime = target.travelTime;
                         if ( place.matchedPlaces.length == 0 ) place.matchedPlaces.push(place);
 
-                        var markerIcon = L.AwesomeMarkers.icon({
-                            icon: 'fa fa-star',
-                            prefix: 'fa',
-                            markerColor: 'yellow'
+                        var  markerIcon = L.icon({
+                            iconUrl: '/styles/icons/marker_source.svg',
+                            shadowUrl: '/styles/icons/marker_shadow.svg',
+                            iconSize:     [28, 40], // size of the icon
+                            shadowSize:   [27, 18],
+                            iconAnchor:   [14, 40], // point of the icon which will correspond to marker's location
+                            shadowAnchor: [7, 14],  // the same for the shadow
+                            popupAnchor:  [0, -43] // point from which the popup should open relative to the iconAnchor
                         })
 
                         // check if place is reachable
@@ -1032,7 +1045,7 @@ angular.module('r360DemoApp')
         $scope.focus = focus;
         function focus(marker,add) {
             if (add) {
-                marker.bindPopup('<strong>' + marker.description.title + '</strong>', {closeButton: false, minWidth: 10});
+                marker.bindPopup('<strong>' + marker.description.title + '</strong>', {closeButton: true, minWidth: 10});
                 marker.openPopup();
             } else {
                 marker.closePopup();

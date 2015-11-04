@@ -9,7 +9,7 @@
 		      <h2>
 		      	<span>Route 360° Demo for </span>
 		      </h2>
-		      <md-select style="margin-left: 1rem" ng-model="options.cityID"  aria-label="City Select" ng-change="flyTo(options.cityID)">
+		      <md-select style="margin-left: .5rem" ng-model="options.cityID"  aria-label="City Select" ng-change="flyTo(options.cityID)">
 	          				<md-option ng-repeat="city in prefs.cities" value="{{city.id}}">{{city.name}}</md-option>
 	          </md-select>
 		      <span flex></span>
@@ -206,7 +206,7 @@
 
       			<md-subheader class="md-no-sticky">Source Markers</md-subheader>
 
-      			<md-list-item class="md-3-line hoverable" ng-mouseenter="focus(marker,true)" ng-mouseleave="focus(marker,false)"  ng-repeat="marker in options.sourceMarkers">
+      			<md-list-item class="md-3-line" ng-click="focus(marker,true)"  ng-repeat="marker in options.sourceMarkers">
 	      				<md-icon class="md-avatar" md-svg-icon="md:map-marker" style="color: #D63E2A"></md-icon>
 	      				<div class="md-list-item-text" layout="column">
 	      				<h3>{{marker.description.title}}</h3>
@@ -228,7 +228,7 @@
 
       			<md-subheader class="md-no-sticky">Target Markers</md-subheader>
 
-      			<md-list-item class="md-3-line hoverable" ng-mouseenter="focus(marker,true)" ng-mouseleave="focus(marker,false)" ng-repeat="marker in options.targetMarkers">
+      			<md-list-item class="md-3-line" ng-click="focus(marker,true)" ng-repeat="marker in options.targetMarkers">
 	      				<md-icon class="md-avatar" md-svg-icon="md:map-marker" style="color: #38A9DC"></md-icon>
 	      				<div class="md-list-item-text" layout="column">
 	      				<h3>{{marker.description.title}}</h3>
@@ -264,7 +264,7 @@
 			          </md-button>
 			        </md-fab-trigger>
 			        <md-fab-actions>
-			          <md-button ng-repeat="time in prefs.travelTimeRanges[options.travelTimeRangeID].times" ng-click="options.travelTime = time" aria-label="Set time to {{Time}}" class="md-fab md-mini" style="background: {{prefs.colorRanges[options.colorRangeID].colors[$index]}}">
+			          <md-button ng-repeat="time in prefs.travelTimeRanges[options.travelTimeRangeID].times.slice().reverse()" ng-click="options.travelTime = time" aria-label="Set time to {{time}}" class="md-fab md-mini" style="background: {{prefs.colorRanges[options.colorRangeID].colors[5-$index]}}">
 			            {{time}}
 			          </md-button>
 			        </md-fab-actions>

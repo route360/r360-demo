@@ -15,9 +15,9 @@
 
     <section layout="column" layout-align="center center">
 
-      <h1 flex layout="row" layout-align="center center">
+      <h1 flex layout="row" layout-align="center center" class="md-display-1">
         <span>Route 360° is currently available for </span>
-        <md-select style="margin-left: 1rem" ng-model="city"  aria-label="City Select" ng-click="stopTheTimers()">
+        <md-select style="margin-left: 0.5rem" ng-model="city"  aria-label="City Select" ng-click="stopTheTimers()">
                 <md-option ng-repeat="city in cities" value="{{city.id}}">{{city.name}}</md-option>
         </md-select>
       </h1>
