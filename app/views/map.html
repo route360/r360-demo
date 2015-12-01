@@ -316,19 +316,26 @@
 
 		</section>
 
-		<section id="overlay-legend" style="margin-left: {{(prefsOpen || optsOpen) && '550px' || 0}}" layout="row" layout-align="center center">
+		<section id="overlay-legend" style="margin-left: {{(prefsOpen || optsOpen) && '550px' || 0}}" layout="column" layout-align="center center">
+
+			<div class="progress-box md-whiteframe-z2" ng-show="states.requestPending">
+				<p>lodaing...</p>
+				<md-progress-linear md-mode="indeterminate"></md-progress-linear>
+			</div>
 
 			<r360-rainbow travel-time="options.travelTime" travel-time-range="prefs.travelTimeRanges[options.travelTimeRangeID].times" color-range="prefs.colorRanges[options.colorRangeID].colors" />
 
 		</section>
 
-		<section class="overlay-progress">
-
-			<md-progress-linear md-mode="indeterminate" ng-show="states.requestPending"></md-progress-linear>
-
-		</section>
 
 		<md-content flex layout="row" id="map"></section>
+
+	</section>
+
+	<section class="overlay-init" layout="column" layout-align="center center" ng-show="states.init">
+
+			<p>initializing...</p>
+			<md-progress-linear md-mode="indeterminate"></md-progress-linear>
 
 	</section>
 

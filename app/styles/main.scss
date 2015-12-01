@@ -38,6 +38,15 @@ body {
   padding:0;
 }
 
+.ng-hide-remove {
+  @include transition(opacity,0.3s,ease-out);
+}
+
+.ng-hide-add {
+  @include transition(opacity,0.3s,ease-out);
+}
+
+
 /* PAGE ANIMATION */
 .page        {
     bottom:0; 
@@ -157,7 +166,7 @@ body {
     left: 0;
     right: 0;
     z-index: 20;
-    r360-rainbow {
+    r360-rainbow, .progress-box  {
       width: 420px;
       z-index: 20;
     }
@@ -187,15 +196,19 @@ body {
 
   }
 
-  .overlay-progress {
-    z-index: 99;
+  .overlay-init {
+    z-index: 9999999;
     position: absolute;
     top: 0;
     left: 0;
     right: 0;
+    bottom: 0;
     margin:0;
     padding:0;
-
+    background: #fff;
+    md-progress-linear {
+      width: 300px;
+    }
   }
 
   .overlay-logo {
@@ -240,36 +253,47 @@ body {
     }
   }
 
-r360-rainbow{
-  min-width: 380px;
-  md-whiteframe {
-    padding: 0;
-    label {
+    .progress-box {
       display: inline-block;
-      font-size: 13px;
-      margin: 0;
-      padding: 0.5rem 0;
+      background: #fff;
       text-align: center;
-      color: rgba(255,255,255,0.8);
+      margin-bottom: .5rem;
+      p {
+        margin: .3rem 0;
+        padding: 0;
+      }
+    }
+
+  r360-rainbow{
+    min-width: 380px;
+    md-whiteframe {
+      padding: 0;
+      label {
+        display: inline-block;
+        font-size: 13px;
+        margin: 0;
+        padding: 0.5rem 0;
+        text-align: center;
+        color: rgba(255,255,255,0.8);
+      }
     }
   }
-}
-}
 
 
-.r360-autocomplete {
-  li {
-    height: auto;
-    padding-top: 8px;
-    padding-bottom: 8px;
-    white-space: normal;
+  .r360-autocomplete {
+    li {
+      height: auto;
+      padding-top: 8px;
+      padding-bottom: 8px;
+      white-space: normal;
+    }
+    span {
+      display: block;
+      line-height: 2;
+    }
   }
-  span {
-    display: block;
-    line-height: 2;
-  }
-}
 
-.leaflet-top, .leaflet-bottom {
-    z-index: 20;
+  .leaflet-top, .leaflet-bottom {
+      z-index: 20;
+  }
 }

@@ -10,7 +10,10 @@
 angular.module('r360DemoApp')
     .controller('MapCtrl', function($scope, $routeParams, $location, $timeout, $mdSidenav, $mdUtil, $log, $mdDialog, $http, $q, $mdToast) {
 
-        var init = true;
+        $scope.states = {
+            "requestPending" : false,
+            "init" : true
+        }
         // ------------
         // GENERAL SETUP
         // ------------
@@ -87,48 +90,48 @@ angular.module('r360DemoApp')
                 "id"    : 0,
                 "name"  : "Berlin",
                 "latlng": [52.516221,13.386154],
-                "url"   : "https://api2-eu.route360.net/brandenburg/",
+                "url"   : "https://service.route360.net/brandenburg/",
 
             }, {
                 "id"    : 1,
                 "name"  : "Oslo",
                 "latlng": [59.913041,10.740509],
-                "url"   : "https://api2-eu.route360.net/norway/"
+                "url"   : "https://service.route360.net/norway/"
             }, {
                 "id"    : 2,
                 "name": "Paris",
                 "latlng": [48.8588589,2.3475569],
-                "url"   : "https://api2-eu.route360.net/france/"
+                "url"   : "https://service.route360.net/france/"
             }, {
                 "id"    : 3,
                 "name": "Vancouver",
                 "latlng": [49.260635,-123.115540],
-                "url"   : "https://api-us.route360.net/canada/"
+                "url"   : "https://service.route360.net/canada/"
             }, {
                 "id"    : 4,
                 "name": "Copenhagen",
                 "latlng": [55.688424,12.576599],
-                "url"   : "https://api2-eu.route360.net/denmark/"
+                "url"   : "https://service.route360.net/denmark/"
             }, {
                 "id"    : 5,
                 "name": "London",
                 "latlng": [51.506606,-0.128403],
-                "url"   : "https://api2-eu.route360.net/britishisles/"
+                "url"   : "https://service.route360.net/britishisles/"
             }, {
                 "id"    : 6,
                 "name": "Zurich",
                 "latlng": [47.370455,8.538437],
-                "url"   : "https://api2-eu.route360.net/switzerland/"
+                "url"   : "https://service.route360.net/switzerland/"
             }, {
                 "id"    : 7,
                 "name": "Vienna",
                 "latlng": [48.209117,16.369629],
-                "url"   : "https://api2-eu.route360.net/austria/"
+                "url"   : "https://service.route360.net/austria/"
             }, {
                 "id"    : 8,
                 "name": "New York",
                 "latlng": [40.731129,-73.987427],
-                "url"   : "https://api-us.route360.net/na_northeast/"
+                "url"   : "https://service.route360.net/na_northeast/"
             }],
             "travelTypes": [{
                 "name": "Bike",
@@ -229,9 +232,6 @@ angular.module('r360DemoApp')
             }]
         };
 
-        $scope.states = {
-            "requestPending" : false
-        }
 
         /**
          * Parse GET parameters to options object
@@ -367,8 +367,8 @@ angular.module('r360DemoApp')
          */
         $scope.flyTo = flyTo;
         function flyTo(cityID) {
-            if (init) {
-                $timeout(function() { init = false; });
+            if ($scope.states.init) {
+                $timeout(function() { $scope.states.init = false; });
             } else {
                 $location.search('cityID', cityID);
                 removeAllMarkers();
@@ -1082,9 +1082,7 @@ angular.module('r360DemoApp')
          * Should be trigered everytime the user changes an options value.
          */
         $scope.$watchCollection('options', function(newCollection, oldCollection, scope) {
-            if (init) {
-                $timeout(function() { init = false; });
-            } else {
+            if (!$scope.states.init) {
                 updateURL();
                 getPolygons(function() {
                     getRoutes();
@@ -1138,11 +1136,11 @@ angular.module('r360DemoApp')
 
         }
 
-        $scope.$watch('prefsOpen', function(newVal) {
-            slide(newVal)
+         $scope.$watch('prefsOpen', function(newVal) {
+            if (!$scope.states.init) slide(newVal);
         });
         $scope.$watch('optsOpen', function(newVal) {
-            slide(newVal);
+            if (!$scope.states.init) slide(newVal);
         });
 
         function slide(open) {
@@ -1170,4 +1168,6 @@ angular.module('r360DemoApp')
             };
 
         }
+
+        $timeout(function() { $scope.states.init = false; }, 2000);
     });
