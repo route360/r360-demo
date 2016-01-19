@@ -88,48 +88,48 @@ angular.module('r360DemoApp')
         $scope.prefs = {
             "cities": [{
                 "id"    : 0,
-                "name"  : "Berlin",
+                "name"  : "Berlin/Brandenburg",
                 "latlng": [52.516221,13.386154],
                 "url"   : "https://service.route360.net/brandenburg/",
 
             }, {
                 "id"    : 1,
-                "name"  : "Oslo",
+                "name"  : "Norway",
                 "latlng": [59.913041,10.740509],
                 "url"   : "https://service.route360.net/norway/"
             }, {
                 "id"    : 2,
-                "name": "Paris",
+                "name": "France",
                 "latlng": [48.8588589,2.3475569],
                 "url"   : "https://service.route360.net/france/"
             }, {
                 "id"    : 3,
-                "name": "Vancouver",
+                "name": "British Columbia",
                 "latlng": [49.260635,-123.115540],
                 "url"   : "https://service.route360.net/canada/"
             }, {
                 "id"    : 4,
-                "name": "Copenhagen",
+                "name": "Denmark",
                 "latlng": [55.688424,12.576599],
                 "url"   : "https://service.route360.net/denmark/"
             }, {
                 "id"    : 5,
-                "name": "London",
+                "name": "British Isles",
                 "latlng": [51.506606,-0.128403],
                 "url"   : "https://service.route360.net/britishisles/"
             }, {
                 "id"    : 6,
-                "name": "Zurich",
+                "name": "Switzerland",
                 "latlng": [47.370455,8.538437],
                 "url"   : "https://service.route360.net/switzerland/"
             }, {
                 "id"    : 7,
-                "name": "Vienna",
+                "name": "Austria",
                 "latlng": [48.209117,16.369629],
                 "url"   : "https://service.route360.net/austria/"
             }, {
                 "id"    : 8,
-                "name": "New York",
+                "name": "United States of America",
                 "latlng": [40.731129,-73.987427],
                 "url"   : "https://service.route360.net/na_northeast/"
             }],

@@ -36,7 +36,7 @@ angular.module('r360DemoApp')
         "url"	: "images/copenhagen.jpg"
     }, {
         "id"    : 5,
-        "name": "Great Britain",
+        "name": "British Isles",
         "url"	: "images/london.jpg"
     }, {
         "id"    : 6,

@@ -28,6 +28,7 @@ module.exports = function(config) {
       'bower_components/angular-mocks/angular-mocks.js',
       'bower_components/angular-route/angular-route.js',
       'bower_components/leaflet/dist/leaflet-src.js',
+      'bower_components/leaflet.contextmenu/dist/leaflet.contextmenu.js',
       'bower_components/leaflet.contextmenu/dist/leaflet.contextmenu-src.js',
       'bower_components/leaflet-active-area/src/leaflet.activearea.js',
       'bower_components/angular-aria/angular-aria.js',
