@@ -533,7 +533,7 @@ angular.module('r360DemoApp')
                 var promise = reverseGeocode(coords);
                 promise.then(function(properties){
                     newMarker.description = buildPlaceDescription(properties);
-                    console.log(markerArray);
+                    // console.log(markerArray);
                 })
 
             }
@@ -547,16 +547,16 @@ angular.module('r360DemoApp')
             var deferred = $q.defer();
 
             if (typeof coords.lat != 'undefined' && typeof coords.lng != 'undefined') 
-                url = "http://photon.komoot.de/reverse?lon=" + coords.lng + "&lat=" + coords.lat;
+                url = "http://service.route360.net/geocode/reverse?lon=" + coords.lng + "&lat=" + coords.lat;
 
             if (typeof coords[0] != 'undefined' && typeof coords[1] != 'undefined') 
-                url = "http://photon.komoot.de/reverse?lon=" + coords[1] + "&lat=" + coords[0];
+                url = "http://service.route360.net/geocode/reverse?lon=" + coords[1] + "&lat=" + coords[0];
 
             $http({
                 method: 'GET',
                 url: url
             }).then(function(response) {
-                console.log(response);
+                // console.log(response);
                 if (response.data.features.length > 0) {
                     var properties = response.data.features[0].properties;
                     if (typeof properties.name === 'undefined') {
@@ -857,7 +857,7 @@ angular.module('r360DemoApp')
 
             $http({
                 method: 'GET',
-                url: "http://photon.komoot.de/api/?q=" + query + "&lat=" + center.lat + "&lon=" + center.lng + "&limit=5"
+                url: "http://service.route360.net/geocode/api/?q=" + query + "&lat=" + center.lat + "&lon=" + center.lng + "&limit=5"
             }).then(function(response) {
                 results = response.data.features.map(function(result) {
                     result.value = result.properties.osm_id;

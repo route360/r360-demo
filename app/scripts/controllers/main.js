@@ -16,39 +16,39 @@ angular.module('r360DemoApp')
   	$scope.cities =  [
   	{
         "id"    : 0,
-        "name"  : "Berlin",
+        "name"  : "Berlin/Brandenburg",
         "url"	: "images/berlin.jpg"
     }, {
         "id"    : 1,
-        "name"  : "Oslo",
+        "name"  : "Norwegen",
         "url"	: "images/oslo.jpg"
     }, {
         "id"    : 2,
-        "name": "Paris",
+        "name": "France",
         "url"	: "images/paris.jpg"
     }, {
         "id"    : 3,
-        "name": "Vancouver",
+        "name": "British Columbia",
         "url"	: "images/vancouver.jpg"
     }, {
         "id"    : 4,
-        "name": "Copenhagen",
+        "name": "Denmark",
         "url"	: "images/copenhagen.jpg"
     }, {
         "id"    : 5,
-        "name": "London",
+        "name": "Great Britain",
         "url"	: "images/london.jpg"
     }, {
         "id"    : 6,
-        "name": "Zurich",
+        "name": "Switzerland",
         "url"	: "images/zurich.jpg"
     }, {
         "id"    : 7,
-        "name": "Vienna",
+        "name": "Austria",
         "url"	: "images/vienna.jpg"
     }, {
         "id"    : 8,
-        "name": "New York",
+        "name": "United States of America",
         "url"	: "images/newyork.jpg"
   	}];
 
