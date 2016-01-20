@@ -2,146 +2,18 @@
 
 	<section class="fs-container" flex layout-fill>
 
-		<md-sidenav class="md-sidenav-left md-whiteframe-z2" md-component-id="prefs" md-is-open="prefsOpen">
+		<md-sidenav class="md-sidenav-left md-whiteframe-z2" md-component-id="options" md-is-open="map.optsOpen">
 
 		  <md-toolbar  class="md-theme-light">
 		  	<div class="md-toolbar-tools">
 		      <h2>
 		      	<span>Route 360° Demo for </span>
 		      </h2>
-		      <md-select style="margin-left: .5rem" ng-model="options.cityID"  aria-label="City Select" ng-change="flyTo(options.cityID)">
-	          				<md-option ng-repeat="city in prefs.cities" value="{{city.id}}">{{city.name}}</md-option>
+		      <md-select style="margin-left: .5rem" ng-model="map.options.cityID"  aria-label="City Select" ng-change="flyTo(map.options.cityID)">
+	          				<md-option ng-repeat="city in map.prefs.cities" value="{{city.id}}">{{city.name}}</md-option>
 	          </md-select>
 		      <span flex></span>
-		      <md-button class="md-icon-button" aria-label="Close" ng-click="togglePrefs()">
-		        <md-icon md-svg-icon="md-close"></md-icon>
-		      </md-button>
-		  	</div>
-		  </md-toolbar>
-
-		  <md-content layout-padding>
-
-		          <md-list>
-
-		          	<md-subheader class="md-no-sticky">Travel Time</md-subheader>
-
-
-					<md-list-item layout-padding layout="row">
-
-						<r360-rainbow flex travel-time="options.travelTime" travel-time-range="prefs.travelTimeRanges[options.travelTimeRangeID].times" color-range="prefs.colorRanges[options.colorRangeID].colors" />
-
-					</md-list-item>
-
-					<md-list-item>
-						<p>Maximum Travel Time</p>
-						<md-slider ng-if="options.travelTimeRangeID == 0" flex class="md-primary" md-discrete ng-model="options.travelTime" step="5" min="5" max="30" aria-label="Travel Time"></md-slider>
-						<md-slider ng-if="options.travelTimeRangeID == 1" flex class="md-primary" md-discrete ng-model="options.travelTime" step="10" min="10" max="60" aria-label="Travel Time"></md-slider>
-						<md-slider ng-if="options.travelTimeRangeID == 2" flex class="md-primary" md-discrete ng-model="options.travelTime" step="20" min="20" max="120" aria-label="Travel Time"></md-slider>
-					</md-list-item>
-
-					<md-list-item>
-						<p>Travel Time Range</p>
-					  	<md-select style="margin: 0" ng-model="options.travelTimeRangeID" aria-label="Travel Time Range">
-							<md-option ng-repeat="range in prefs.travelTimeRanges" value="{{range.id}}">{{range.name}}</md-option>
-          				</md-select>
-
-					</md-list-item>
-
-					<md-list-item>
-						<p>Color Range</p>
-					  	<md-select style="margin: 0" ng-model="options.colorRangeID" aria-label="Travel Time Range">
-							<md-option ng-repeat="range in prefs.colorRanges" value="{{range.id}}">{{range.name}}</md-option>
-          				</md-select>
-
-					</md-list-item>
-
-					<md-divider style="margin-top:1rem;"></md-divider>
-
-					<md-subheader class="md-no-sticky">Travel Type</md-subheader>
-
-					<md-list-item>
-    					<p>Travel Type</p>
-    					<md-icon md-svg-icon="{{options.travelTypeIcon}}" style="margin-right: 1rem;"></md-icon>
-						<md-select style="margin: 0" ng-model="options.travelType" aria-label="Travel Type">
-							<md-option ng-repeat="type in prefs.travelTypes" value="{{type.value}}" >
-								<md-icon md-svg-icon="{{type.icon}}"></md-icon> {{type.name}}
- 							</md-option>
-          				</md-select>
-          			</md-list-item>
-
-          			<!-- <md-list-item ng-show="options.travelType == 'transit'">
-    					<p>Travel Date</p>
-						<md-datepicker ng-model="options.queryDate" md-placeholder="Travel Date" aria-label="Datepicker"></md-datepicker>
-          			</md-list-item>
-
-					<md-list-item ng-show="options.travelType == 'transit'">
-	        			<p>Start Time</p>
-	        			<md-select style="margin: 0" ng-model="options.queryTime.h" aria-label="Start-Time Hour">
-									  	<md-option ng-repeat="hour in prefs.queryTimeRange.hour" value="{{hour}}">{{hour}}</md-option>
-		          		</md-select>
-
-		          		<span style="margin: 0 1rem">:</span>
-
-		          	<md-select style="margin: 0" ng-model="options.queryTime.m" aria-label="Start-Time Minute">
-						  	<md-option ng-repeat="minute in prefs.queryTimeRange.minute" value="{{minute}}">{{minute}}</md-option>
-		          	</md-select>
-          			</md-list-item> -->
-
-          			<md-divider></md-divider>
-
-          			<section ng-show="options.showAdvanced">
-
-          			<md-subheader class="md-no-sticky">Advanced</md-subheader>
-
-          			<md-list-item>
-	        					<p>Intersection Mode</p>
-								<md-select style="margin: 0" ng-model="options.intersection" aria-label="Intersection Mode">
-						  		<md-option ng-repeat="type in prefs.intersectionTypes" value="{{type.value}}">{{type.name}}</md-option>
-		          	</md-select>
-          			</md-list-item>
-
-          			<!-- <md-list-item>
-	        				<p>Map Provider</p>
-							<md-select style="margin: 0" ng-model="options.mapProvider" aria-label="Map Provider">
-		          				<md-option ng-repeat="provider in prefs.mapProviderList" value="{{provider.value}}">{{provider.name}}</md-option>
-		          			</md-select>
-          			</md-list-item> -->
-
-
-          			<md-list-item>
-	        				<p>Map transition (Menu open)</p>
-							<md-switch class="md-primary" aria-label="Transition Switch" ng-model="options.transition" />
-          			</md-list-item>
-
-          			<md-list-item>
-						<p>Map Style</p>
-					  	<md-select style="margin: 0" ng-model="options.mapstyle" aria-label="Map Style Select" ng-change="updateTileStyle()">
-							<md-option ng-repeat="style in prefs.mapStyles" value="{{style.value}}">{{style.name}}</md-option>
-          				</md-select>
-
-					</md-list-item>
-
-					</section>
-
-					<md-list-item layout-align="center center">
-          				<md-button ng-click="options.showAdvanced = !options.showAdvanced" class="md-primary">{{options.showAdvanced && 'Less' || 'More'}}</md-button>
-          			</md-list-item>
-
-				</md-list>
-
-		  </md-content>
-
-		</md-sidenav>
-
-		<md-sidenav class="md-sidenav-left md-whiteframe-z2" md-component-id="options" md-is-open="optsOpen">
-
-		  <md-toolbar  class="md-theme-light">
-		  	<div class="md-toolbar-tools">
-		      <h2>
-		      	<span>Marker</span>
-		      </h2>
-		      <span flex></span>
-		      <md-button class="md-icon-button" aria-label="Close" ng-click="toggleOptions()">
+		      <md-button class="md-icon-button" aria-label="Close" ng-click="map.toggleOptions()">
 		        <md-icon md-svg-icon="md-close"></md-icon>
 		      </md-button>
 		  	</div>
@@ -196,7 +68,7 @@
 
       			</md-list-item>
 
-      			<!-- <md-list-item ng-repeat="poi in prefs.pois">
+      			<!-- <md-list-item ng-repeat="poi in map.prefs.pois">
 
       			<p>{{poi.name}}</p>
 
@@ -206,7 +78,7 @@
 
       			<md-subheader class="md-no-sticky">Source Markers</md-subheader>
 
-      			<md-list-item class="md-3-line" ng-click="focus(marker,true)"  ng-repeat="marker in options.sourceMarkers">
+      			<md-list-item class="md-3-line" ng-click="focus(marker,true)"  ng-repeat="marker in map.options.sourceMarkers">
 	      				<md-icon class="md-avatar" md-svg-icon="md:map-marker" style="color: #D63E2A"></md-icon>
 	      				<div class="md-list-item-text" layout="column">
 	      				<h3>{{marker.description.title}}</h3>
@@ -219,7 +91,7 @@
 					    </md-button>
       			</md-list-item>
 
-      			<md-list-item ng-if="options.sourceMarkers.length === 0" layout="row" layout-align="center center">
+      			<md-list-item ng-if="map.options.sourceMarkers.length === 0" layout="row" layout-align="center center">
       				<div style="color: rgba(0,0,0,0.4)">
       					<md-icon md-svg-icon="md:information" style="color: rgba(0,0,0,0.4)"></md-icon>
       					<span>No source Markers defined</span>
@@ -228,7 +100,7 @@
 
       			<md-subheader class="md-no-sticky">Target Markers</md-subheader>
 
-      			<md-list-item class="md-3-line" ng-click="focus(marker,true)" ng-repeat="marker in options.targetMarkers">
+      			<md-list-item class="md-3-line" ng-click="focus(marker,true)" ng-repeat="marker in map.options.targetMarkers">
 	      				<md-icon class="md-avatar" md-svg-icon="md:map-marker" style="color: #38A9DC"></md-icon>
 	      				<div class="md-list-item-text" layout="column">
 	      				<h3>{{marker.description.title}}</h3>
@@ -241,12 +113,104 @@
 					    </md-button>
       			</md-list-item>
 
-      			<md-list-item ng-if="options.targetMarkers.length === 0" layout="row" layout-align="center center">
+      			<md-list-item ng-if="map.options.targetMarkers.length === 0" layout="row" layout-align="center center">
       				<div style="color: rgba(0,0,0,0.4)">
       					<md-icon md-svg-icon="md:information" style="color: rgba(0,0,0,0.4)"></md-icon>
       					<span>No target Markers defined</span>
       				</div>
       			</md-list-item>
+
+				</md-list>
+
+          			<md-divider></md-divider>
+
+          			<section ng-show="map.options.showAdvanced">
+
+          			<md-subheader class="md-no-sticky">Advanced</md-subheader>
+
+          			 <md-list>
+
+					<md-list-item>
+						<p>Travel Time Range</p>
+					  	<md-select style="margin: 0" ng-model="map.options.travelTimeRangeID" aria-label="Travel Time Range">
+							<md-option ng-repeat="range in map.prefs.travelTimeRanges" value="{{range.id}}">{{range.name}}</md-option>
+          				</md-select>
+
+					</md-list-item>
+
+					<md-list-item>
+						<p>Color Range</p>
+					  	<md-select style="margin: 0" ng-model="map.options.colorRangeID" aria-label="Travel Time Range">
+							<md-option ng-repeat="range in map.prefs.colorRanges" value="{{range.id}}">{{range.name}}</md-option>
+          				</md-select>
+
+					</md-list-item>
+
+					<md-divider style="margin-top:1rem;"></md-divider>
+
+					<!-- <md-subheader class="md-no-sticky">Travel Type</md-subheader>
+
+					<md-list-item>
+    					<p>Travel Type</p>
+    					<md-icon md-svg-icon="{{map.options.travelTypeIcon}}" style="margin-right: 1rem;"></md-icon>
+						<md-select style="margin: 0" ng-model="map.options.travelType" aria-label="Travel Type">
+							<md-option ng-repeat="type in map.prefs.travelTypes" value="{{type.value}}" >
+								<md-icon md-svg-icon="{{type.icon}}"></md-icon> {{type.name}}
+ 							</md-option>
+          				</md-select>
+          			</md-list-item> -->
+
+          			<!-- <md-list-item ng-show="map.options.travelType == 'transit'">
+    					<p>Travel Date</p>
+						<md-datepicker ng-model="map.options.queryDate" md-placeholder="Travel Date" aria-label="Datepicker"></md-datepicker>
+          			</md-list-item>
+
+					<md-list-item ng-show="map.options.travelType == 'transit'">
+	        			<p>Start Time</p>
+	        			<md-select style="margin: 0" ng-model="map.options.queryTime.h" aria-label="Start-Time Hour">
+									  	<md-option ng-repeat="hour in map.prefs.queryTimeRange.hour" value="{{hour}}">{{hour}}</md-option>
+		          		</md-select>
+
+		          		<span style="margin: 0 1rem">:</span>
+
+		          	<md-select style="margin: 0" ng-model="map.options.queryTime.m" aria-label="Start-Time Minute">
+						  	<md-option ng-repeat="minute in map.prefs.queryTimeRange.minute" value="{{minute}}">{{minute}}</md-option>
+		          	</md-select>
+          			</md-list-item> -->
+
+          			<md-list-item>
+	        					<p>Intersection Mode</p>
+								<md-select style="margin: 0" ng-model="map.options.intersection" aria-label="Intersection Mode">
+						  		<md-option ng-repeat="type in map.prefs.intersectionTypes" value="{{type.value}}">{{type.name}}</md-option>
+		          	</md-select>
+          			</md-list-item>
+
+          			<!-- <md-list-item>
+	        				<p>Map Provider</p>
+							<md-select style="margin: 0" ng-model="map.options.mapProvider" aria-label="Map Provider">
+		          				<md-option ng-repeat="provider in map.prefs.mapProviderList" value="{{provider.value}}">{{provider.name}}</md-option>
+		          			</md-select>
+          			</md-list-item> -->
+
+
+          			<md-list-item>
+	        				<p>Map transition (Menu open)</p>
+							<md-switch class="md-primary" aria-label="Transition Switch" ng-model="map.options.transition" />
+          			</md-list-item>
+
+          			<md-list-item>
+						<p>Map Style</p>
+					  	<md-select style="margin: 0" ng-model="map.options.mapstyle" aria-label="Map Style Select" ng-change="updateTileStyle()">
+							<md-option ng-repeat="style in map.prefs.mapStyles" value="{{style.value}}">{{style.name}}</md-option>
+          				</md-select>
+
+					</md-list-item>
+
+					</section>
+
+					<md-list-item layout-align="center center">
+          				<md-button ng-click="map.options.showAdvanced = !map.options.showAdvanced" class="md-primary">{{map.options.showAdvanced && 'Less' || 'More'}}</md-button>
+          			</md-list-item>
 
 				</md-list>
 
@@ -259,12 +223,12 @@
 			<md-fab-speed-dial md-direction="left" class="md-fling">
 			        <md-fab-trigger>
 			          <md-button aria-label="Travel Type" class="md-fab md-accent md-hue-2">
-			            {{options.travelTime}} Min.
+			            {{map.options.travelTime}} Min.
 			            <md-tooltip>Max. Travel Time</md-tooltip>
 			          </md-button>
 			        </md-fab-trigger>
 			        <md-fab-actions>
-			          <md-button ng-repeat="time in prefs.travelTimeRanges[options.travelTimeRangeID].times.slice().reverse()" ng-click="options.travelTime = time" aria-label="Set time to {{time}}" class="md-fab md-mini" style="background: {{prefs.colorRanges[options.colorRangeID].colors[5-$index]}}">
+			          <md-button ng-repeat="time in map.prefs.travelTimeRanges[map.options.travelTimeRangeID].times.slice().reverse()" ng-click="map.options.travelTime = time" aria-label="Set time to {{time}}" class="md-fab md-mini" style="background: {{map.prefs.colorRanges[map.options.colorRangeID].colors[5-$index]}}">
 			            {{time}}
 			          </md-button>
 			        </md-fab-actions>
@@ -274,27 +238,27 @@
 			<md-fab-speed-dial md-direction="left" class="md-fling">
 			        <md-fab-trigger>
 			          <md-button aria-label="Travel Type" class="md-fab md-accent md-hue-2">
-			            <md-icon ng-if="options.travelType == 'bike'" md-svg-icon="md:bike"></md-icon>
-			            <md-icon ng-if="options.travelType == 'walk'" md-svg-icon="md:walk"></md-icon>
-			            <md-icon ng-if="options.travelType == 'car'" md-svg-icon="md:car"></md-icon>
-			            <md-icon ng-if="options.travelType == 'transit'" md-svg-icon="md:train"></md-icon>
+			            <md-icon ng-if="map.options.travelType == 'bike'" md-svg-icon="md:bike"></md-icon>
+			            <md-icon ng-if="map.options.travelType == 'walk'" md-svg-icon="md:walk"></md-icon>
+			            <md-icon ng-if="map.options.travelType == 'car'" md-svg-icon="md:car"></md-icon>
+			            <md-icon ng-if="map.options.travelType == 'transit'" md-svg-icon="md:train"></md-icon>
 			            <md-tooltip>Travel Type</md-tooltip>
 			          </md-button>
 			        </md-fab-trigger>
 			        <md-fab-actions>
-			          <md-button ng-click="options.travelType = 'walk'" aria-label="Walk" class="md-fab md-mini">
+			          <md-button ng-click="map.options.travelType = 'walk'" aria-label="Walk" class="md-fab md-mini">
 			            <md-icon  md-svg-icon="md:walk"></md-icon>
 			            <md-tooltip>Walk</md-tooltip>
 			          </md-button>
-			          <md-button ng-click="options.travelType = 'bike'" aria-label="Bike" class="md-fab md-mini">
+			          <md-button ng-click="map.options.travelType = 'bike'" aria-label="Bike" class="md-fab md-mini">
 			            <md-icon  md-svg-icon="md:bike"></md-icon>
 			            <md-tooltip>Bike</md-tooltip>
 			          </md-button>
-			          <md-button ng-click="options.travelType = 'car'" aria-label="Car" class="md-fab md-mini">
+			          <md-button ng-click="map.options.travelType = 'car'" aria-label="Car" class="md-fab md-mini">
 			            <md-icon  md-svg-icon="md:car"></md-icon>
 			            <md-tooltip>Car</md-tooltip>
 			          </md-button>
-			          <md-button ng-click="options.travelType = 'transit'" aria-label="Transit" class="md-fab md-mini">
+			          <md-button ng-click="map.options.travelType = 'transit'" aria-label="Transit" class="md-fab md-mini">
 			            <md-icon  md-svg-icon="md:train"></md-icon>
 			            <md-tooltip>Transit</md-tooltip>
 			          </md-button>
@@ -305,25 +269,21 @@
 
 		<section class="overlay-controls" layout="column">
 
-			<md-button class="md-fab md-primary overlay-btn md-hue-2" ng-click="togglePrefs()" aria-label="Open Menu">
+			<md-button class="md-fab md-primary overlay-btn md-hue-2" ng-click="map.toggleOptions()" aria-label="Open Menu">
 			<md-icon md-svg-icon="md-menu"></md-icon>
-				<!--<md-tooltip>Preferences</md-tooltip>-->
-			</md-button>
-			<md-button class="md-fab md-primary overlay-btn md-hue-2" ng-click="toggleOptions()" aria-label="Open Menu">
-			<md-icon md-svg-icon="md:map-marker-multiple"></md-icon>
 				<!--<md-tooltip>Options</md-tooltip>-->
 			</md-button>
 
 		</section>
 
-		<section id="overlay-legend" style="margin-left: {{(prefsOpen || optsOpen) && '550px' || 0}}" layout="column" layout-align="center center">
+		<section id="overlay-legend" style="margin-left: {{(map.prefsOpen || map.optsOpen) && '550px' || 0}}" layout="column" layout-align="center center">
 
-			<div class="progress-box md-whiteframe-z2" ng-show="states.requestPending">
+			<div class="progress-box md-whiteframe-z2" ng-show="map.states.requestPending">
 				<p>loading...</p>
 				<md-progress-linear md-mode="indeterminate"></md-progress-linear>
 			</div>
 
-			<r360-rainbow travel-time="options.travelTime" travel-time-range="prefs.travelTimeRanges[options.travelTimeRangeID].times" color-range="prefs.colorRanges[options.colorRangeID].colors" />
+			<r360-rainbow travel-time="map.options.travelTime" travel-time-range="map.prefs.travelTimeRanges[map.options.travelTimeRangeID].times" color-range="map.prefs.colorRanges[map.options.colorRangeID].colors" />
 
 		</section>
 
@@ -332,7 +292,7 @@
 
 	</section>
 
-	<section class="overlay-init" layout="column" layout-align="center center" ng-show="states.init">
+	<section class="overlay-init" layout="column" layout-align="center center" ng-show="map.states.init">
 
 			<p>initializing...</p>
 			<md-progress-linear md-mode="indeterminate"></md-progress-linear>

@@ -32,7 +32,7 @@ angular
         // map page
         .when('/map', {
             templateUrl: 'views/map.html',
-            controller: 'MapCtrl',
+            controller: 'MapCtrl as map',
             reloadOnSearch: false
         });
 
