@@ -102,7 +102,7 @@ angular.module('r360DemoApp')
                 "id"    : 3,
                 "name": "British Columbia",
                 "latlng": [49.260635,-123.115540],
-                "url"   : "https://service.route360.net/canada/"
+                "url"   : "https://service.route360.net/britishcolumbia/"
             }, {
                 "id"    : 4,
                 "name": "Denmark",
@@ -1049,9 +1049,15 @@ angular.module('r360DemoApp')
             }
         }
 
+        function changeTravelTime(time) {
+            if(vm.options.travelTime == time) return;
+            vm.options.travelTime = time;
+            getPolygons();
+        };
 
+        vm.changeTravelTime = changeTravelTime;
 
-        $scope.$watch('vm.options.travelTimeRangeID', function(newVal) {
+        function changeTravelTimeRange(id) {
 
             if(!angular.isDefined(newVal)) return;
 
@@ -1066,28 +1072,22 @@ angular.module('r360DemoApp')
             });
 
             vm.options.travelTime = nextVal;
-        });
+        };
 
-        $scope.$watch('vm.options.travelType', function(newVal) {
+        vm.changeTravelTimeRange = changeTravelTimeRange;
 
-             vm.prefs.travelTypes.forEach(function(elem,index,array){
-                if (elem['value'] == newVal) vm.options.travelTypeIcon = elem['icon'];
-            })
+        function changeTravelType(type) {
 
-        });
+            if(vm.options.travelType == type) return;
+            vm.options.travelType = type;
+            vm.prefs.travelTypes.forEach(function(elem,index,array){
+                if (elem['value'] == type) vm.options.travelTypeIcon = elem['icon'];
+            });
+            getPolygons();
 
-        /**
-         * Should be trigered everytime the user changes an options value.
-         */
-        $scope.$watchCollection('options', function(newCollection, oldCollection, scope) {
-            if (!vm.states.init) {
-                updateURL();
-                getPolygons(function() {
-                    getRoutes();
-                });
-            }
-        });
+        };
 
+        vm.changeTravelType = changeTravelType;
 
 
         function updateURL() {
