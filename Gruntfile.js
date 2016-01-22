@@ -438,9 +438,46 @@ module.exports = function (grunt) {
         configFile: 'test/karma.conf.js',
         singleRun: true
       }
-    }
-  });
+    },
 
+    keycdn: {
+      purgeURL: {
+        options: {
+          apiKey: 'sk_prod_NTQ3NmZkYmU0NGE3MzM4YzZj',
+          zoneId: '18060',
+          method: 'del'
+        },
+        files: [{
+            expand : true,
+            src: 'dist/**',
+            filter: 'isFile',
+            rename: function(dest, src) {
+
+                var contextPath = 'demo-ftp';
+                var kcdnFileName = "apps-2248.kxcdn.com/" + contextPath + "/" + src.replace("dist/", "");
+
+                return kcdnFileName;
+            }
+        }],
+      },
+    },
+
+    'ftp-deploy': {
+      build: {
+        auth: {
+          host: '78.46.156.197',
+          port: 21,
+          authKey: 'webspace'
+        },
+        src: 'dist',
+        dest: 'public_html/project/demo-ftp',
+        exclusions: ['**/.DS_Store', '**/Thumbs.db', 'dist/tmp'],
+        forceVerbose : true
+      }
+    },
+  });
+    
+  grunt.loadNpmTasks('grunt-ftp-deploy');
 
   grunt.registerTask('serve', 'Compile then start a connect web server', function (target) {
     if (target === 'dist') {
@@ -487,6 +524,10 @@ module.exports = function (grunt) {
     'filerev',
     'usemin',
     'htmlmin'
+  ]);
+
+  grunt.registerTask('sftp', [
+    'grunt-sftp-deploy'
   ]);
 
   grunt.registerTask('default', [

@@ -128,6 +128,11 @@ angular.module('r360DemoApp')
                 "name": "United States of America",
                 "latlng": [40.731129,-73.987427],
                 "url"   : "https://service.route360.net/na_northeast/"
+            }, {
+                "id"    : 9,
+                "name": "Germany",
+                "latlng": [52.516221,13.386154],
+                "url"   : "https://dev.route360.net/xxx/"
             }],
             "travelTypes": [{
                 "name": "Bike",
@@ -773,6 +778,10 @@ angular.module('r360DemoApp')
                     if(angular.isDefined(callback)) callback();
                 },
                 function(status,message) {
+
+                    console.log(status);
+                    console.log(message);
+
                     vm.states.requestPending = false;
                     $mdDialog.show(
                         $mdDialog.alert()

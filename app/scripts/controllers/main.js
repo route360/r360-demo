@@ -50,7 +50,11 @@ angular.module('r360DemoApp')
         "id"    : 8,
         "name": "United States of America",
         "url"	: "images/newyork.jpg"
-  	}];
+  	}, {
+        "id"    : 9,
+        "name": "Germany",
+        "url"   : "images/berlin.jpg"
+    }];
 
   	$scope.timer = 0;
   	$scope.mode = 'determinate';
