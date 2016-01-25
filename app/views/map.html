@@ -132,7 +132,7 @@
 
 					<md-list-item>
 						<p>Travel Time Range</p>
-					  	<md-select style="margin: 0" ng-model="map.options.travelTimeRangeID" aria-label="Travel Time Range">
+					  	<md-select style="margin: 0" ng-model="map.options.travelTimeRangeID" aria-label="Travel Time Range" ng-change="map.changeTravelTimeRange()">
 							<md-option ng-repeat="range in map.prefs.travelTimeRanges" value="{{range.id}}">{{range.name}}</md-option>
           				</md-select>
 
@@ -140,7 +140,7 @@
 
 					<md-list-item>
 						<p>Color Range</p>
-					  	<md-select style="margin: 0" ng-model="map.options.colorRangeID" aria-label="Travel Time Range">
+					  	<md-select style="margin: 0" ng-model="map.options.colorRangeID" aria-label="Travel Time Range" ng-change="map.updateView()">
 							<md-option ng-repeat="range in map.prefs.colorRanges" value="{{range.id}}">{{range.name}}</md-option>
           				</md-select>
 
@@ -180,7 +180,7 @@
 
           			<md-list-item>
 	        					<p>Intersection Mode</p>
-								<md-select style="margin: 0" ng-model="map.options.intersection" aria-label="Intersection Mode">
+								<md-select style="margin: 0" ng-model="map.options.intersection" aria-label="Intersection Mode" ng-change="map.updateView()">
 						  		<md-option ng-repeat="type in map.prefs.intersectionTypes" value="{{type.value}}">{{type.name}}</md-option>
 		          	</md-select>
           			</md-list-item>

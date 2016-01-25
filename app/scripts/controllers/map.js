@@ -787,6 +787,8 @@ angular.module('r360DemoApp')
             );
         }
 
+        vm.updateView = getPolygons;
+
         /**
          * Clear the route layer, request and draw new routes
          */
@@ -1057,14 +1059,14 @@ angular.module('r360DemoApp')
 
         vm.changeTravelTime = changeTravelTime;
 
-        function changeTravelTimeRange(id) {
+        function changeTravelTimeRange() {
 
-            if(!angular.isDefined(newVal)) return;
+            var rngId = vm.options.travelTimeRangeID;
 
             var dist = 999999;
             var nextVal = 30;
 
-            vm.prefs.travelTimeRanges[newVal].times.forEach(function(elem, index, array) {
+            vm.prefs.travelTimeRanges[rngId].times.forEach(function(elem, index, array) {
                 if (dist > Math.abs(elem - vm.options.travelTime)) {
                     dist = Math.abs(elem - vm.options.travelTime)
                     nextVal = elem;
