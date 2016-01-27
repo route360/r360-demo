@@ -9,8 +9,8 @@
 		      <h2>
 		      	<span>Route 360° Demo for </span>
 		      </h2>
-		      <md-select style="margin-left: .5rem" ng-model="map.options.cityID"  aria-label="City Select" ng-change="map.flyTo(map.options.cityID)">
-	          				<md-option ng-repeat="city in map.prefs.cities" value="{{city.id}}">{{city.name}}</md-option>
+		      <md-select style="margin-left: .5rem" ng-model="map.options.areaID"  aria-label="City Select" ng-change="map.flyTo(map.options.areaID)">
+	          				<md-option ng-repeat="city in map.prefs.cities | orderBy:'name'" value="{{city.id}}">{{city.name}}</md-option>
 	          </md-select>
 		      <span flex></span>
 		      <md-button class="md-icon-button" aria-label="Close" ng-click="map.toggleOptions()">
@@ -218,7 +218,7 @@
 
 		</md-sidenav>
 
-		<section class="overlay-speeddials" layout="column" layout-align="center end">
+		<section id="fab-bounds" class="overlay-speeddials" ng-cloak layout="column" layout-align="start end">
 
 			<md-fab-speed-dial md-direction="left" class="md-fling">
 			        <md-fab-trigger>

@@ -8,71 +8,91 @@
  * Controller of the r360DemoApp
  */
 angular.module('r360DemoApp')
-  .controller('MainCtrl', function ($scope,$interval) {
+  .controller('MainCtrl', function ($interval,$scope) {
+
+    var vm = this;
   	$scope.pageClass = "main-page";
 
-  	$scope.city = 0;
+  	vm.city = "brandenburg";
 
-  	$scope.cities =  [
+  	vm.cities =  [
   	{
-        "id"    : 0,
+        "id"    :  "brandenburg",
         "name"  : "Berlin/Brandenburg",
         "url"	: "images/berlin.jpg"
     }, {
-        "id"    : 1,
-        "name"  : "Norwegen",
+        "id"    : "norway",
+        "name"  : "Norway",
         "url"	: "images/oslo.jpg"
     }, {
-        "id"    : 2,
+        "id"    : "france",
         "name": "France",
         "url"	: "images/paris.jpg"
     }, {
-        "id"    : 3,
+        "id"    : "canada",
         "name": "British Columbia",
         "url"	: "images/vancouver.jpg"
     }, {
-        "id"    : 4,
+        "id"    : "denmark",
         "name": "Denmark",
         "url"	: "images/copenhagen.jpg"
     }, {
-        "id"    : 5,
+        "id"    : "britishisles",
         "name": "British Isles",
         "url"	: "images/london.jpg"
     }, {
-        "id"    : 6,
+        "id"    : "switzerland",
         "name": "Switzerland",
         "url"	: "images/zurich.jpg"
     }, {
-        "id"    : 7,
+        "id"    : "austria",
         "name": "Austria",
         "url"	: "images/vienna.jpg"
     }, {
-        "id"    : 8,
-        "name": "United States of America",
-        "url"	: "images/newyork.jpg"
-  	}];
+        "id"    : "newyork",
+        "name"  : "United States of America",
+        "url"	  : "images/newyork.jpg"
+  	}, {
+        "id"    : "italy",
+        "name"  : "Italy",
+        "url"   : "images/italy.jpg"
+    }, {
+        "id"    : "spain",
+        "name"  : "Spain",
+        "url"   : "images/spain.jpg"
+    }, {
+        "id"    : "portugal",
+        "name"  : "Portugal",
+        "url"   : "images/portugal.jpg"
+    }];
 
-  	$scope.timer = 0;
-  	$scope.mode = 'determinate';
+  	vm.timer = 0;
+  	vm.mode = 'determinate';
   	var timer1;
   	var timer2;
+    var i = 0;
 
   	timer1 = $interval(function(){
-  		if ($scope.city < $scope.cities.length-1) $scope.city++
-  			else $scope.city = 0;
-  		$scope.timer = 0;
-  		$scope.mode = "";
-  		$scope.mode = 'determinate';
+  		if (i < vm.cities.length-1) {
+        i++
+        vm.city = vm.cities[i].id;
+      }
+  			else {
+          i = 0;
+          vm.city = 'brandenburg'
+        };
+  		vm.timer = 0;
+  		vm.mode = 'determinate';
   	},5000);
 
   	timer2 = $interval(function(){
-  		$scope.timer++;
+  		vm.timer++;
   	},50);
 
-  	$scope.stopTheTimers = function() {
+  	vm.stopTheTimers = function() {
   		$interval.cancel(timer1);
   		$interval.cancel(timer2);
-  		$scope.mode = '';
+  		vm.mode = '';
   	}
 
   })

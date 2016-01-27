@@ -2,7 +2,7 @@
     <img src="images/github.svg" alt="r360 on GitHub">
 </a> -->
 
-<div ng-repeat="key in cities" class="bg-image" layout-fill layout="row" style="background: url('{{key.url}}') center center; background-size: cover; z-index:{{(key.id == city) && 10 || 1}}; opacity: {{(key.id == city) && 1 || 0}}">
+<div ng-repeat="key in main.cities" class="bg-image" layout-fill layout="row" style="background: url('{{key.url}}') center center; background-size: cover; z-index:{{(key.id == main.city) && 10 || 1}}; opacity: {{(key.id == main.city) && 1 || 0}}">
 </div>
 
 <div class="abs dark" layout-fill layout="row" layout-align="center center" style="z-index: 99">
@@ -17,12 +17,12 @@
 
       <h1 flex layout="row" layout-align="center center" class="md-display-1">
         <span>Route 360° is currently available for </span>
-        <md-select style="margin-left: 0.5rem" ng-model="city"  aria-label="City Select" ng-click="stopTheTimers()">
-                <md-option ng-repeat="city in cities" value="{{city.id}}">{{city.name}}</md-option>
+        <md-select style="margin-left: 0.5rem" ng-model="main.city"  aria-label="City Select" ng-click="main.stopTheTimers()">
+                <md-option ng-repeat="key in main.cities | orderBy:'name'" value="{{key.id}}">{{key.name}}</md-option>
         </md-select>
       </h1>
 
-      <a layout="row" class="ghostbutton" href="./#/map?cityID={{city}}">Launch Demo</a>
+      <a layout="row" class="ghostbutton" href="./#/map?areaID={{main.city}}">Launch Demo</a>
 
     </section>
 
@@ -30,4 +30,4 @@
 
 </div>
 
-<md-progress-linear class="timer-progress md-hue-1" md-mode="{{mode}}" value="{{timer}}"></md-progress-linear>
+<md-progress-linear class="timer-progress md-hue-1" md-mode="{{main.mode}}" value="{{main.timer}}"></md-progress-linear>

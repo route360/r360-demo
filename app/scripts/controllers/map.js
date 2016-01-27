@@ -8,7 +8,7 @@
  * Map Controller of the r360DemoApp
  */
 angular.module('r360DemoApp')
-    .controller('MapCtrl', function($scope, $routeParams, $location, $timeout, $mdSidenav, $mdUtil, $log, $mdDialog, $http, $q, $mdToast) {
+    .controller('MapCtrl', function($document,$scope, $routeParams, $location, $timeout, $mdSidenav, $mdUtil, $log, $mdDialog, $http, $q, $mdToast) {
 
         var vm = this;
 
@@ -32,13 +32,25 @@ angular.module('r360DemoApp')
             $mdSidenav('options').toggle();
         };
 
-        function showToast(message) {
-            $mdToast.show(
-              $mdToast.simple()
-                .content(message)
-                .position('top right')
-                .hideDelay(3000)
-            );
+        function showToast(message,position,action) {
+            if (!angular.isDefined(position)) var position = 'top right';
+
+            if (angular.isDefined(action)) {
+                $mdToast.show(
+                    $mdToast.simple()
+                        .content(message)
+                        .position(position)
+                        .hideDelay(5000)
+                        .action(action)
+                );
+            } else {
+                $mdToast.show(
+                    $mdToast.simple()
+                        .content(message)
+                        .position(position)
+                        .hideDelay(3000)
+                );
+            }
         }
 
         var now = new Date();
@@ -53,7 +65,8 @@ angular.module('r360DemoApp')
         };
 
         vm.options = {
-            "cityID": 0,
+            "areaID": "brandenburg",
+            "cityID" : undefined,  // legacy
             "travelTime": 30,
             "travelTimeRangeID": 0,
             "travelType": "bike",
@@ -83,51 +96,66 @@ angular.module('r360DemoApp')
 
         vm.prefs = {
             "cities": [{
-                "id"    : 0,
+                "id"    : "brandenburg",
                 "name"  : "Berlin/Brandenburg",
                 "latlng": [52.516221,13.386154],
                 "url"   : "https://service.route360.net/brandenburg/",
 
             }, {
-                "id"    : 1,
+                "id"    : "norway",
                 "name"  : "Norway",
                 "latlng": [59.913041,10.740509],
                 "url"   : "https://service.route360.net/norway/"
             }, {
-                "id"    : 2,
-                "name": "France",
+                "id"    : "france",
+                "name"  : "France",
                 "latlng": [48.8588589,2.3475569],
                 "url"   : "https://service.route360.net/france/"
             }, {
-                "id"    : 3,
+                "id"    : "britishcolumbia",
                 "name": "British Columbia",
                 "latlng": [49.260635,-123.115540],
                 "url"   : "https://service.route360.net/britishcolumbia/"
             }, {
-                "id"    : 4,
-                "name": "Denmark",
+                "id"    : "denmark",
+                "name"  : "Denmark",
                 "latlng": [55.688424,12.576599],
                 "url"   : "https://service.route360.net/denmark/"
             }, {
-                "id"    : 5,
-                "name": "British Isles",
+                "id"    : "britishisles",
+                "name"  : "British Isles",
                 "latlng": [51.506606,-0.128403],
                 "url"   : "https://service.route360.net/britishisles/"
             }, {
-                "id"    : 6,
-                "name": "Switzerland",
+                "id"    : "switzerland",
+                "name"  : "Switzerland",
                 "latlng": [47.370455,8.538437],
                 "url"   : "https://service.route360.net/switzerland/"
             }, {
-                "id"    : 7,
+                "id"    : "austria",
                 "name": "Austria",
                 "latlng": [48.209117,16.369629],
                 "url"   : "https://service.route360.net/austria/"
             }, {
-                "id"    : 8,
-                "name": "United States of America",
+                "id"    : "newyork",
+                "name"  : "United States of America",
                 "latlng": [40.731129,-73.987427],
                 "url"   : "https://service.route360.net/na_northeast/"
+            }, {
+                "id"    : "italy",
+                "name"  : "Italy",
+                "latlng": [41.8945503,12.483081],
+                "url"   : "https://service.route360.net/italy/"
+            }, {
+                "id"    : "spain",
+                "name"  : "Spain",
+                "latlng": [40.472101, -3.682646],
+                "url"   : "https://service.route360.net/iberia/"
+            }, {
+                "id"    : "portugal",
+                "name"  : "Portugal",
+                "latlng": [38.714109, -9.133373],
+                "url"   : "https://service.route360.net/iberia/"
             }],
             "travelTypes": [{
                 "name": "Bike",
@@ -253,6 +281,7 @@ angular.module('r360DemoApp')
                 case "placesLimit" :
                     vm.options[index] = parseInt(value);
                     break;
+                case "areaID" :
                 case "travelType" :
                 case "mapstyle" :
                 case "intersection" :
@@ -269,8 +298,49 @@ angular.module('r360DemoApp')
             }
         }
 
+        // legacy ID support
+        if (angular.isDefined(vm.options.cityID) && typeof vm.options.cityID === "number") {
+            switch (vm.options.cityID) {
+                case 0:
+                    vm.options.cityID = "berlin";
+                    break;
+                case 1:
+                    vm.options.cityID = "norway";
+                    break;
+                case 2:
+                    vm.options.cityID = "france";
+                    break;
+                case 3:
+                    vm.options.cityID = "canada";
+                    break;
+                case 4:
+                    vm.options.cityID = "denmark";
+                    break;
+                case 5:
+                    vm.options.cityID = "britishisles";
+                    break;
+                case 6:
+                    vm.options.cityID = "switzerland";
+                    break;
+                case 7:
+                    vm.options.cityID = "austria";
+                    break;
+                case 8:
+                    vm.options.cityID = "newyork";
+                    break;
+            }
+        } 
+
+        function getCity() {
+            var result = {};
+            vm.prefs.cities.forEach(function(city){
+                if(city.id == vm.options.areaID) result = city;
+            });
+            return result;
+        }
+
         r360.config.requestTimeout = 10000;
-        r360.config.serviceUrl = vm.prefs.cities[vm.options.cityID].url;
+        r360.config.serviceUrl = getCity().url;
         r360.config.serviceKey = "OOWOFUK3OPHLQTA8H5JD";
         r360.config.i18n.language = "de";
 
@@ -296,10 +366,8 @@ angular.module('r360DemoApp')
             right: '0',
             bottom: '0'
         })
-        .setView(vm.prefs.cities[vm.options.cityID].latlng, 13)
-        .on('load', function() {
-            showToast('Markers can be added by right-clicking on the map.');
-        });
+        .setView(getCity().latlng, 13);
+
         L.control.scale({
             metric: true,
             imperial: false
@@ -356,21 +424,21 @@ angular.module('r360DemoApp')
             getPolygons(function() {getRoutes()});
         }
 
-        if (!angular.isDefined($routeParams['sources']) && !angular.isDefined($routeParams['targets']) ) addMarker(vm.prefs.cities[vm.options.cityID].latlng, 'source');
+        if (!angular.isDefined($routeParams['sources']) && !angular.isDefined($routeParams['targets']) ) addMarker(getCity().latlng, 'source');
 
         /**
          * Helper function to change the city & service url
          */
         vm.flyTo = flyTo;
-        function flyTo(cityID) {
+        function flyTo(areaID) {
             if (vm.states.init) {
                 $timeout(function() { vm.states.init = false; });
             } else {
-                $location.search('cityID', cityID);
+                $location.search('areaID', areaID);
                 removeAllMarkers();
-                r360.config.serviceUrl = vm.prefs.cities[cityID].url;
-                vm.map.setView(vm.prefs.cities[cityID].latlng,10,{animate:true, duration: 1});
-                addMarker(vm.prefs.cities[cityID].latlng,'source');
+                r360.config.serviceUrl = getCity().url;
+                vm.map.setView(getCity().latlng,10,{animate:true, duration: 1});
+                addMarker(getCity().latlng,'source');
             }
         }
 
@@ -570,7 +638,7 @@ angular.module('r360DemoApp')
                 }
                 deferred.resolve(properties);
             }, function(response) {
-                showToast("reverse Geocoding failed");
+                showToast("Reverse geocoding failed.");
             });
 
             return deferred.promise;
@@ -1118,7 +1186,7 @@ angular.module('r360DemoApp')
                         });
                         $location.search("targets", targets.join(";"));
                         break;
-                    case 'cityID':
+                    case 'areaID':
                     case 'travelTime':
                     case 'travelTimeRangeID':
                     case 'travelType':
@@ -1163,4 +1231,5 @@ angular.module('r360DemoApp')
         }
 
         $timeout(function() { vm.states.init = false; }, 2000);
+        $timeout(function() { showToast('Markers can be added by right-clicking on the map.','bottom right','OK') }, 3000);
     });

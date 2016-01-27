@@ -26,7 +26,7 @@ angular
         // home page
         .when('/', {
             templateUrl: 'views/main.html',
-            controller: 'MainCtrl'
+            controller: 'MainCtrl as main'
         })
 
         // map page
