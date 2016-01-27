@@ -302,42 +302,44 @@ angular.module('r360DemoApp')
         if (angular.isDefined(vm.options.cityID) && typeof vm.options.cityID === "number") {
             switch (vm.options.cityID) {
                 case 0:
-                    vm.options.cityID = "berlin";
+                    vm.options.areaID = "berlin";
                     break;
                 case 1:
-                    vm.options.cityID = "norway";
+                    vm.options.areaID = "norway";
                     break;
                 case 2:
-                    vm.options.cityID = "france";
+                    vm.options.areaID = "france";
                     break;
                 case 3:
-                    vm.options.cityID = "canada";
+                    vm.options.areaID = "canada";
                     break;
                 case 4:
-                    vm.options.cityID = "denmark";
+                    vm.options.areaID = "denmark";
                     break;
                 case 5:
-                    vm.options.cityID = "britishisles";
+                    vm.options.areaID = "britishisles";
                     break;
                 case 6:
-                    vm.options.cityID = "switzerland";
+                    vm.options.areaID = "switzerland";
                     break;
                 case 7:
-                    vm.options.cityID = "austria";
+                    vm.options.areaID = "austria";
                     break;
                 case 8:
-                    vm.options.cityID = "newyork";
+                    vm.options.areaID = "newyork";
                     break;
             }
         } 
 
         function getCity() {
-            var result = {};
+            var result = undefined;
             vm.prefs.cities.forEach(function(city){
                 if(city.id == vm.options.areaID) result = city;
             });
             return result;
         }
+
+        if(!angular.isDefined(getCity())) vm.options.areaID = "brandenburg";
 
         r360.config.requestTimeout = 10000;
         r360.config.serviceUrl = getCity().url;
