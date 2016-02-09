@@ -160,29 +160,27 @@
           				</md-select>
           			</md-list-item> -->
 
-          			<!-- <md-list-item ng-show="map.options.travelType == 'transit'">
+          			<md-list-item ng-show="map.options.travelType == 'transit' && map.options.cityID == 0 "> <!-- germany -->
     					<p>Travel Date</p>
 						<md-datepicker ng-model="map.options.queryDate" md-placeholder="Travel Date" aria-label="Datepicker"></md-datepicker>
           			</md-list-item>
 
-					<md-list-item ng-show="map.options.travelType == 'transit'">
+					<md-list-item ng-show="map.options.travelType == 'transit' && map.options.cityID == 0 "> <!-- germany -->
 	        			<p>Start Time</p>
 	        			<md-select style="margin: 0" ng-model="map.options.queryTime.h" aria-label="Start-Time Hour">
-									  	<md-option ng-repeat="hour in map.prefs.queryTimeRange.hour" value="{{hour}}">{{hour}}</md-option>
+						  	<md-option ng-repeat="hour in map.prefs.queryTimeRange.hour" value="{{hour}}">{{hour}}</md-option>
 		          		</md-select>
-
 		          		<span style="margin: 0 1rem">:</span>
-
-		          	<md-select style="margin: 0" ng-model="map.options.queryTime.m" aria-label="Start-Time Minute">
+    		          	<md-select style="margin: 0" ng-model="map.options.queryTime.m" aria-label="Start-Time Minute">
 						  	<md-option ng-repeat="minute in map.prefs.queryTimeRange.minute" value="{{minute}}">{{minute}}</md-option>
-		          	</md-select>
-          			</md-list-item> -->
+    		          	</md-select>
+          			</md-list-item>
 
           			<md-list-item>
-	        					<p>Intersection Mode</p>
-								<md-select style="margin: 0" ng-model="map.options.intersection" aria-label="Intersection Mode">
-						  		<md-option ng-repeat="type in map.prefs.intersectionTypes" value="{{type.value}}">{{type.name}}</md-option>
-		          	</md-select>
+    					<p>Intersection Mode</p>
+						<md-select style="margin: 0" ng-model="map.options.intersection" aria-label="Intersection Mode">
+				  		    <md-option ng-repeat="type in map.prefs.intersectionTypes" value="{{type.value}}">{{type.name}}</md-option>
+		          	   </md-select>
           			</md-list-item>
 
           			<!-- <md-list-item>
@@ -191,7 +189,6 @@
 		          				<md-option ng-repeat="provider in map.prefs.mapProviderList" value="{{provider.value}}">{{provider.name}}</md-option>
 		          			</md-select>
           			</md-list-item> -->
-
 
           			<md-list-item>
 	        				<p>Map transition (Menu open)</p>

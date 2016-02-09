@@ -46,10 +46,10 @@ angular.module('r360DemoApp')
         var minute = (now.getMinutes() + (5 - now.getMinutes() % 5)) % 60;
 
         if (minute == 0) {
-            hour++
+            hour++;
         };
         if (hour == 24) {
-            hour = 0
+            hour = 0;
         };
 
         vm.options = {
@@ -84,9 +84,9 @@ angular.module('r360DemoApp')
         vm.prefs = {
             "cities": [{
                 "id"    : 0,
-                "name"  : "Berlin/Brandenburg",
+                "name"  : "Germany",
                 "latlng": [52.516221,13.386154],
-                "url"   : "https://service.route360.net/brandenburg/",
+                "url"   : "https://service.route360.net/germany/",
 
             }, {
                 "id"    : 1,
