@@ -453,7 +453,7 @@ module.exports = function (grunt) {
             filter: 'isFile',
             rename: function(dest, src) {
 
-                var contextPath = 'demo-ftp';
+                var contextPath = 'demo';
                 var kcdnFileName = "apps-2248.kxcdn.com/" + contextPath + "/" + src.replace("dist/", "");
 
                 return kcdnFileName;
@@ -470,7 +470,7 @@ module.exports = function (grunt) {
           authKey: 'webspace'
         },
         src: 'dist',
-        dest: 'public_html/project/demo-ftp',
+        dest: 'public_html/project/demo',
         exclusions: ['**/.DS_Store', '**/Thumbs.db', 'dist/tmp'],
         forceVerbose : true
       }
@@ -526,8 +526,9 @@ module.exports = function (grunt) {
     'htmlmin'
   ]);
 
-  grunt.registerTask('sftp', [
-    'grunt-sftp-deploy'
+  grunt.registerTask('deploy', [
+    'ftp-deploy',
+    'keycdn'
   ]);
 
   grunt.registerTask('default', [
