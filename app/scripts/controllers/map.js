@@ -1130,6 +1130,7 @@ angular.module('r360DemoApp')
             if(vm.options.travelTime == time) return;
             vm.options.travelTime = time;
             getPolygons();
+            updateURL();
         };
 
         vm.changeTravelTime = changeTravelTime;
@@ -1161,6 +1162,8 @@ angular.module('r360DemoApp')
                 if (elem['value'] == type) vm.options.travelTypeIcon = elem['icon'];
             });
             getPolygons();
+
+            updateURL();
 
         };
 
