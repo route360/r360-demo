@@ -100,6 +100,8 @@ angular.module('r360DemoApp')
                 "name"  : "Germany",
                 "latlng": [52.516221,13.386154],
                 "url"   : "https://service.route360.net/germany/",
+                // "url"   : "https://api3.eu.route360.net:8080/",
+                // "url"   : "http://localhost:8080/api/",
 
             }, {
                 "id"    : "norway",
@@ -156,6 +158,16 @@ angular.module('r360DemoApp')
                 "name"  : "Portugal",
                 "latlng": [38.714109, -9.133373],
                 "url"   : "https://service.route360.net/iberia/"
+            }, {
+                "id"    : "czech_republic",
+                "name"  : "Czech Republic",
+                "latlng": [50.0833, 14.4167],
+                "url"   : "https://service.route360.net/czech_republic/"
+            }, {
+                "id"    : "south_america",
+                "name"  : "South America",
+                "latlng": [-22.9068, -43.1729],
+                "url"   : "https://service.route360.net/south_america/"
             }],
             "travelTypes": [{
                 "name": "Bike",
@@ -344,6 +356,7 @@ angular.module('r360DemoApp')
         r360.config.requestTimeout = 10000;
         r360.config.serviceUrl = getCity().url;
         r360.config.serviceKey = "OOWOFUK3OPHLQTA8H5JD";
+        // r360.config.serviceKey = "uhWrWpUhyZQy8rPfiC7X";
         r360.config.i18n.language = "de";
 
         vm.map = L.map('map', {
