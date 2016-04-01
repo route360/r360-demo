@@ -8,7 +8,7 @@
  * Map Controller of the r360DemoApp
  */
 angular.module('r360DemoApp')
-    .controller('MapCtrl', function($document,$scope,$route, $location, $routeParams, $timeout, $mdSidenav, $mdUtil, $log, $mdDialog, $http, $q, $mdToast) {
+    .controller('MapCtrl', function($document,$scope,$route, $location, $routeParams, $timeout, $mdSidenav, $mdUtil, $log, $mdDialog, $http, $q, $mdToast, ENV) {
 
         var vm = this;
         var lastRelatedTarget;
@@ -70,75 +70,72 @@ angular.module('r360DemoApp')
                     "id"    : "germany",
                     "name"  : "Germany",
                     "latlng": [52.516221,13.386154],
-                    "url"   : "https://service.route360.net/germany/",
-                    // "url"   : "https://api3.eu.route360.net:8080/",
-                    // "url"   : "http://localhost:8080/api/",
-
+                    "url"   : ENV.endpoints.germany
                 }, {
                     "id"    : "norway",
                     "name"  : "Norway",
                     "latlng": [59.913041,10.740509],
-                    "url"   : "https://service.route360.net/norway/"
+                    "url"   : ENV.endpoints.norway
                 }, {
                     "id"    : "france",
                     "name"  : "France",
                     "latlng": [48.8588589,2.3475569],
-                    "url"   : "https://service.route360.net/france/"
+                    "url"   : ENV.endpoints.france
                 }, {
                     "id"    : "britishcolumbia",
                     "name": "British Columbia",
                     "latlng": [49.260635,-123.115540],
-                    "url"   : "https://service.route360.net/britishcolumbia/"
+                    "url"   : ENV.endpoints.britishcolumbia
                 }, {
                     "id"    : "denmark",
                     "name"  : "Denmark",
                     "latlng": [55.688424,12.576599],
-                    "url"   : "https://service.route360.net/denmark/"
+                    "url"   : ENV.endpoints.denmark
                 }, {
                     "id"    : "britishisles",
                     "name"  : "British Isles",
                     "latlng": [51.506606,-0.128403],
-                    "url"   : "https://service.route360.net/britishisles/"
+                    "url"   : ENV.endpoints.britishisles
                 }, {
                     "id"    : "switzerland",
                     "name"  : "Switzerland",
                     "latlng": [47.370455,8.538437],
-                    "url"   : "https://service.route360.net/switzerland/"
+                    "url"   : ENV.endpoints.switzerland
                 }, {
                     "id"    : "austria",
                     "name": "Austria",
                     "latlng": [48.209117,16.369629],
-                    "url"   : "https://service.route360.net/austria/"
+                    "url"   : ENV.endpoints.austria
                 }, {
                     "id"    : "newyork",
                     "name"  : "United States of America",
                     "latlng": [40.731129,-73.987427],
-                    "url"   : "https://service.route360.net/na_northeast/"
+                    "url"   : ENV.endpoints.newyork
                 }, {
                     "id"    : "italy",
                     "name"  : "Italy",
                     "latlng": [41.8945503,12.483081],
-                    "url"   : "https://service.route360.net/italy/"
+                    "url"   : ENV.endpoints.italy
                 }, {
                     "id"    : "spain",
                     "name"  : "Spain",
                     "latlng": [40.472101, -3.682646],
-                    "url"   : "https://service.route360.net/iberia/"
+                    "url"   : ENV.endpoints.spain
                 }, {
                     "id"    : "portugal",
                     "name"  : "Portugal",
                     "latlng": [38.714109, -9.133373],
-                    "url"   : "https://service.route360.net/iberia/"
+                    "url"   : ENV.endpoints.portugal
                 }, {
                     "id"    : "czech_republic",
                     "name"  : "Czech Republic",
                     "latlng": [50.0833, 14.4167],
-                    "url"   : "https://service.route360.net/czech_republic/"
+                    "url"   : ENV.endpoints.czech_republic
                 }, {
                     "id"    : "south_america",
                     "name"  : "South America",
                     "latlng": [-22.9068, -43.1729],
-                    "url"   : "https://service.route360.net/south_america/"
+                    "url"   : ENV.endpoints.south_america
                 }],
                 "travelTypes": [{
                     "name": "Bike",
@@ -243,7 +240,7 @@ angular.module('r360DemoApp')
 
             r360.config.requestTimeout = 10000;
             r360.config.serviceUrl = getCity().url;
-            r360.config.serviceKey = "OOWOFUK3OPHLQTA8H5JD";
+            r360.config.serviceKey = ENV.serviceKey;
             r360.config.i18n.language = "de";
 
             if (!angular.isDefined(vm.map)) {
@@ -524,8 +521,8 @@ angular.module('r360DemoApp')
                     };
                     markerArray = vm.options.sourceMarkers;
                     markerIcon = L.icon({
-                        iconUrl: '/styles/icons/marker_source.svg',
-                        shadowUrl: '/styles/icons/shadow.png',
+                        iconUrl: './images/icons/marker_source.svg',
+                        shadowUrl: './images/icons/shadow.png',
                         iconSize:     [28, 40],
                         shadowSize:   [28, 45],
                         iconAnchor:   [14, 40],
@@ -540,8 +537,8 @@ angular.module('r360DemoApp')
                     };
                     markerArray = vm.options.targetMarkers;
                     markerIcon = L.icon({
-                        iconUrl: '/styles/icons/marker_target.svg',
-                        shadowUrl: '/styles/icons/shadow.png',
+                        iconUrl: './images/icons/marker_target.svg',
+                        shadowUrl: './images/icons/shadow.png',
                         iconSize:     [28, 40],
                         shadowSize:   [28, 45],
                         iconAnchor:   [14, 40],
@@ -552,7 +549,7 @@ angular.module('r360DemoApp')
 
                 case 'temp' :
                     markerIcon = L.icon({
-                        iconUrl: '/styles/icons/marker_temp.svg',
+                        iconUrl: './images/icons/marker_temp.svg',
                         iconSize:     [15, 15],
                         iconAnchor:   [7.5, 7.5],
                         shadowAnchor: [4, 62],
@@ -641,10 +638,10 @@ angular.module('r360DemoApp')
             var deferred = $q.defer();
 
             if (typeof coords.lat != 'undefined' && typeof coords.lng != 'undefined')
-                url = "https://service.route360.net/geocode/reverse?lon=" + coords.lng + "&lat=" + coords.lat;
+                url = ENV.endpoints.geocoder + "reverse?lon=" + coords.lng + "&lat=" + coords.lat;
 
             if (typeof coords[0] != 'undefined' && typeof coords[1] != 'undefined')
-                url = "https://service.route360.net/geocode/reverse?lon=" + coords[1] + "&lat=" + coords[0];
+                url = ENV.endpoints.geocoder + "reverse?lon=" + coords[1] + "&lat=" + coords[0];
 
             $http({
                 method: 'GET',
@@ -967,7 +964,7 @@ angular.module('r360DemoApp')
 
             $http({
                 method: 'GET',
-                url: "https://service.route360.net/geocode/api/?q=" + query + "&lat=" + center.lat + "&lon=" + center.lng + "&limit=5"
+                url: ENV.endpoints.geocoder + "api/?q=" + query + "&lat=" + center.lat + "&lon=" + center.lng + "&limit=5"
             }).then(function(response) {
                 results = response.data.features.map(function(result) {
                     result.value = result.properties.osm_id;
@@ -1052,8 +1049,8 @@ angular.module('r360DemoApp')
                         if ( place.matchedPlaces.length == 0 ) place.matchedPlaces.push(place);
 
                         var  markerIcon = L.icon({
-                            iconUrl: '/styles/icons/marker_source.svg',
-                            shadowUrl: '/styles/icons/marker_shadow.svg',
+                            iconUrl: './images/icons/marker_source.svg',
+                            shadowUrl: './images/icons/marker_shadow.svg',
                             iconSize:     [28, 40], // size of the icon
                             shadowSize:   [27, 18],
                             iconAnchor:   [14, 40], // point of the icon which will correspond to marker's location

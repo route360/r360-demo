@@ -14,7 +14,9 @@ module.exports = function (grunt) {
 
   // Automatically load required Grunt tasks
   require('jit-grunt')(grunt, {
+    ngconstant : 'grunt-ng-constant',
     useminPrepare: 'grunt-usemin',
+    removelogging : 'grunt-remove-logging',
     ngtemplates: 'grunt-angular-templates',
     cdnify: 'grunt-google-cdn'
   });
@@ -30,6 +32,77 @@ module.exports = function (grunt) {
 
     // Project settings
     yeoman: appConfig,
+
+    ngconstant: {
+      options: {
+        name: 'config',
+        dest: '<%= yeoman.app %>/scripts/config.js',
+        wrap: '"use strict";\n\n {%= __ngModule %}',
+        constants: {
+          // constants for DEV and PROD
+          package: grunt.file.readJSON('package.json')
+        }
+      },
+      // Environment targets
+      development: {
+        constants: {
+          ENV: {
+            name       : 'development',
+            serviceKey : "OOWOFUK3OPHLQTA8H5JD",
+            endpoints  : {
+              germany         : "https://service.route360.net/germany/",
+              norway          : "https://service.route360.net/norway/",
+              france          : "https://service.route360.net/france/",
+              britishcolumbia : "https://service.route360.net/britishcolumbia/",
+              denmark         : "https://service.route360.net/denmark/",
+              britishisles    : "https://service.route360.net/britishisles/",
+              switzerland     : "https://service.route360.net/switzerland/",
+              austria         : "https://service.route360.net/austria/",
+              newyork         : "https://service.route360.net/na_northeast/",
+              italy           : "https://service.route360.net/italy/",
+              spain           : "https://service.route360.net/iberia/",
+              portugal        : "https://service.route360.net/iberia/",
+              czech_republic  : "https://service.route360.net/czech_republic/",
+              south_america   : "https://service.route360.net/south_america/",
+
+              geocoder        : "https://service.route360.net/geocode/"
+            }
+          }
+        }
+      },
+      production: {
+        constants: {
+          ENV: {
+            name       : 'production',
+            serviceKey : "OOWOFUK3OPHLQTA8H5JD",
+            endpoints  : {
+              germany         : "https://service.route360.net/germany/",
+              norway          : "https://service.route360.net/norway/",
+              france          : "https://service.route360.net/france/",
+              britishcolumbia : "https://service.route360.net/britishcolumbia/",
+              denmark         : "https://service.route360.net/denmark/",
+              britishisles    : "https://service.route360.net/britishisles/",
+              switzerland     : "https://service.route360.net/switzerland/",
+              austria         : "https://service.route360.net/austria/",
+              newyork         : "https://service.route360.net/na_northeast/",
+              italy           : "https://service.route360.net/italy/",
+              spain           : "https://service.route360.net/iberia/",
+              portugal        : "https://service.route360.net/iberia/",
+              czech_republic  : "https://service.route360.net/czech_republic/",
+              south_america   : "https://service.route360.net/south_america/",
+
+              geocoder        : "https://service.route360.net/geocode/"
+            }
+          }
+        }
+      }
+    },
+
+    removelogging: {
+      dist: {
+        src: "<%= yeoman.dist %>/**/*.js" // Each file will be overwritten with the output!
+      }
+    },
 
     // Watches files for changes and runs tasks based on the changed files
     watch: {
@@ -53,7 +126,8 @@ module.exports = function (grunt) {
         tasks: ['compass:server', 'autoprefixer:server']
       },
       gruntfile: {
-        files: ['Gruntfile.js']
+        files: ['Gruntfile.js'],
+        tasks: ['ngconstant:development']
       },
       livereload: {
         options: {
@@ -322,6 +396,15 @@ module.exports = function (grunt) {
     },
 
     svgmin: {
+      options: {
+          full: true,
+          plugins: [
+            {cleanupIDs: false},                  // don't remove  ids
+            {removeViewBox: false},               // don't remove the viewbox atribute from the SVG
+            {removeUselessStrokeAndFill: false},  // don't remove Useless Strokes and Fills
+            {removeEmptyAttrs: false}             // don't remove Empty Attributes from the SVG
+          ]
+      },
       dist: {
         files: [{
           expand: true,
@@ -476,7 +559,7 @@ module.exports = function (grunt) {
       }
     },
   });
-    
+
   grunt.loadNpmTasks('grunt-ftp-deploy');
 
   grunt.registerTask('serve', 'Compile then start a connect web server', function (target) {
@@ -486,6 +569,7 @@ module.exports = function (grunt) {
 
     grunt.task.run([
       'clean:server',
+      'ngconstant:development',
       'wiredep',
       'concurrent:server',
       'autoprefixer:server',
@@ -510,6 +594,7 @@ module.exports = function (grunt) {
 
   grunt.registerTask('build', [
     'clean:dist',
+    'ngconstant:production',
     'wiredep',
     'useminPrepare',
     'concurrent:dist',
@@ -518,6 +603,7 @@ module.exports = function (grunt) {
     'concat',
     'ngAnnotate',
     'copy:dist',
+    'removelogging:dist',
     'cdnify',
     'cssmin',
     'uglify',
