@@ -14,7 +14,7 @@ angular
     'ngRoute',
     'ngMaterial'
   ])
-   .config(function ($mdIconProvider,$mdThemingProvider,$routeProvider) {
+   .config(function ($mdIconProvider,$mdThemingProvider,$routeProvider,$locationProvider) {
 
 
    	$mdThemingProvider.theme('default')
@@ -35,6 +35,8 @@ angular
             controller: 'MapCtrl as map',
             reloadOnSearch: false
         });
+
+    // $locationProvider.html5Mode(true);
 
     $mdIconProvider
         //.iconSet('action', '../styles/icons/action-icons.svg', 24)

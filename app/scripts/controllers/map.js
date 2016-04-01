@@ -8,25 +8,404 @@
  * Map Controller of the r360DemoApp
  */
 angular.module('r360DemoApp')
-    .controller('MapCtrl', function($document,$scope, $routeParams, $location, $timeout, $mdSidenav, $mdUtil, $log, $mdDialog, $http, $q, $mdToast) {
+    .controller('MapCtrl', function($document,$scope,$route, $location, $routeParams, $timeout, $mdSidenav, $mdUtil, $log, $mdDialog, $http, $q, $mdToast) {
 
         var vm = this;
+        var lastRelatedTarget;
 
-        vm.states = {
-            "requestPending" : false,
-            "init" : true
+        // init function
+        function init() {
+
+            vm.states = {
+                "requestPending" : false,
+                "init" : true,
+                "urlModified" : false
+            }
+
+            $scope.pageClass = 'map-page';
+
+            var now = new Date();
+            var hour = now.getHours();
+            var minute = (now.getMinutes() + (5 - now.getMinutes() % 5)) % 60;
+
+            if (minute == 0) {
+                hour++;
+            };
+            if (hour == 24) {
+                hour = 0;
+            };
+
+            vm.options = {
+                "areaID": "germany",
+                "cityID" : undefined,  // legacy
+                "travelTime": 30,
+                "travelTimeRangeID": 0,
+                "travelType": "bike",
+                "queryDate": now,
+                "queryTime": {
+                    "h": hour,
+                    "m": minute
+                },
+                "colorRangeID": 0,
+                "mapProvider": "osm",
+                "sourceMarkers": [],
+                "maxSourceMarkers" : 3,
+                "targetMarkers": [],
+                "maxTargetMarkers" : 3,
+                "groups" : [],
+                "intersection": "union",
+                "strokeWidth": 30,
+                "extendWidth": 500,
+                "backgroundColor": 'black',
+                "backgroundOpacity": 0,
+                "minPolygonHoleSize": 1000000,
+                "placesLimit" : 100,
+                "transition" : true,
+                "mapstyle" : "mi.0ad4304c",
+                "showAdvanced" : false
+            };
+
+            vm.prefs = {
+                "cities": [{
+                    "id"    : "germany",
+                    "name"  : "Germany",
+                    "latlng": [52.516221,13.386154],
+                    "url"   : "https://service.route360.net/germany/",
+
+                }, {
+                    "id"    : "norway",
+                    "name"  : "Norway",
+                    "latlng": [59.913041,10.740509],
+                    "url"   : "https://service.route360.net/norway/"
+                }, {
+                    "id"    : "france",
+                    "name"  : "France",
+                    "latlng": [48.8588589,2.3475569],
+                    "url"   : "https://service.route360.net/france/"
+                }, {
+                    "id"    : "britishcolumbia",
+                    "name": "British Columbia",
+                    "latlng": [49.260635,-123.115540],
+                    "url"   : "https://service.route360.net/britishcolumbia/"
+                }, {
+                    "id"    : "denmark",
+                    "name"  : "Denmark",
+                    "latlng": [55.688424,12.576599],
+                    "url"   : "https://service.route360.net/denmark/"
+                }, {
+                    "id"    : "britishisles",
+                    "name"  : "British Isles",
+                    "latlng": [51.506606,-0.128403],
+                    "url"   : "https://service.route360.net/britishisles/"
+                }, {
+                    "id"    : "switzerland",
+                    "name"  : "Switzerland",
+                    "latlng": [47.370455,8.538437],
+                    "url"   : "https://service.route360.net/switzerland/"
+                }, {
+                    "id"    : "austria",
+                    "name": "Austria",
+                    "latlng": [48.209117,16.369629],
+                    "url"   : "https://service.route360.net/austria/"
+                }, {
+                    "id"    : "newyork",
+                    "name"  : "United States of America",
+                    "latlng": [40.731129,-73.987427],
+                    "url"   : "https://service.route360.net/na_northeast/"
+                }, {
+                    "id"    : "italy",
+                    "name"  : "Italy",
+                    "latlng": [41.8945503,12.483081],
+                    "url"   : "https://service.route360.net/italy/"
+                }, {
+                    "id"    : "spain",
+                    "name"  : "Spain",
+                    "latlng": [40.472101, -3.682646],
+                    "url"   : "https://service.route360.net/iberia/"
+                }, {
+                    "id"    : "portugal",
+                    "name"  : "Portugal",
+                    "latlng": [38.714109, -9.133373],
+                    "url"   : "https://service.route360.net/iberia/"
+                }],
+                "travelTypes": [{
+                    "name": "Bike",
+                    "icon": "md:bike",
+                    "value": "bike",
+                }, {
+                    "name": "Walk",
+                    "icon": "md:walk",
+                    "value": "walk",
+                }, {
+                    "name": "Car",
+                    "icon": "md:car",
+                    "value": "car",
+                }, {
+                    "name": "Transit",
+                    "icon": "md:train",
+                    "value": "transit",
+                }],
+                "queryTimeRange": {
+                    "hour": [0, 1, 2, 3, 4, 5, 6, 7, 8, 9, 10, 11, 12, 13, 14, 15, 16, 17, 18, 19, 20, 21, 22, 23],
+                    "minute": [0, 5, 10, 15, 20, 25, 30, 35, 40, 45, 50, 55]
+                },
+                "mapProviderList": [{
+                    "name": "OpenStreetMaps",
+                    "value": "osm"
+                }, {
+                    "name": "Google Maps",
+                    "value": "google"
+                }],
+                "intersectionTypes": [{
+                    "name": "Union",
+                    "value": "union"
+                }, {
+                    "name": "Intersection",
+                    "value": "intersection"
+                }, {
+                    "name": "Average",
+                    "value": "average"
+                }, ],
+                "travelTimeRanges" : [{
+                    "name" : "5 Min - 30 Min",
+                    "id"   : 0,
+                    "times": [5,10,15,20,25,30]
+                    }, {
+                    "name" : "10 Min - 60 Min",
+                    "id"   : 1,
+                    "times": [10,20,30,40,50,60]
+                    }, {
+                    "name" : "20 Min - 120 Min",
+                    "id"   : 2,
+                    "times": [20,40,60,80,100,120]
+                    }
+                ],
+                "colorRanges" : [{
+                    "name"  : "Green to Red",
+                    "id"    : 0,
+                    "colors": ["#006837","#39B54A","#8CC63F","#F7931E","#F15A24","#C1272D"],
+                    "opacities" : [1,1,1,1,1,1]
+                    }, {
+                    "name"  : "Colorblind",
+                    "id"    : 1,
+                    "colors": ["#142b66","#4525AB","#9527BC","#CE29A8","#DF2A5C","#F0572C"],
+                    "opacities" : [1,1,1,1,1,1]
+                    }, {
+                    "name"  : "Greyscale",
+                    "id"    : 2,
+                    "colors": ["#d2d2d2","#b2b2b2","#999999","#777777","#555555","#333333"],
+                    "opacities" : [1,0.8,0.6,0.4,0.2,0]
+                    }, {
+                    "name"  : "Inverse Mode (B/W)",
+                    "id"    : 3,
+                    "colors": ["#333"],
+                    "opacities" : [1,1,1,1,1,1]
+                    }
+                ],
+                "pois" : [{
+                    "name"  : "Supermarkets",
+                    "value" : "osm:shop='supermarket'",
+                    "icon"  : "",
+                    "selected" : false
+                }, {
+                    "name"  : "ATMs",
+                    "value" : "osm:amenity='atm'",
+                    "icon"  : "",
+                    "selected" : false
+                }, {
+                    "name"  : "Restaurants",
+                    "value" : "osm:amenity='restaurant'",
+                    "icon"  : "",
+                    "selected" : false
+                }],
+                "mapStyles" : [{
+                    "name"  : "Grey",
+                    "value" : "mi.0ad4304c",
+                }, {
+                    "name"  : "Nature",
+                    "value" : "mi.0e455ea3",
+                }]
+            };
+
+            parseUrl();
+
+            r360.config.requestTimeout = 10000;
+            r360.config.serviceUrl = getCity().url;
+            r360.config.serviceKey = "OOWOFUK3OPHLQTA8H5JD";
+            r360.config.i18n.language = "de";
+
+            if (!angular.isDefined(vm.map)) {
+                vm.map = L.map('map', {
+                    zoomControl: false,
+                    scrollWheelZoom: true,
+                    contextmenu: true,
+                    contextmenuWidth: 220,
+                    contextmenuItems: [{
+                        text: 'New Source',
+                        callback: addSourceMarkerFromContext,
+                        iconFa: 'fa-fw fa-plus'
+                    }, {
+                        text: 'New Target',
+                        callback: addTargetMarkerFromContext,
+                        iconFa: 'fa-fw fa-plus'
+                    }]
+                })
+                .setActiveArea({
+                    position: 'absolute',
+                    top: '0',
+                    left: '0',
+                    right: '0',
+                    bottom: '0'
+                })
+                .setView(getCity().latlng, 13);
+
+                L.control.scale({
+                    metric: true,
+                    imperial: false
+                }).addTo(vm.map);
+
+                var attribution = "<a href='https://www.mapbox.com/about/maps/' target='_blank'>© Mapbox © OpenStreetMap</a> | © <a href='https://developers.route360.net/#availability' target='_blank'>Transit Data</a> | developed by <a href='http://www.route360.net/de/' target='_blank'>Route360°</a>";
+
+                /**
+                 * Collection of all layer groups
+                 * @type {Object}
+                 */
+                vm.layerGroups = {
+                    tileLayer: L.tileLayer('https://a.tiles.mapbox.com/v3/' + vm.options.mapstyle + '/{z}/{x}/{y}.png', {maxZoom: 18,attribution: attribution}).addTo(vm.map),
+                    markerLayerGroup: L.featureGroup().addTo(vm.map),
+                    routeLayerGroup: L.featureGroup().addTo(vm.map),
+                    reachableLayerGroup: L.featureGroup().addTo(vm.map),
+                    tempLayerGroup: L.featureGroup().addTo(vm.map),
+                    polygonLayerGroup: r360.leafletPolygonLayer({extendWidthX: vm.options.extendWidth, extendWidthY: vm.options.extendWidth}).addTo(vm.map)
+                };
+
+            }
+
+            vm.map.on("contextmenu.show", function(e) {
+                lastRelatedTarget = e.relatedTarget;
+            });
+
+            addMarkersFromUrl();
+
+            $timeout(function() { vm.states.init = false; }, 2000);
+            $timeout(function() { showToast('Markers can be added by right-clicking on the map.','bottom right','OK') }, 3000);
+
+        };
+
+        function parseUrl() {
+            /**
+             * Parse GET parameters to options object
+             * @param  {Object} $routeParams The GET parameters
+             */
+            for(var index in $routeParams) {
+
+                var value = $routeParams[index];
+
+                switch (index) {
+                    case "cityID" :
+                    case "travelTime" :
+                    case "travelTimeRangeID" :
+                    case "colorRangeID" :
+                    case "mapProvider" :
+                    case "maxSourceMarkers" :
+                    case "maxTargetMarkers" :
+                    case "strokeWidth" :
+                    case "extendWidth" :
+                    case "backgroundColor" :
+                    case "backgroundOpacity" :
+                    case "minPolygonHoleSize" :
+                    case "placesLimit" :
+                        vm.options[index] = parseInt(value);
+                        break;
+                    case "areaID" :
+                    case "travelType" :
+                    case "mapstyle" :
+                    case "intersection" :
+                        vm.options[index] = value;
+                        break;
+                    case "transition" :
+                        vm.options[index] = (value === "true");
+                    case "sources":
+                    case "targets":
+                        break;
+                    default:
+                        showToast('Parameter not valid');
+                        break;
+                }
+            }
+
+            // legacy ID support
+            if (angular.isDefined(vm.options.cityID) && typeof vm.options.cityID === "number") {
+                switch (vm.options.cityID) {
+                    case 0:
+                        vm.options.areaID = "berlin";
+                        break;
+                    case 1:
+                        vm.options.areaID = "norway";
+                        break;
+                    case 2:
+                        vm.options.areaID = "france";
+                        break;
+                    case 3:
+                        vm.options.areaID = "canada";
+                        break;
+                    case 4:
+                        vm.options.areaID = "denmark";
+                        break;
+                    case 5:
+                        vm.options.areaID = "britishisles";
+                        break;
+                    case 6:
+                        vm.options.areaID = "switzerland";
+                        break;
+                    case 7:
+                        vm.options.areaID = "austria";
+                        break;
+                    case 8:
+                        vm.options.areaID = "newyork";
+                        break;
+                }
+            }
+
         }
-        // ------------
-        // GENERAL SETUP
-        // ------------
-        $scope.pageClass = 'map-page';
 
-        // ------------
-        // CONTROLS SETUP
-        // ------------
+        function addMarkersFromUrl() {
+
+            removeAllMarkers();
+            if(!angular.isDefined(getCity())) vm.options.areaID = "germany";
+
+            // Check if sources are available in GET params
+            if (angular.isDefined($routeParams.targets)) {
+                parseAndAddMarkers($routeParams.targets, "target");
+            }
+
+            if (angular.isDefined($routeParams.sources)) {
+                parseAndAddMarkers($routeParams.sources, "source");
+                getPolygons(function() {getRoutes()});
+            }
+
+            if (!angular.isDefined($routeParams['sources']) && !angular.isDefined($routeParams['targets']) ) addMarker(getCity().latlng, 'source');
+        }
+
+        /**
+         * Apply a different tile style to the map.
+         */
+        vm.updateTileStyle = updateTileStyle;
+        function updateTileStyle() {
+            vm.layerGroups.tileLayer.setUrl('https://a.tiles.mapbox.com/v3/' + vm.options.mapstyle + '/{z}/{x}/{y}.png');
+            vm.layerGroups.tileLayer.redraw();
+            updateUrl();
+        }
+
+        function getCity() {
+            var result = undefined;
+            vm.prefs.cities.forEach(function(city){
+                if(city.id == vm.options.areaID) result = city;
+            });
+            return result;
+        }
 
         vm.toggleOptions = toggleOptions;
-        
         function toggleOptions() {
             if (!vm.states.init) slide(!vm.optsOpen);
             $mdSidenav('options').toggle();
@@ -53,359 +432,22 @@ angular.module('r360DemoApp')
             }
         }
 
-        var now = new Date();
-        var hour = now.getHours();
-        var minute = (now.getMinutes() + (5 - now.getMinutes() % 5)) % 60;
-
-        if (minute == 0) {
-            hour++;
-        };
-        if (hour == 24) {
-            hour = 0;
-        };
-
-        vm.options = {
-            "areaID": "germany",
-            "cityID" : undefined,  // legacy
-            "travelTime": 30,
-            "travelTimeRangeID": 0,
-            "travelType": "bike",
-            "queryDate": now,
-            "queryTime": {
-                "h": hour,
-                "m": minute
-            },
-            "colorRangeID": 0,
-            "mapProvider": "osm",
-            "sourceMarkers": [],
-            "maxSourceMarkers" : 3,
-            "targetMarkers": [],
-            "maxTargetMarkers" : 3,
-            "groups" : [],
-            "intersection": "union",
-            "strokeWidth": 30,
-            "extendWidth": 500,
-            "backgroundColor": 'black',
-            "backgroundOpacity": 0,
-            "minPolygonHoleSize": 1000000,
-            "placesLimit" : 100,
-            "transition" : true,
-            "mapstyle" : "mi.0ad4304c",
-            "showAdvanced" : false
-        };
-
-        vm.prefs = {
-            "cities": [{
-                "id"    : "germany",
-                "name"  : "Germany",
-                "latlng": [52.516221,13.386154],
-                "url"   : "https://service.route360.net/germany/",
-
-            }, {
-                "id"    : "norway",
-                "name"  : "Norway",
-                "latlng": [59.913041,10.740509],
-                "url"   : "https://service.route360.net/norway/"
-            }, {
-                "id"    : "france",
-                "name"  : "France",
-                "latlng": [48.8588589,2.3475569],
-                "url"   : "https://service.route360.net/france/"
-            }, {
-                "id"    : "britishcolumbia",
-                "name": "British Columbia",
-                "latlng": [49.260635,-123.115540],
-                "url"   : "https://service.route360.net/britishcolumbia/"
-            }, {
-                "id"    : "denmark",
-                "name"  : "Denmark",
-                "latlng": [55.688424,12.576599],
-                "url"   : "https://service.route360.net/denmark/"
-            }, {
-                "id"    : "britishisles",
-                "name"  : "British Isles",
-                "latlng": [51.506606,-0.128403],
-                "url"   : "https://service.route360.net/britishisles/"
-            }, {
-                "id"    : "switzerland",
-                "name"  : "Switzerland",
-                "latlng": [47.370455,8.538437],
-                "url"   : "https://service.route360.net/switzerland/"
-            }, {
-                "id"    : "austria",
-                "name": "Austria",
-                "latlng": [48.209117,16.369629],
-                "url"   : "https://service.route360.net/austria/"
-            }, {
-                "id"    : "newyork",
-                "name"  : "United States of America",
-                "latlng": [40.731129,-73.987427],
-                "url"   : "https://service.route360.net/na_northeast/"
-            }, {
-                "id"    : "italy",
-                "name"  : "Italy",
-                "latlng": [41.8945503,12.483081],
-                "url"   : "https://service.route360.net/italy/"
-            }, {
-                "id"    : "spain",
-                "name"  : "Spain",
-                "latlng": [40.472101, -3.682646],
-                "url"   : "https://service.route360.net/iberia/"
-            }, {
-                "id"    : "portugal",
-                "name"  : "Portugal",
-                "latlng": [38.714109, -9.133373],
-                "url"   : "https://service.route360.net/iberia/"
-            }],
-            "travelTypes": [{
-                "name": "Bike",
-                "icon": "md:bike",
-                "value": "bike",
-            }, {
-                "name": "Walk",
-                "icon": "md:walk",
-                "value": "walk",
-            }, {
-                "name": "Car",
-                "icon": "md:car",
-                "value": "car",
-            }, {
-                "name": "Transit",
-                "icon": "md:train",
-                "value": "transit",
-            }],
-            "queryTimeRange": {
-                "hour": [0, 1, 2, 3, 4, 5, 6, 7, 8, 9, 10, 11, 12, 13, 14, 15, 16, 17, 18, 19, 20, 21, 22, 23],
-                "minute": [0, 5, 10, 15, 20, 25, 30, 35, 40, 45, 50, 55]
-            },
-            "mapProviderList": [{
-                "name": "OpenStreetMaps",
-                "value": "osm"
-            }, {
-                "name": "Google Maps",
-                "value": "google"
-            }],
-            "intersectionTypes": [{
-                "name": "Union",
-                "value": "union"
-            }, {
-                "name": "Intersection",
-                "value": "intersection"
-            }, {
-                "name": "Average",
-                "value": "average"
-            }, ],
-            "travelTimeRanges" : [{
-                "name" : "5 Min - 30 Min",
-                "id"   : 0,
-                "times": [5,10,15,20,25,30]
-                }, {
-                "name" : "10 Min - 60 Min",
-                "id"   : 1,
-                "times": [10,20,30,40,50,60]
-                }, {
-                "name" : "20 Min - 120 Min",
-                "id"   : 2,
-                "times": [20,40,60,80,100,120]
-                }
-            ], 
-            "colorRanges" : [{
-                "name"  : "Green to Red",
-                "id"    : 0,
-                "colors": ["#006837","#39B54A","#8CC63F","#F7931E","#F15A24","#C1272D"],
-                "opacities" : [1,1,1,1,1,1]
-                }, {
-                "name"  : "Colorblind",
-                "id"    : 1,
-                "colors": ["#142b66","#4525AB","#9527BC","#CE29A8","#DF2A5C","#F0572C"],
-                "opacities" : [1,1,1,1,1,1]
-                }, {
-                "name"  : "Greyscale",
-                "id"    : 2,
-                "colors": ["#d2d2d2","#b2b2b2","#999999","#777777","#555555","#333333"],
-                "opacities" : [1,0.8,0.6,0.4,0.2,0]
-                }, {
-                "name"  : "Inverse Mode (B/W)",
-                "id"    : 3,
-                "colors": ["#333"],
-                "opacities" : [1,1,1,1,1,1]
-                }
-            ],
-            "pois" : [{
-                "name"  : "Supermarkets",
-                "value" : "osm:shop='supermarket'",
-                "icon"  : "",
-                "selected" : false
-            }, {
-                "name"  : "ATMs",
-                "value" : "osm:amenity='atm'",
-                "icon"  : "",
-                "selected" : false
-            }, {
-                "name"  : "Restaurants",
-                "value" : "osm:amenity='restaurant'",
-                "icon"  : "",
-                "selected" : false
-            }],
-            "mapStyles" : [{
-                "name"  : "Grey",
-                "value" : "mi.0ad4304c",
-            }, {
-                "name"  : "Nature",
-                "value" : "mi.0e455ea3",
-            }]
-        };
-
-
         /**
-         * Parse GET parameters to options object
-         * @param  {Object} $routeParams The GET parameters
+         * Helper function to change the city & service url
          */
-        for(var index in $routeParams) {
-
-            var value = $routeParams[index];
-
-            switch (index) {
-                case "cityID" :
-                case "travelTime" :
-                case "travelTimeRangeID" :
-                case "colorRangeID" :
-                case "mapProvider" :
-                case "maxSourceMarkers" :
-                case "maxTargetMarkers" :
-                case "strokeWidth" :
-                case "extendWidth" :
-                case "backgroundColor" :
-                case "backgroundOpacity" :
-                case "minPolygonHoleSize" :
-                case "placesLimit" :
-                    vm.options[index] = parseInt(value);
-                    break;
-                case "areaID" :
-                case "travelType" :
-                case "mapstyle" :
-                case "intersection" :
-                    vm.options[index] = value;
-                    break;
-                case "transition" :
-                    vm.options[index] = (value === "true");
-                case "sources":
-                case "targets":
-                    break;
-                default:
-                    showToast('Parameter not valid');
-                    break;
+        vm.flyTo = flyTo;
+        function flyTo(areaID) {
+            if (vm.states.init) {
+                $timeout(function() { vm.states.init = false; });
+            } else {
+                $routeParams.areaID = areaID;
+                $route.updateParams($routeParams);
+                removeAllMarkers();
+                r360.config.serviceUrl = getCity().url;
+                vm.map.setView(getCity().latlng,10,{animate:true, duration: 1});
+                addMarker(getCity().latlng,'source');
             }
         }
-
-        // legacy ID support
-        if (angular.isDefined(vm.options.cityID) && typeof vm.options.cityID === "number") {
-            switch (vm.options.cityID) {
-                case 0:
-                    vm.options.areaID = "berlin";
-                    break;
-                case 1:
-                    vm.options.areaID = "norway";
-                    break;
-                case 2:
-                    vm.options.areaID = "france";
-                    break;
-                case 3:
-                    vm.options.areaID = "canada";
-                    break;
-                case 4:
-                    vm.options.areaID = "denmark";
-                    break;
-                case 5:
-                    vm.options.areaID = "britishisles";
-                    break;
-                case 6:
-                    vm.options.areaID = "switzerland";
-                    break;
-                case 7:
-                    vm.options.areaID = "austria";
-                    break;
-                case 8:
-                    vm.options.areaID = "newyork";
-                    break;
-            }
-        } 
-
-        function getCity() {
-            var result = undefined;
-            vm.prefs.cities.forEach(function(city){
-                if(city.id == vm.options.areaID) result = city;
-            });
-            return result;
-        }
-
-        if(!angular.isDefined(getCity())) vm.options.areaID = "germany";
-
-        r360.config.requestTimeout = 10000;
-        r360.config.serviceUrl = getCity().url;
-        r360.config.serviceKey = "OOWOFUK3OPHLQTA8H5JD";
-        r360.config.i18n.language = "de";
-
-        vm.map = L.map('map', {
-            zoomControl: false,
-            scrollWheelZoom: true,
-            contextmenu: true,
-            contextmenuWidth: 220,
-            contextmenuItems: [{
-                text: 'New Source',
-                callback: addSourceMarkerFromContext,
-                iconFa: 'fa-fw fa-plus'
-            }, {
-                text: 'New Target',
-                callback: addTargetMarkerFromContext,
-                iconFa: 'fa-fw fa-plus'
-            }]
-        })
-        .setActiveArea({
-            position: 'absolute',
-            top: '0',
-            left: '0',
-            right: '0',
-            bottom: '0'
-        })
-        .setView(getCity().latlng, 13);
-
-        L.control.scale({
-            metric: true,
-            imperial: false
-        }).addTo(vm.map);
-        
-        var attribution = "<a href='https://www.mapbox.com/about/maps/' target='_blank'>© Mapbox © OpenStreetMap</a> | © <a href='https://developers.route360.net/#availability' target='_blank'>Transit Data</a> | developed by <a href='http://www.route360.net/de/' target='_blank'>Route360°</a>";
-
-        /**
-         * Collection of all layer groups
-         * @type {Object}
-         */
-        vm.layerGroups = {
-            tileLayer: L.tileLayer('https://a.tiles.mapbox.com/v3/' + vm.options.mapstyle + '/{z}/{x}/{y}.png', {maxZoom: 18,attribution: attribution}).addTo(vm.map),
-            markerLayerGroup: L.featureGroup().addTo(vm.map),
-            routeLayerGroup: L.featureGroup().addTo(vm.map),
-            reachableLayerGroup: L.featureGroup().addTo(vm.map),
-            tempLayerGroup: L.featureGroup().addTo(vm.map),
-            polygonLayerGroup: r360.leafletPolygonLayer({extendWidthX: vm.options.extendWidth, extendWidthY: vm.options.extendWidth}).addTo(vm.map)
-        };
-
-        /**
-         * Apply a different tile style to thhe map.
-         */
-        vm.updateTileStyle = updateTileStyle;
-        function updateTileStyle() {
-            vm.layerGroups.tileLayer.setUrl('https://a.tiles.mapbox.com/v3/' + vm.options.mapstyle + '/{z}/{x}/{y}.png');
-            vm.layerGroups.tileLayer.redraw();
-        }
-
-        var lastRelatedTarget;
-
-        vm.map.on("contextmenu.show", function(e) {
-            lastRelatedTarget = e.relatedTarget;
-        });
-
-        // Check if sources are available in GET params
 
         function parseAndAddMarkers(string, type) {
             var array = string.split(";");
@@ -415,33 +457,6 @@ angular.module('r360DemoApp')
                 coords[1] = parseFloat(coords[1]);
                 addMarker(coords, type, false);
             });
-        }
-
-        if (angular.isDefined($routeParams['targets'])) {
-            parseAndAddMarkers($routeParams['targets'], "target");
-        }
-
-        if (angular.isDefined($routeParams['sources'])) {
-            parseAndAddMarkers($routeParams['sources'], "source");
-            getPolygons(function() {getRoutes()});
-        }
-
-        if (!angular.isDefined($routeParams['sources']) && !angular.isDefined($routeParams['targets']) ) addMarker(getCity().latlng, 'source');
-
-        /**
-         * Helper function to change the city & service url
-         */
-        vm.flyTo = flyTo;
-        function flyTo(areaID) {
-            if (vm.states.init) {
-                $timeout(function() { vm.states.init = false; });
-            } else {
-                $location.search('areaID', areaID);
-                removeAllMarkers();
-                r360.config.serviceUrl = getCity().url;
-                vm.map.setView(getCity().latlng,10,{animate:true, duration: 1});
-                addMarker(getCity().latlng,'source');
-            }
         }
 
         /**
@@ -496,11 +511,11 @@ angular.module('r360DemoApp')
                     markerArray = vm.options.sourceMarkers;
                     markerIcon = L.icon({
                         iconUrl: '/styles/icons/marker_source.svg',
-                        shadowUrl: '/styles/icons/marker_shadow.svg',
+                        shadowUrl: '/styles/icons/shadow.png',
                         iconSize:     [28, 40],
-                        shadowSize:   [27, 18],
+                        shadowSize:   [28, 45],
                         iconAnchor:   [14, 40],
-                        shadowAnchor: [7, 14],
+                        shadowAnchor: [2, 40],
                         popupAnchor:  [0, -43]
                     })
                     break;
@@ -512,16 +527,16 @@ angular.module('r360DemoApp')
                     markerArray = vm.options.targetMarkers;
                     markerIcon = L.icon({
                         iconUrl: '/styles/icons/marker_target.svg',
-                        shadowUrl: '/styles/icons/marker_shadow.svg',
+                        shadowUrl: '/styles/icons/shadow.png',
                         iconSize:     [28, 40],
-                        shadowSize:   [27, 18],
+                        shadowSize:   [28, 45],
                         iconAnchor:   [14, 40],
-                        shadowAnchor: [7, 14],
+                        shadowAnchor: [2, 40],
                         popupAnchor:  [0, -43]
                     })
                     break;
 
-                case 'temp' : 
+                case 'temp' :
                     markerIcon = L.icon({
                         iconUrl: '/styles/icons/marker_temp.svg',
                         iconSize:     [15, 15],
@@ -590,8 +605,8 @@ angular.module('r360DemoApp')
 
                 markerArray.push(newMarker);
 
-                updateURL();
                 if (refresh) {
+                    updateURL();
                     getPolygons(function() {
                         getRoutes();
                     });
@@ -603,7 +618,6 @@ angular.module('r360DemoApp')
                 })
 
             }
-
         }
 
         function reverseGeocode(coords) {
@@ -612,10 +626,10 @@ angular.module('r360DemoApp')
 
             var deferred = $q.defer();
 
-            if (typeof coords.lat != 'undefined' && typeof coords.lng != 'undefined') 
+            if (typeof coords.lat != 'undefined' && typeof coords.lng != 'undefined')
                 url = "https://service.route360.net/geocode/reverse?lon=" + coords.lng + "&lat=" + coords.lat;
 
-            if (typeof coords[0] != 'undefined' && typeof coords[1] != 'undefined') 
+            if (typeof coords[0] != 'undefined' && typeof coords[1] != 'undefined')
                 url = "https://service.route360.net/geocode/reverse?lon=" + coords[1] + "&lat=" + coords[0];
 
             $http({
@@ -732,8 +746,6 @@ angular.module('r360DemoApp')
             getPolygons(function() {
               getRoutes();
             });
-
-
         }
 
         /**
@@ -782,7 +794,6 @@ angular.module('r360DemoApp')
             travelOptions.setTravelType(vm.options.travelType);
 
             vm.options.sourceMarkers.forEach(function(elem, index, array) {
-                elem.id = r360.Util.generateId();
                 travelOptions.addSource(elem);
             })
 
@@ -830,6 +841,7 @@ angular.module('r360DemoApp')
             if (vm.options.sourceMarkers.length == 0) {
                 vm.layerGroups.polygonLayerGroup.clearLayers();
                 vm.states.requestPending = false;
+                if (angular.isDefined(callback)) callback();
                 return;
             }
 
@@ -838,10 +850,17 @@ angular.module('r360DemoApp')
             r360.PolygonService.getTravelTimePolygons(travelOptions,
 
                 function(polygons) {
-                    vm.layerGroups.polygonLayerGroup.clearAndAddLayers(polygons, true);
-                    vm.states.requestPending = false;
-                    $scope.$apply();
-                    if(angular.isDefined(callback)) callback();
+                    if (!$scope.$$phase) {
+                        $scope.$apply(function(){
+                            vm.layerGroups.polygonLayerGroup.clearAndAddLayers(polygons, true);
+                            vm.states.requestPending = false;
+                            if(angular.isDefined(callback)) callback();
+                        });
+                    } else {
+                        vm.layerGroups.polygonLayerGroup.clearAndAddLayers(polygons, true);
+                        vm.states.requestPending = false;
+                        if(angular.isDefined(callback)) callback();
+                    }
                 },
                 function(status,message) {
 
@@ -862,7 +881,10 @@ angular.module('r360DemoApp')
             );
         }
 
-        vm.updateView = getPolygons;
+        vm.updateView = function updateView() {
+            getPolygons;
+            updateURL();
+        }
 
         /**
          * Clear the route layer, request and draw new routes
@@ -873,8 +895,9 @@ angular.module('r360DemoApp')
 
             vm.layerGroups.routeLayerGroup.clearLayers();
 
-            if (vm.options.targetMarkers.length == 0) {
+            if (vm.options.targetMarkers.length == 0 || vm.options.sourceMarkers.length == 0) {
                 vm.states.requestPending = false;
+                if(angular.isDefined(callback)) callback();
                 return;
             }
             //vm.srcTrgLayer.clearLayers();
@@ -953,11 +976,9 @@ angular.module('r360DemoApp')
 
             console.log(deferred.promise);
             return deferred.promise;
-
         }
 
         vm.getPlaces = getPlaces;
-
         function getPlaces() {
             vm.layerGroups.reachableLayerGroup.clearLayers();
 
@@ -1012,7 +1033,7 @@ angular.module('r360DemoApp')
                     // get each target for the first source (only one source was supplied to the service)
                     _.each(sources[0].targets, function(target){
 
-                        var place = _.find(places, function(place){ return place.id == target.id ; }); 
+                        var place = _.find(places, function(place){ return place.id == target.id ; });
                         place.travelTime = target.travelTime;
                         if ( place.matchedPlaces.length == 0 ) place.matchedPlaces.push(place);
 
@@ -1067,23 +1088,23 @@ angular.module('r360DemoApp')
 
             vm.options.groups.forEach(function(group){
                 // group was previously defined
-                if ( group.key == place.type ) { 
+                if ( group.key == place.type ) {
 
                     if ( group.data.length >= vm.options.placesLimit ) {
 
                         place.error = "too-many-objects";
                         group.error = "too-many-objects";
-                    }   
+                    }
                     else {
 
-                        group.data.push(place); 
+                        group.data.push(place);
                         inserted = true;
-                    } 
+                    }
                 }
             });
 
             // group has not yet been initialized
-            if ( !inserted && !place.error ) 
+            if ( !inserted && !place.error )
                 vm.options.groups.push({ key : place.type, data : [place], tableParams : undefined });
 
             return !(_.has(place, 'error') && "too-many-objects" == place.error);
@@ -1134,7 +1155,6 @@ angular.module('r360DemoApp')
         };
 
         vm.changeTravelTime = changeTravelTime;
-
         function changeTravelTimeRange() {
 
             var rngId = vm.options.travelTimeRangeID;
@@ -1150,10 +1170,33 @@ angular.module('r360DemoApp')
             });
 
             vm.options.travelTime = nextVal;
+            if (!vm.states.init) getPolygons();
+            updateURL();
         };
 
-        vm.changeTravelTimeRange = changeTravelTimeRange;
+        function changeColorRange() {
 
+            var colors = [];
+            vm.prefs.travelTimeRanges[vm.options.travelTimeRangeID].times.forEach(function(elem, index, array) {
+                var dataSet = {};
+                dataSet.time  = elem*60;
+                dataSet.color = vm.prefs.colorRanges[vm.options.colorRangeID].colors[index];
+                dataSet.opacity = vm.prefs.colorRanges[vm.options.colorRangeID].opacities[index];
+                colors.push(dataSet);
+            })
+
+            if (vm.options.colorRangeID == 3) {
+                vm.layerGroups.polygonLayerGroup.setInverse(true);
+            } else {
+                vm.layerGroups.polygonLayerGroup.setInverse(false);
+            };
+
+            vm.layerGroups.polygonLayerGroup.setColors(colors);
+            updateURL();
+        };
+        vm.changeColorRange = changeColorRange;
+
+        vm.changeTravelTimeRange = changeTravelTimeRange;
         function changeTravelType(type) {
 
             if(vm.options.travelType == type) return;
@@ -1162,20 +1205,21 @@ angular.module('r360DemoApp')
                 if (elem['value'] == type) vm.options.travelTypeIcon = elem['icon'];
             });
             getPolygons();
-
             updateURL();
 
         };
-
         vm.changeTravelType = changeTravelType;
 
-
         function updateURL() {
+
+            vm.states.urlModified = true;
 
             for (var index in vm.options) {
                 switch (index) {
                     case 'sourceMarkers':
                         if (vm.options.sourceMarkers.length == 0)  {
+                            // $routeParams.sources = null;
+                            // $route.updateParams($routeParams);
                             $location.search("sources", null);
                             break;
                         }
@@ -1183,10 +1227,14 @@ angular.module('r360DemoApp')
                         vm.options.sourceMarkers.forEach(function(elem,index,array){
                             sources.push(elem._latlng.lat + "," + elem._latlng.lng);
                         });
+                        // $routeParams.sources = sources.join(";");
+                        // $route.updateParams($routeParams);
                         $location.search("sources", sources.join(";"));
                         break;
-                    case 'targetMarkers': 
+                    case 'targetMarkers':
                         if (vm.options.targetMarkers.length == 0) {
+                            // $routeParams.targets = null;
+                            // $route.updateParams($routeParams);
                              $location.search("targets", null);
                             break;
                         };
@@ -1195,6 +1243,8 @@ angular.module('r360DemoApp')
                             targets.push(elem._latlng.lat + "," + elem._latlng.lng);
                         });
                         $location.search("targets", targets.join(";"));
+                        // $routeParams.targets = targets.join(";");
+                        // $route.updateParams($routeParams);
                         break;
                     case 'areaID':
                     case 'travelTime':
@@ -1205,6 +1255,8 @@ angular.module('r360DemoApp')
                     case 'transition':
                     case 'mapstyle':
                         if (angular.isDefined($routeParams[index]) && $routeParams[index] == vm.options[index]) break;
+                        // $routeParams[index] = String(vm.options[index]);
+                        // $route.updateParams($routeParams);
                         $location.search(index, String(vm.options[index]));
                         break;
                     default:
@@ -1212,6 +1264,9 @@ angular.module('r360DemoApp')
                 }
             }
 
+            if (!$scope.$$phase) {
+                $scope.$apply();
+            }
         }
 
         function slide(open) {
@@ -1237,9 +1292,18 @@ angular.module('r360DemoApp')
                     bottom: '0'
                 });
             };
-
         }
 
-        $timeout(function() { vm.states.init = false; }, 2000);
-        $timeout(function() { showToast('Markers can be added by right-clicking on the map.','bottom right','OK') }, 3000);
+        init();
+
+        $scope.$on('$routeUpdate',function(e, current) {
+            console.log('route update');
+            if (!vm.states.urlModified) {
+                parseUrl();
+                addMarkersFromUrl();
+            } else {
+                vm.states.urlModified = false;
+            }
+        });
+
     });
