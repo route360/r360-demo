@@ -71,6 +71,8 @@ angular.module('r360DemoApp')
                     "name"  : "Germany",
                     "latlng": [52.516221,13.386154],
                     "url"   : "https://service.route360.net/germany/",
+                    // "url"   : "https://api3.eu.route360.net:8080/",
+                    // "url"   : "http://localhost:8080/api/",
 
                 }, {
                     "id"    : "norway",
@@ -127,6 +129,16 @@ angular.module('r360DemoApp')
                     "name"  : "Portugal",
                     "latlng": [38.714109, -9.133373],
                     "url"   : "https://service.route360.net/iberia/"
+                }, {
+                    "id"    : "czech_republic",
+                    "name"  : "Czech Republic",
+                    "latlng": [50.0833, 14.4167],
+                    "url"   : "https://service.route360.net/czech_republic/"
+                }, {
+                    "id"    : "south_america",
+                    "name"  : "South America",
+                    "latlng": [-22.9068, -43.1729],
+                    "url"   : "https://service.route360.net/south_america/"
                 }],
                 "travelTypes": [{
                     "name": "Bike",
@@ -264,6 +276,7 @@ angular.module('r360DemoApp')
                     imperial: false
                 }).addTo(vm.map);
 
+
                 var attribution = "<a href='https://www.mapbox.com/about/maps/' target='_blank'>© Mapbox © OpenStreetMap</a> | © <a href='https://developers.route360.net/#availability' target='_blank'>Transit Data</a> | developed by <a href='http://www.route360.net/de/' target='_blank'>Route360°</a>";
 
                 /**
@@ -370,6 +383,7 @@ angular.module('r360DemoApp')
         }
 
         function addMarkersFromUrl() {
+
 
             removeAllMarkers();
             if(!angular.isDefined(getCity())) vm.options.areaID = "germany";
