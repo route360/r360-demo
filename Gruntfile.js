@@ -48,9 +48,10 @@ module.exports = function (grunt) {
         constants: {
           ENV: {
             name       : 'development',
-            serviceKey : "OOWOFUK3OPHLQTA8H5JD",
+            serviceKey : "uhWrWpUhyZQy8rPfiC7X",
             endpoints  : {
               germany         : "https://service.route360.net/germany/",
+              germany         : "http://localhost:8080/api/",
               norway          : "https://service.route360.net/norway/",
               france          : "https://service.route360.net/france/",
               britishcolumbia : "https://service.route360.net/britishcolumbia/",
