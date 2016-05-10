@@ -52,6 +52,7 @@ module.exports = function (grunt) {
             endpoints  : {
               germany         : "https://service.route360.net/germany/",
               // germany         : "http://localhost:8080/api/",
+              australia       : "https://service.route360.net/australia/",
               norway          : "https://service.route360.net/norway/",
               france          : "https://service.route360.net/france/",
               britishcolumbia : "https://service.route360.net/britishcolumbia/",
@@ -91,6 +92,7 @@ module.exports = function (grunt) {
               portugal        : "https://service.route360.net/iberia/",
               czech_republic  : "https://service.route360.net/czech_republic/",
               south_america   : "https://service.route360.net/south_america/",
+              australia       : "https://service.route360.net/australia/",
 
               geocoder        : "https://service.route360.net/geocode/"
             }

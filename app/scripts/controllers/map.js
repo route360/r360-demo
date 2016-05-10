@@ -136,6 +136,11 @@ angular.module('r360DemoApp')
                     "name"  : "South America",
                     "latlng": [-22.9068, -43.1729],
                     "url"   : ENV.endpoints.south_america
+                }, {
+                    "id"    : "australia",
+                    "name"  : "Australia",
+                    "latlng": [-37.807332,144.957422],
+                    "url"   : ENV.endpoints.australia
                 }],
                 "travelTypes": [{
                     "name": "Bike",

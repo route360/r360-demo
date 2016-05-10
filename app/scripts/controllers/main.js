@@ -68,11 +68,14 @@ angular.module('r360DemoApp')
         "id"    : "czech_republic",
         "name"  : "Czech Republic",
         "url"   : "images/prague.jpg"
-    }
-    , {
+    }, {
         "id"    : "south_america",
         "name"  : "South America",
         "url"   : "images/rio.jpg"
+    }, {
+        "id"    : "australia",
+        "name"  : "Australia",
+        "url"   : "images/australia.jpg"
     }];
 
   	vm.timer = 0;
