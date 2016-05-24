@@ -61,7 +61,7 @@ angular.module('r360DemoApp')
                 "minPolygonHoleSize": 1000000,
                 "placesLimit" : 100,
                 "transition" : true,
-                "mapstyle" : "mi.0ad4304c",
+                "mapstyle" : "light",
                 "showAdvanced" : false
             };
 
@@ -146,6 +146,11 @@ angular.module('r360DemoApp')
                     "name"  : "South America",
                     "latlng": [-22.9068, -43.1729],
                     "url"   : ENV.endpoints.south_america
+                }, {
+                    "id"    : "australia",
+                    "name"  : "Australia",
+                    "latlng": [-37.807332,144.957422],
+                    "url"   : ENV.endpoints.australia
                 }],
                 "travelTypes": [{
                     "name": "Bike",
@@ -238,11 +243,13 @@ angular.module('r360DemoApp')
                     "selected" : false
                 }],
                 "mapStyles" : [{
-                    "name"  : "Grey",
-                    "value" : "mi.0ad4304c",
+                    "name"  : "Light",
+                    "value" : "light",
+                    "url"   : "https://cartodb-basemaps-{s}.global.ssl.fastly.net/light_all/{z}/{x}/{y}.png"
                 }, {
-                    "name"  : "Nature",
-                    "value" : "mi.0e455ea3",
+                    "name"  : "Dark",
+                    "value" : "dark",
+                    "url"   : "https://cartodb-basemaps-{s}.global.ssl.fastly.net/dark_all/{z}/{x}/{y}.png"
                 }]
             };
 
@@ -284,14 +291,20 @@ angular.module('r360DemoApp')
                 }).addTo(vm.map);
 
 
-                var attribution = "<a href='https://www.mapbox.com/about/maps/' target='_blank'>© Mapbox © OpenStreetMap</a> | © <a href='https://developers.route360.net/#availability' target='_blank'>Transit Data</a> | developed by <a href='http://www.route360.net/de/' target='_blank'>Route360°</a>";
+                var attribution = "<a href='https://cartodb.com/location-data-services/basemaps/' target='_blank'>© Cartodb © OpenStreetMap</a> | © <a href='https://developers.route360.net/#availability' target='_blank'>Transit Data</a> | developed by <a href='http://www.route360.net/de/' target='_blank'>Route360°</a>";
+
+                var tileUrl = lookupObject(vm.prefs.mapStyles,'value',vm.options.mapstyle).url;
+
+                if (isHidpi()) {
+                    tileUrl = tileUrl.substring(0,tileUrl.length-4).concat('@2x.png');
+                }
 
                 /**
                  * Collection of all layer groups
                  * @type {Object}
                  */
                 vm.layerGroups = {
-                    tileLayer: L.tileLayer('https://a.tiles.mapbox.com/v3/' + vm.options.mapstyle + '/{z}/{x}/{y}.png', {maxZoom: 18,attribution: attribution}).addTo(vm.map),
+                    tileLayer: L.tileLayer(tileUrl, {maxZoom: 18,attribution: attribution}).addTo(vm.map),
                     markerLayerGroup: L.featureGroup().addTo(vm.map),
                     routeLayerGroup: L.featureGroup().addTo(vm.map),
                     reachableLayerGroup: L.featureGroup().addTo(vm.map),
@@ -339,9 +352,15 @@ angular.module('r360DemoApp')
                         break;
                     case "areaID" :
                     case "travelType" :
-                    case "mapstyle" :
                     case "intersection" :
                         vm.options[index] = value;
+                        break;
+                    case "mapstyle" :
+                        if (value.indexOf('mi.')>-1) {
+                            vm.options[index] = 'light'
+                        } else {
+                            vm.options[index] = value;
+                        }
                         break;
                     case "transition" :
                         vm.options[index] = (value === "true");
@@ -408,14 +427,33 @@ angular.module('r360DemoApp')
             if (!angular.isDefined($routeParams['sources']) && !angular.isDefined($routeParams['targets']) ) addMarker(getCity().latlng, 'source');
         }
 
+        function isHidpi(){
+            var mediaQuery = "(-webkit-min-device-pixel-ratio: 1.5),\
+                    (min--moz-device-pixel-ratio: 1.5),\
+                    (-o-min-device-pixel-ratio: 3/2),\
+                    (min-resolution: 1.5dppx)";
+            if (window.devicePixelRatio > 1)
+                return true;
+            if (window.matchMedia && window.matchMedia(mediaQuery).matches)
+                return true;
+            return false;
+        }
+
         /**
          * Apply a different tile style to the map.
          */
         vm.updateTileStyle = updateTileStyle;
         function updateTileStyle() {
-            vm.layerGroups.tileLayer.setUrl('https://a.tiles.mapbox.com/v3/' + vm.options.mapstyle + '/{z}/{x}/{y}.png');
+            var tileUrl = lookupObject(vm.prefs.mapStyles,'value',vm.options.mapstyle).url;
+
+            if (isHidpi()) {
+                tileUrl = tileUrl.substring(0,tileUrl.length-4).concat('@2x.png');
+            }
+
+            vm.layerGroups.tileLayer.setUrl(tileUrl);
             vm.layerGroups.tileLayer.redraw();
-            updateUrl();
+            $routeParams.mapstyle = vm.options.mapstyle;
+            $route.updateParams($routeParams);
         }
 
         function getCity() {
@@ -492,6 +530,21 @@ angular.module('r360DemoApp')
         }
         function removeMarkerFromContext(e) {
             removeMarker(lastRelatedTarget);
+        }
+
+        /**
+         * Helper function for finding an object in an array
+         * @param  {array} array The array to lookup
+         * @param  {string} key   The key of the indicating attribute
+         * @param  {string} value The corresponding value to match
+         * @return {Object}       the desired object from the array
+         */
+        function lookupObject(array,key,value) {
+            var lookup = {};
+            for (var i = 0, len = array.length; i < len; i++) {
+                lookup[array[i][key]] = array[i];
+            }
+            return lookup[value];
         }
 
         /**
@@ -1317,7 +1370,6 @@ angular.module('r360DemoApp')
         init();
 
         $scope.$on('$routeUpdate',function(e, current) {
-            console.log('route update');
             if (!vm.states.urlModified) {
                 parseUrl();
                 addMarkersFromUrl();
