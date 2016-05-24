@@ -65,6 +65,8 @@ module.exports = function (grunt) {
               portugal        : "https://service.route360.net/iberia/",
               czech_republic  : "https://service.route360.net/czech_republic/",
               south_america   : "https://service.route360.net/south_america/",
+              australia       : "https://service.route360.net/australia/",
+              sweden          : "https://service.route360.net/sweden/",
 
               geocoder        : "https://service.route360.net/geocode/"
             }
@@ -91,6 +93,8 @@ module.exports = function (grunt) {
               portugal        : "https://service.route360.net/iberia/",
               czech_republic  : "https://service.route360.net/czech_republic/",
               south_america   : "https://service.route360.net/south_america/",
+              australia       : "https://service.route360.net/australia/",
+              sweden          : "https://service.route360.net/sweden/",
 
               geocoder        : "https://service.route360.net/geocode/"
             }
@@ -317,7 +321,7 @@ module.exports = function (grunt) {
         src: [
           '<%= yeoman.dist %>/scripts/{,*/}*.js',
           '<%= yeoman.dist %>/styles/{,*/}*.css',
-          '<%= yeoman.dist %>/images/{,*/}*.{png,jpg,jpeg,gif,webp,svg}',
+        //   '<%= yeoman.dist %>/images/{,*/}*.{png,jpg,jpeg,gif,webp,svg}',
           '<%= yeoman.dist %>/styles/fonts/*'
         ]
       }

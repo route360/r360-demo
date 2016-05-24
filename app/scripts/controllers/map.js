@@ -72,6 +72,16 @@ angular.module('r360DemoApp')
                     "latlng": [52.516221,13.386154],
                     "url"   : ENV.endpoints.germany
                 }, {
+                    "id"    : "australia",
+                    "name"  : "Australia and New Zealand",
+                    "latlng": [-33.8675, 151.2070],
+                    "url"   : ENV.endpoints.australia
+                }, {
+                    "id"    : "sweden",
+                    "name"  : "Sweden",
+                    "latlng": [59.3293, 18.0686],
+                    "url"   : ENV.endpoints.sweden
+                }, {
                     "id"    : "norway",
                     "name"  : "Norway",
                     "latlng": [59.913041,10.740509],
@@ -778,8 +788,8 @@ angular.module('r360DemoApp')
         function buildTravelOptions() {
 
             var travelOptions = r360.travelOptions();
+            travelOptions.setServiceUrl(r360.config.serviceUrl);
 
-            //
             var travelTime = vm.options.travelTime * 60;
             var travelTimes=[];
             var defaultColors =[];
@@ -822,7 +832,6 @@ angular.module('r360DemoApp')
             };
 
             travelOptions.backgroundColor = vm.options.backgroundColor;
-
             travelOptions.setIntersectionMode(vm.options.intersection);
             //travelOptions.setWaitControl(vm.waitControl);
 

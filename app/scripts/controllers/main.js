@@ -16,7 +16,11 @@ angular.module('r360DemoApp')
   	vm.city = "germany";
 
   	vm.cities =  [
-  	{
+    {
+        "id"    :  "australia",
+        "name"  : "Australia and New Zealand",
+        "url"	: "images/australia.jpg"
+    }, {
         "id"    :  "germany",
         "name"  : "Germany",
         "url"	: "images/germany.jpg"
@@ -68,6 +72,10 @@ angular.module('r360DemoApp')
         "id"    : "czech_republic",
         "name"  : "Czech Republic",
         "url"   : "images/prague.jpg"
+    }, {
+        "id"    : "sweden",
+        "name"  : "Sweden",
+        "url"   : "images/sweden.jpg"
     }
     , {
         "id"    : "south_america",

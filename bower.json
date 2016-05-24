@@ -16,5 +16,8 @@
     "angular-mocks": "^1.3.0"
   },
   "appPath": "app",
-  "moduleName": "r360DemoApp"
+  "moduleName": "r360DemoApp",
+  "resolutions": {
+    "angular": "1.5.3"
+  }
 }
