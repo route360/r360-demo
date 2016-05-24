@@ -5,3 +5,4 @@
 /bower_components
 .ftppass
 config.js
+app/scripts/config.js
