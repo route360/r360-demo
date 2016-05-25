@@ -97,6 +97,11 @@ angular.module('r360DemoApp')
                     "latlng": [49.260635,-123.115540],
                     "url"   : ENV.endpoints.britishcolumbia
                 }, {
+                    "id"    : "malaysia_singapore",
+                    "name": "Malaysia, Singapore, Brunei",
+                    "latlng": [1.290613,103.852386],
+                    "url"   : ENV.endpoints.malaysia_singapore
+                }, {
                     "id"    : "denmark",
                     "name"  : "Denmark",
                     "latlng": [55.688424,12.576599],

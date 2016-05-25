@@ -25,6 +25,10 @@ angular.module('r360DemoApp')
         "name"  : "Germany",
         "url"	: "images/germany.jpg"
     }, {
+        "id"    :  "malaysia_singapore",
+        "name"  : "Malaysia, Singapore, Brunei",
+        "url"	: "images/singapore.jpg"
+    }, {
         "id"    : "norway",
         "name"  : "Norway",
         "url"	: "images/oslo.jpg"
