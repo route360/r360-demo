@@ -461,6 +461,44 @@ angular.module('r360DemoApp')
             $route.updateParams($routeParams);
         }
 
+         function downloadGeoJson() {
+            var travelOptions = buildTravelOptions();
+
+            travelOptions.setPolygonSerializer('geojson');
+
+             var cfg = r360.PolygonService.getCfg(travelOptions);
+
+            cfg.polygon.serializer = 'geojson';
+
+
+             var options = r360.PolygonService.getAjaxOptions(travelOptions, cfg, 
+
+                 function(polygons) {
+                    //do nothing before the request is resolved
+                }, 
+
+                function(err) {
+                    console.log('error');
+                }, 
+
+
+                'GET');
+             
+             $.ajax(options).then(function(polygons){
+                      var data = "text/json;charset=utf-8," + encodeURIComponent(JSON.stringify(polygons.data));
+
+                    var a = document.createElement('a');
+                    a.href = 'data:' + data;
+                    a.download = 'geojson.json';
+                    a.innerHTML = 'download JSON';
+
+                    a.click();
+             });
+           
+          }
+
+          vm.downloadGeoJson = downloadGeoJson;
+
         function getCity() {
             var result = undefined;
             vm.prefs.cities.forEach(function(city){
