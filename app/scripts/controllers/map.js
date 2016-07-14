@@ -151,11 +151,6 @@ angular.module('r360DemoApp')
                     "name"  : "South America",
                     "latlng": [-22.9068, -43.1729],
                     "url"   : ENV.endpoints.south_america
-                }, {
-                    "id"    : "australia",
-                    "name"  : "Australia",
-                    "latlng": [-37.807332,144.957422],
-                    "url"   : ENV.endpoints.australia
                 }],
                 "travelTypes": [{
                     "name": "Bike",
@@ -260,7 +255,6 @@ angular.module('r360DemoApp')
 
             parseUrl();
 
-            r360.config.requestTimeout = 10000;
             r360.config.serviceUrl = getCity().url;
             r360.config.serviceKey = ENV.serviceKey;
             r360.config.i18n.language = "de";
@@ -847,6 +841,25 @@ angular.module('r360DemoApp')
 
             var travelOptions = r360.travelOptions();
             travelOptions.setServiceUrl(r360.config.serviceUrl);
+            travelOptions.setServiceKey(r360.config.serviceKey);
+
+            if ( travelOptions.getServiceUrl().indexOf("https://service.route360.net/na_") > -1 ) {
+
+                var lat = vm.options.sourceMarkers[0].getLatLng().lat;
+                var lng = vm.options.sourceMarkers[0].getLatLng().lng;
+
+                var context = "";
+
+                if ( lng <= -100 && lat <= 36 ) context = 'southwest';
+                else if ( lng <= -100 && lat >= 36 ) context = 'northwest';
+                else if ( lng >= -100 && lat >= 36 ) context = 'northeast';
+                else if ( lng >= -100 && lat <= 36 ) context = 'southeast';
+                else 
+                    return false;
+
+                r360.config.serviceUrl = 'https://service.route360.net/na_'+context+'/';
+                travelOptions.setServiceUrl(r360.config.serviceUrl);
+            }
 
             var travelTime = vm.options.travelTime * 60;
             var travelTimes=[];
@@ -960,7 +973,8 @@ angular.module('r360DemoApp')
         }
 
         vm.updateView = function updateView() {
-            getPolygons;
+
+            getPolygons();
             updateURL();
         }
 

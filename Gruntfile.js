@@ -50,8 +50,7 @@ module.exports = function (grunt) {
             name       : 'development',
             serviceKey : "uhWrWpUhyZQy8rPfiC7X",
             endpoints  : {
-              germany               : "https://service.route360.net/germany/",
-              // germany               : "http://localhost:8080/api/",
+              // germany               : "https://dev.route360.net/xxx/",
               australia             : "https://service.route360.net/australia/",
               norway                : "https://service.route360.net/norway/",
               france                : "https://service.route360.net/france/",
@@ -59,14 +58,16 @@ module.exports = function (grunt) {
               denmark               : "https://service.route360.net/denmark/",
               britishisles          : "https://service.route360.net/britishisles/",
               switzerland           : "https://service.route360.net/switzerland/",
+
               austria               : "https://service.route360.net/austria/",
+              germany               : "http://localhost:8080/",
+
               newyork               : "https://service.route360.net/na_northeast/",
               italy                 : "https://service.route360.net/italy/",
               spain                 : "https://service.route360.net/iberia/",
               portugal              : "https://service.route360.net/iberia/",
               czech_republic        : "https://service.route360.net/czech_republic/",
               south_america         : "https://service.route360.net/south_america/",
-              australia             : "https://service.route360.net/australia/",
               sweden                : "https://service.route360.net/sweden/",
               malaysia_singapore    : "https://service.route360.net/malaysia_singapore/",
 
@@ -97,7 +98,6 @@ module.exports = function (grunt) {
                 portugal              : "https://service.route360.net/iberia/",
                 czech_republic        : "https://service.route360.net/czech_republic/",
                 south_america         : "https://service.route360.net/south_america/",
-                australia             : "https://service.route360.net/australia/",
                 sweden                : "https://service.route360.net/sweden/",
                 malaysia_singapore    : "https://service.route360.net/malaysia_singapore/",
 

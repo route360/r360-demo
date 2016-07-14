@@ -37,6 +37,8 @@ angular
             reloadOnSearch: false
         });
 
+        r360.config.requestTimeout = 30000;
+
     // $locationProvider.html5Mode(true);
 
     $mdIconProvider

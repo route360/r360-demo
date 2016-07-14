@@ -58,7 +58,7 @@ angular.module('r360DemoApp')
         "url"	: "images/vienna.jpg"
     }, {
         "id"    : "newyork",
-        "name"  : "United States of America",
+        "name"  : "USA and Mexico",
         "url"	  : "images/newyork.jpg"
   	}, {
         "id"    : "italy",
@@ -84,10 +84,6 @@ angular.module('r360DemoApp')
         "id"    : "south_america",
         "name"  : "South America",
         "url"   : "images/rio.jpg"
-    }, {
-        "id"    : "australia",
-        "name"  : "Australia",
-        "url"   : "images/australia.jpg"
     }];
 
   	vm.timer = 0;
