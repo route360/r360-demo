@@ -256,7 +256,10 @@ angular.module('r360DemoApp')
             parseUrl();
 
             r360.config.serviceUrl = getCity().url;
-            r360.config.serviceKey = ENV.serviceKey;
+            if (angular.isDefined(vm.options.serviceKey))
+                r360.config.serviceKey = vm.options.serviceKey;
+            else
+                r360.config.serviceKey = ENV.serviceKey;
             r360.config.i18n.language = "de";
 
             if (!angular.isDefined(vm.map)) {
@@ -352,6 +355,7 @@ angular.module('r360DemoApp')
                     case "areaID" :
                     case "travelType" :
                     case "intersection" :
+                    case "serviceKey":
                         vm.options[index] = value;
                         break;
                     case "mapstyle" :
