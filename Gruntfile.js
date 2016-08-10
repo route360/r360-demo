@@ -51,6 +51,8 @@ module.exports = function (grunt) {
             serviceKey : "uhWrWpUhyZQy8rPfiC7X",
             endpoints  : {
               // germany               : "https://dev.route360.net/xxx/",
+              // germany               : "http://localhost:8080/",
+              germany               : "https://service.route360.net/germany/",
               australia             : "https://service.route360.net/australia/",
               norway                : "https://service.route360.net/norway/",
               france                : "https://service.route360.net/france/",
@@ -58,10 +60,7 @@ module.exports = function (grunt) {
               denmark               : "https://service.route360.net/denmark/",
               britishisles          : "https://service.route360.net/britishisles/",
               switzerland           : "https://service.route360.net/switzerland/",
-
               austria               : "https://service.route360.net/austria/",
-              germany               : "http://localhost:8080/",
-
               newyork               : "https://service.route360.net/na_northeast/",
               italy                 : "https://service.route360.net/italy/",
               spain                 : "https://service.route360.net/iberia/",
@@ -156,7 +155,7 @@ module.exports = function (grunt) {
       options: {
         port: 9000,
         // Change this to '0.0.0.0' to access the server from outside.
-        hostname: 'localhost',
+        hostname: '0.0.0.0', // for smartphone testing
         livereload: 35729
       },
       livereload: {

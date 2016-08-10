@@ -4,11 +4,6 @@
 $dark-accent: #2B3E50;
 $light-accent: #fff;
 
-$break-small: 700px;
-$break-medium: 875px;
-$break-large: 1025px;
-
-
 @mixin transition($transition-property, $transition-time, $method) {
     -webkit-transition: $transition-property $transition-time $method;
     -moz-transition: $transition-property $transition-time $method;
@@ -17,17 +12,42 @@ $break-large: 1025px;
     transition: $transition-property $transition-time $method;
 }
 
+$break-xs: 600px;
+$break-sm: 960px;
+$break-md: 1280px;
+$break-lg: 1920px;
+
 @mixin bp($media) {
-  @if $media == small {
-    @media only screen and (max-width: $break-small) { @content; }
+  @if $media == xs {
+    @media only screen and (max-width:  #{ $break-xs - 1px }) { @content; }
   }
-  @else if $media == medium {
-    @media only screen and (max-width: $break-medium) { @content; }
+  @else if $media == gt-xs {
+    @media only screen and (min-width: $break-xs) { @content; }
   }
-  @else if $media == large {
-    @media only screen and (max-width: $break-large) { @content; }
+  @if $media == sm {
+    @media only screen and (max-width:  #{ $break-sm - 1px }) and (min-width:  #{ $break-xs}) { @content; }
   }
+  @else if $media == gt-sm {
+    @media only screen and (min-width: $break-sm) { @content; }
+  }
+  @if $media == md {
+    @media only screen and (max-width:  #{ $break-md - 1px }) and (min-width:  #{ $break-sm}) { @content; }
+  }
+  @else if $media == gt-md {
+    @media only screen and (min-width: $break-md) { @content; }
+  }
+  @if $media == lg {
+    @media only screen and (max-width:  #{ $break-lg - 1px }) and (min-width:  #{ $break-md}) { @content; }
+  }
+  @else if $media == gt-lg {
+    @media only screen and (min-width: $break-lg) { @content; }
+  }
+  @else if $media == xl {
+    @media only screen and (min-width: $break-lg) { @content; }
+  }
+
 }
+
 
 body {
   padding: 0;
@@ -50,11 +70,11 @@ body {
 
 /* PAGE ANIMATION */
 .page        {
-    bottom:0; 
-    position:absolute; 
+    bottom:0;
+    position:absolute;
     text-align:center;
-    top:0;  
-    width:100%; 
+    top:0;
+    width:100%;
 }
 
 @keyframes slideOutLeft {
@@ -70,6 +90,10 @@ body {
 
 
 /* HOME VIEW */
+
+.md-select-menu-container {
+  z-index: 99;
+}
 
 .main-page {
 
@@ -94,7 +118,7 @@ body {
     position: absolute;
     top: 4rem;
     right: 5rem;
-    img { 
+    img {
       width: 35px;
     }
   }
@@ -178,19 +202,26 @@ body {
 
   .overlay-controls {
     position: absolute;
-    top: 1rem;
+    top: 2rem;
     left: 2rem;
+    @include bp(xs) {
+      top: .5rem;
+      left: .5rem;
+    }
     margin:0;
     padding:0;
   }
 
   .overlay-speeddials {
     position: absolute;
-    top: 1rem;
+    top: 2rem;
     right: 2rem;
     margin:0;
     padding:0;
-
+    @include bp(xs) {
+      top: .5rem;
+      right: .5rem;
+    }
     button span {
       text-transform: none;
     }
@@ -228,6 +259,11 @@ body {
     min-width: 550px !important;
     width: 550px !important;
     max-width: 550px !important;
+    @include bp(xs) {
+      min-width: 100% !important;
+      width: 100% !important;
+      max-width: 100% !important;
+    }
     overflow-x: hidden;
     md-content {
       overflow-x: hidden;
@@ -267,6 +303,11 @@ body {
 
   r360-rainbow{
     min-width: 380px;
+    @include bp(xs) {
+      min-width: 95%;
+      width: 95%;
+      max-width: 95%;
+    }
     md-whiteframe {
       padding: 0;
       label {

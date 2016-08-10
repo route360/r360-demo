@@ -8,10 +8,12 @@
  * Map Controller of the r360DemoApp
  */
 angular.module('r360DemoApp')
-    .controller('MapCtrl', function($document,$scope,$route, $location, $routeParams, $timeout, $mdSidenav, $mdUtil, $log, $mdDialog, $http, $q, $mdToast, ENV) {
+    .controller('MapCtrl', function($document,$scope,$route, $location, $routeParams, $timeout, $mdSidenav, $mdUtil, $log, $mdDialog, $http, $q, $mdToast, ENV, $mdMedia) {
 
         var vm = this;
         var lastRelatedTarget;
+
+        vm.mdMedia = $mdMedia;
 
         // init function
         function init() {
@@ -256,7 +258,6 @@ angular.module('r360DemoApp')
             parseUrl();
 
             r360.config.serviceUrl = getCity().url;
-            debugger;
             if (angular.isDefined(vm.options.serviceKey))
                 r360.config.serviceKey = vm.options.serviceKey;
             else
@@ -859,7 +860,7 @@ angular.module('r360DemoApp')
                 else if ( lng <= -100 && lat >= 36 ) context = 'northwest';
                 else if ( lng >= -100 && lat >= 36 ) context = 'northeast';
                 else if ( lng >= -100 && lat <= 36 ) context = 'southeast';
-                else 
+                else
                     return false;
 
                 r360.config.serviceUrl = 'https://service.route360.net/na_'+context+'/';
@@ -1301,7 +1302,7 @@ angular.module('r360DemoApp')
             vm.prefs.travelTypes.forEach(function(elem,index,array){
                 if (elem['value'] == type) vm.options.travelTypeIcon = elem['icon'];
             });
-            getPolygons();
+            getPolygons(function() {getRoutes()});
             updateURL();
 
         };
