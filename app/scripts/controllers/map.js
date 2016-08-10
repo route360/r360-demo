@@ -325,8 +325,14 @@ angular.module('r360DemoApp')
             addMarkersFromUrl();
 
             $timeout(function() { vm.states.init = false; }, 2000);
-            $timeout(function() { showToast('Markers can be added by right-clicking on the map.','bottom right','OK') }, 3000);
+            var toastmsg = is_touch_device() ? 'long-pressing' : 'right-clicking';
+            $timeout(function() { showToast('Markers can be added by '+ toastmsg +' on the map.','bottom right','OK') }, 3000);
 
+        };
+
+        function is_touch_device() {
+          return 'ontouchstart' in window        // works on most browsers
+              || navigator.maxTouchPoints;       // works on IE10/11 and Surface
         };
 
         function parseUrl() {
