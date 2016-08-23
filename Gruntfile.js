@@ -50,18 +50,15 @@ module.exports = function (grunt) {
             name       : 'development',
             serviceKey : "uhWrWpUhyZQy8rPfiC7X",
             endpoints  : {
-              // germany               : "https://dev.route360.net/xxx/",
               australia             : "https://service.route360.net/australia/",
               norway                : "https://service.route360.net/norway/",
-              france                : "https://service.route360.net/france/",
+              france                : "https://service.route360.net/france_belgium/",
               britishcolumbia       : "https://service.route360.net/britishcolumbia/",
               denmark               : "https://service.route360.net/denmark/",
               britishisles          : "https://service.route360.net/britishisles/",
               switzerland           : "https://service.route360.net/switzerland/",
-
               austria               : "https://service.route360.net/austria/",
-              germany               : "http://localhost:8080/",
-
+              germany               : "https://service.route360.net/germany/",
               newyork               : "https://service.route360.net/na_northeast/",
               italy                 : "https://service.route360.net/italy/",
               spain                 : "https://service.route360.net/iberia/",
@@ -83,10 +80,9 @@ module.exports = function (grunt) {
             serviceKey : "OOWOFUK3OPHLQTA8H5JD",
             endpoints  : {
                 germany               : "https://service.route360.net/germany/",
-                // germany               : "http://localhost:8080/api/",
                 australia             : "https://service.route360.net/australia/",
                 norway                : "https://service.route360.net/norway/",
-                france                : "https://service.route360.net/france/",
+                france                : "https://service.route360.net/france_belgium/",
                 britishcolumbia       : "https://service.route360.net/britishcolumbia/",
                 denmark               : "https://service.route360.net/denmark/",
                 britishisles          : "https://service.route360.net/britishisles/",

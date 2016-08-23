@@ -34,7 +34,7 @@ angular.module('r360DemoApp')
         "url"	: "images/oslo.jpg"
     }, {
         "id"    : "france",
-        "name": "France",
+        "name": "France & Belgium",
         "url"	: "images/paris.jpg"
     }, {
         "id"    : "britishcolumbia",

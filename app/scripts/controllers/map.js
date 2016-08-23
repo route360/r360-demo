@@ -88,7 +88,7 @@ angular.module('r360DemoApp')
                     "url"   : ENV.endpoints.norway
                 }, {
                     "id"    : "france",
-                    "name"  : "France",
+                    "name"  : "France & Belgium",
                     "latlng": [48.8588589,2.3475569],
                     "url"   : ENV.endpoints.france
                 }, {
