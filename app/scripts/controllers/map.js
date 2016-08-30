@@ -295,7 +295,7 @@ angular.module('r360DemoApp')
                 }).addTo(vm.map);
 
 
-                var attribution = "<a href='https://cartodb.com/location-data-services/basemaps/' target='_blank'>© Cartodb © OpenStreetMap</a> | © <a href='https://developers.route360.net/#availability' target='_blank'>Transit Data</a> | developed by <a href='http://www.route360.net/de/' target='_blank'>Route360°</a>";
+                var attribution = "<a href='https://cartodb.com/location-data-services/basemaps/' target='_blank'>© Cartodb © OpenStreetMap</a> | © <a href='https://developers.route360.net/availability.html' target='_blank'>Transit Data</a> | developed by <a href='http://www.route360.net/de/' target='_blank'>Route360°</a>";
 
                 var tileUrl = lookupObject(vm.prefs.mapStyles,'value',vm.options.mapstyle).url;
 
