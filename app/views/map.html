@@ -121,11 +121,11 @@
                             </md-option>
                         </md-select>
                     </md-list-item> -->
-                        <md-list-item ng-show="map.options.travelType == 'transit' && map.options.areaID == 'germany' ">
+                        <md-list-item ng-show="map.options.travelType == 'transit' && (map.options.areaID == 'germany' || map.options.areaID == 'denmark') ">
                             <p>Travel Date</p>
                             <md-datepicker ng-model="map.options.queryDate" md-placeholder="Travel Date" aria-label="Datepicker" ng-change="map.updateView()"></md-datepicker>
                         </md-list-item>
-                        <md-list-item ng-show="map.options.travelType == 'transit' && map.options.areaID == 'germany' ">
+                        <md-list-item ng-show="map.options.travelType == 'transit' && (map.options.areaID == 'germany' || map.options.areaID == 'denmark') ">
                             <p>Start Time</p>
                             <md-select style="margin: 0" ng-model="map.options.queryTime.h" aria-label="Start-Time Hour" ng-change="map.updateView()">
                                 <md-option ng-repeat="hour in map.prefs.queryTimeRange.hour" value="{{hour}}">{{hour}}</md-option>
