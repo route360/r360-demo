@@ -6,8 +6,13 @@ angular.module('r360DemoApp')
 
             var result = "";
 
-            if (amount < 3) result = "Direktverbindung";
-                else result = (amount - 2) + " Mal umsteigen";
+            var times = amount - 2;
+
+            if (times < 1) result = "direct connection";
+                else {
+                    result = "change " + times;
+                    result += times > 1 ? " times" : " time";
+                }
 
             return result;
 

@@ -5,8 +5,8 @@
     <md-list-item class="md-2-line" ng-click="travelPlan.showPlan(route)">
 
         <div class="md-list-item-text" layout="column">
-            <h3>{{route.departureTime | secToTime}} bis {{route.arrivalTime | secToTime}}</h3>
-            <p>{{route.travelTime | secToHoursMin}} | {{route.transfers | transferCount}}</p>
+            <h3>{{route.sourceId | idToName}} to {{route.targetId | idToName}}</h3>
+            <p>{{route.travelTime | secToHoursMin}} | {{route.transfers | transferCount}} | {{route.length | distance}}</p>
         </div>
 
         <md-icon class="animate ng-class:{'rotate-180':route.show}" ng-click="travelPlan.showPlan(route)"  md-svg-icon="md:chevron-down"></md-icon>
@@ -30,14 +30,14 @@
                 </td>
                 <td ng-if="segment.getType() == 'WALK' && route.getSegments().length == 1"><span class='destination-name center-block' style='margin-top: 8px;'>{{travelPlan.mapStore.currentItem.title}}</span></td>
                 <td ng-if="segment.getType() == 'WALK'">
-                    <div style="text-align: center">{{segment.travelTime | secToMin }} Min.</div>
+                    <div style="text-align: center">{{segment.travelTime | secToMin }}min</div>
                     <div style="text-align: center"><small>{{segment.getDistance() * 1000 | formatMeter }}</small></div>
                 </td>
                 <!-- TRANSFER -->
                 <td ng-if="segment.getType() == 'TRANSFER'" class="text-center">
                     <md-icon md-svg-icon="md:redo" aria-label="change"></md-icon>
                 </td>
-                <td ng-if="segment.getType() == 'TRANSFER'">Umsteigen</td>
+                <td ng-if="segment.getType() == 'TRANSFER'">Change</td>
                 <td ng-if="segment.getType() == 'TRANSFER'">
                     <div style="text-align: center;">{{segment.getTravelTime() | secToHoursMin }}</div>
                 </td>
@@ -49,7 +49,7 @@
                 </td>
                 <td ng-if="segment.getType() == 'CAR'"><span class='destination-name center-block' style='margin-top: 8px;'>{{apartment.street}} {{apartment.houseNumber}}</span></td>
                 <td ng-if="segment.getType() == 'CAR'">
-                    <div style="text-align: center">{{segment.getTravelTime() | secToMin }} Min.</div>
+                    <div style="text-align: center">{{segment.getTravelTime() | secToMin }}min</div>
                     <div style="text-align: center"><small>{{segment.getLength() | formatMeter }}</small></div>
                 </td>
                 <!-- BIKE -->
@@ -66,7 +66,7 @@
                 </td>
                 <td ng-if="segment.getType() == 'BIKE' && route.getSegments().length == 1"><span class='destination-name center-block' style='margin-top: 8px;'>{{travelPlan.mapStore.currentItem.title}}</span></td>
                 <td ng-if="segment.getType() == 'BIKE'">
-                    <div style="text-align: center">{{segment.travelTime | secToMin }} Min.</div>
+                    <div style="text-align: center">{{segment.travelTime | secToMin }}min</div>
                     <div style="text-align: center"><small>{{segment.getDistance() * 1000 | formatMeter }}</small></div>
                 </td>
                 <!-- FERRY -->
@@ -81,7 +81,7 @@
                                     </td>
                                     <td ng-if="segment.getType() == 'FERRY' && route.getSegments().length == 1"><span class='destination-name center-block' style='margin-top: 8px;'>{{travelPlan.mapStore.currentItem.title}}</span></td>
                                     <td ng-if="segment.getType() == 'FERRY'">
-                                        <div style="text-align: center">{{segment.travelTime | secToMin }} Min.</div>
+                                        <div style="text-align: center">{{segment.travelTime | secToMin }}min</div>
                                         <div style="text-align: center"><small>{{segment.getDistance() * 1000 | formatMeter }}</small></div>
                                     </td> -->
                 <!-- TRANSIT -->
@@ -93,15 +93,15 @@
                     <table class="table table-condensed" style='margin-bottom: 0px;'>
                         <tbody>
                             <tr style="border-style:none;" class="block-caption">
-                                <td>Abfahrt</td>
+                                <td>Departs</td>
                                 <td style="width: 60%">{{segment.getDepartureTime() | secToTime }}</td>
                             </tr>
                             <tr class="block-info">
-                                <td>Richtung</td>
+                                <td>Direction</td>
                                 <td style="width: 60%">{{ segment.getTripHeadSign() | cleanName }}</td>
                             </tr>
                             <tr class="block-info">
-                                <td>Ankunft</td>
+                                <td>Arrives</td>
                                 <td style="width: 60%">{{segment.getArrivalTime() | secToTime }}</td>
                             </tr>
                             <tr class="block-info">
@@ -111,7 +111,7 @@
                     </table>
                 </td>
                 <td ng-if="segment.getType() == 'TRANSIT'">
-                    <div style="text-align: center;">{{segment.getTravelTime() | secToMin }} Min.</div>
+                    <div style="text-align: center;">{{segment.getTravelTime() | secToMin }}min</div>
                     <div style='text-align: center;'><img style="width:30px;margin-top:10px;" ng-src="{{'images/marker/' + segment.routeType + '.png'}}"></div>
                 </td>
             </tr>
@@ -119,7 +119,7 @@
                 <td>
                     <md-icon md-svg-icon="md:clock"></md-icon>
                 </td>
-                <td class='destination-name'>Gesamtreisedauer</td>
+                <td class='destination-name'>Total travel time</td>
                 <td>
                     <div class='center destination-name'>{{ route.travelTime | secToHoursMin }}</div>
                 </td>

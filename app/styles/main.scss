@@ -89,6 +89,30 @@ body {
 .page.ng-leave           { animation: slideOutLeft 0.5s both ease-in; z-index: 9999; }
 
 
+.rotate-180 {
+  -ms-transform: rotate(180deg);
+  -webkit-transform: rotate(180deg);
+  transform: rotate(180deg);
+}
+
+.animate {
+  -webkit-transition: all ease-in-out .5s;
+  transition:all ease-in-out .5s;
+}
+
+.expand {
+  overflow: hidden;
+  -webkit-transition: all ease-in-out .5s;
+  transition:all ease-in-out .5s;
+  max-height: 500px;
+  opacity: 1;
+  &.ng-hide {
+      max-height: 0px;
+      opacity: 0;
+  }
+}
+
+
 /* HOME VIEW */
 
 .md-select-menu-container {
