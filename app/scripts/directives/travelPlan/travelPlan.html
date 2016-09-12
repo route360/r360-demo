@@ -1,0 +1,131 @@
+<md-list class="routes-list">
+
+<div ng-repeat="route in travelPlan.routesService.routes " class="route-item ng-class:{'active-route': route.show}">
+
+    <md-list-item class="md-2-line" ng-click="travelPlan.showPlan(route)">
+
+        <div class="md-list-item-text" layout="column">
+            <h3>{{route.departureTime | secToTime}} bis {{route.arrivalTime | secToTime}}</h3>
+            <p>{{route.travelTime | secToHoursMin}} | {{route.transfers | transferCount}}</p>
+        </div>
+
+        <md-icon class="animate ng-class:{'rotate-180':route.show}" ng-click="travelPlan.showPlan(route)"  md-svg-icon="md:chevron-down"></md-icon>
+
+    </md-list-item>
+
+    <div class="travel-plan" ng-hide="!route.show">
+        <table class="table table-striped" id="details-travel-table">
+            <tr ng-repeat="segment in route.getSegments().slice() | filter:travelPlan.isNotTransfer" class="routeSegment routeType-{{segment.routeType || segment.routeType == 0 ? segment.routeType : segment.type}}">
+                <!-- WALK -->
+                <td ng-if="segment.getType() == 'WALK'" class="">
+                    <div class="center">
+                        <md-icon md-svg-icon="md:walk" aria-label="laufen"></md-icon>
+                    </div>
+                </td>
+                <td ng-if="segment.getType() == 'WALK' && route.getSegments().length > 1 && $index < route.getSegments().length - 3">
+                    <span class='start-name center-block'>{{route.getSegments()[2].getStartName() | cleanName }}</span>
+                </td>
+                <td ng-if="segment.getType() == 'WALK' && $index == route.getSegments().length - 3 && route.getSegments().length > 1">
+                    <div class='start-name center-block'>{{travelPlan.mapStore.currentItem.title}}</div>
+                </td>
+                <td ng-if="segment.getType() == 'WALK' && route.getSegments().length == 1"><span class='destination-name center-block' style='margin-top: 8px;'>{{travelPlan.mapStore.currentItem.title}}</span></td>
+                <td ng-if="segment.getType() == 'WALK'">
+                    <div style="text-align: center">{{segment.travelTime | secToMin }} Min.</div>
+                    <div style="text-align: center"><small>{{segment.getDistance() * 1000 | formatMeter }}</small></div>
+                </td>
+                <!-- TRANSFER -->
+                <td ng-if="segment.getType() == 'TRANSFER'" class="text-center">
+                    <md-icon md-svg-icon="md:redo" aria-label="change"></md-icon>
+                </td>
+                <td ng-if="segment.getType() == 'TRANSFER'">Umsteigen</td>
+                <td ng-if="segment.getType() == 'TRANSFER'">
+                    <div style="text-align: center;">{{segment.getTravelTime() | secToHoursMin }}</div>
+                </td>
+                <!-- CAR -->
+                <td ng-if="segment.getType() == 'CAR'">
+                    <div class="center routeTypes">
+                        <md-icon md-svg-icon="md:car" aria-label="car"></md-icon>
+                    </div>
+                </td>
+                <td ng-if="segment.getType() == 'CAR'"><span class='destination-name center-block' style='margin-top: 8px;'>{{apartment.street}} {{apartment.houseNumber}}</span></td>
+                <td ng-if="segment.getType() == 'CAR'">
+                    <div style="text-align: center">{{segment.getTravelTime() | secToMin }} Min.</div>
+                    <div style="text-align: center"><small>{{segment.getLength() | formatMeter }}</small></div>
+                </td>
+                <!-- BIKE -->
+                <td ng-if="segment.getType() == 'BIKE'" class="">
+                    <div class="center">
+                        <md-icon md-svg-icon="md:walk" aria-label="laufen"></md-icon>
+                    </div>
+                </td>
+                <td ng-if="segment.getType() == 'BIKE' && route.getSegments().length > 1 && $index < route.getSegments().length - 3">
+                    <span class='start-name center-block'>{{route.getSegments()[2].getStartName() | cleanName }}</span>
+                </td>
+                <td ng-if="segment.getType() == 'BIKE' && $index == route.getSegments().length - 3 && route.getSegments().length > 1">
+                    <big class='start-name center-block'>{{travelPlan.mapStore.currentItem.title}}</big>
+                </td>
+                <td ng-if="segment.getType() == 'BIKE' && route.getSegments().length == 1"><span class='destination-name center-block' style='margin-top: 8px;'>{{travelPlan.mapStore.currentItem.title}}</span></td>
+                <td ng-if="segment.getType() == 'BIKE'">
+                    <div style="text-align: center">{{segment.travelTime | secToMin }} Min.</div>
+                    <div style="text-align: center"><small>{{segment.getDistance() * 1000 | formatMeter }}</small></div>
+                </td>
+                <!-- FERRY -->
+                <!-- td ng-if="segment.getType() == 'FERRY'" class="">
+                                        <div class="center"><img class='ferry-icon' src="assets/images/marker/ferry.png"></div>
+                                    </td>
+                                    <td ng-if="segment.getType() == 'FERRY' && route.getSegments().length > 1 && $index < route.getSegments().length - 3">
+                                        <span class='start-name center-block'>{{route.getSegments()[2].getStartName() | cleanName }}</span>
+                                    </td>
+                                    <td ng-if="segment.getType() == 'FERRY' && $index == route.getSegments().length - 3 && route.getSegments().length > 1">
+                                        <big class='start-name center-block'>{{travelPlan.mapStore.currentItem.title}}</big>
+                                    </td>
+                                    <td ng-if="segment.getType() == 'FERRY' && route.getSegments().length == 1"><span class='destination-name center-block' style='margin-top: 8px;'>{{travelPlan.mapStore.currentItem.title}}</span></td>
+                                    <td ng-if="segment.getType() == 'FERRY'">
+                                        <div style="text-align: center">{{segment.travelTime | secToMin }} Min.</div>
+                                        <div style="text-align: center"><small>{{segment.getDistance() * 1000 | formatMeter }}</small></div>
+                                    </td> -->
+                <!-- TRANSIT -->
+                <td ng-if="segment.getType() == 'TRANSIT'">
+                    <div class="circle-name block-caption">{{segment.getRouteShortName()}}
+                    </div>
+                </td>
+                <td ng-if="segment.getType() == 'TRANSIT'">
+                    <table class="table table-condensed" style='margin-bottom: 0px;'>
+                        <tbody>
+                            <tr style="border-style:none;" class="block-caption">
+                                <td>Abfahrt</td>
+                                <td style="width: 60%">{{segment.getDepartureTime() | secToTime }}</td>
+                            </tr>
+                            <tr class="block-info">
+                                <td>Richtung</td>
+                                <td style="width: 60%">{{ segment.getTripHeadSign() | cleanName }}</td>
+                            </tr>
+                            <tr class="block-info">
+                                <td>Ankunft</td>
+                                <td style="width: 60%">{{segment.getArrivalTime() | secToTime }}</td>
+                            </tr>
+                            <tr class="block-info">
+                                <td colspan="2" class='destination-name'><strong>{{segment.getEndName() | cleanName }}</strong></td>
+                            </tr>
+                        </tbody>
+                    </table>
+                </td>
+                <td ng-if="segment.getType() == 'TRANSIT'">
+                    <div style="text-align: center;">{{segment.getTravelTime() | secToMin }} Min.</div>
+                    <div style='text-align: center;'><img style="width:30px;margin-top:10px;" ng-src="{{'images/marker/' + segment.routeType + '.png'}}"></div>
+                </td>
+            </tr>
+            <tr class="report">
+                <td>
+                    <md-icon md-svg-icon="md:clock"></md-icon>
+                </td>
+                <td class='destination-name'>Gesamtreisedauer</td>
+                <td>
+                    <div class='center destination-name'>{{ route.travelTime | secToHoursMin }}</div>
+                </td>
+            </tr>
+        </table>
+    </div>
+
+</div>
+</md-list>

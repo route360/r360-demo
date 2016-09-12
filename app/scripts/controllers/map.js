@@ -8,7 +8,7 @@
  * Map Controller of the r360DemoApp
  */
 angular.module('r360DemoApp')
-    .controller('MapCtrl', function($document,$scope,$route, $location, $routeParams, $timeout, $mdSidenav, $mdUtil, $log, $mdDialog, $http, $q, $mdToast, ENV, $mdMedia) {
+    .controller('MapCtrl', function($document,$scope,$route, $location, $routeParams, $timeout, $mdSidenav, $mdUtil, $log, $mdDialog, $http, $q, $mdToast, ENV, $mdMedia, RoutesService) {
 
         var vm = this;
         var lastRelatedTarget;
@@ -897,11 +897,14 @@ angular.module('r360DemoApp')
 
             travelOptions.setTravelType(vm.options.travelType);
 
+            debugger;
             vm.options.sourceMarkers.forEach(function(elem, index, array) {
+                elem.id = 'source' + index;
                 travelOptions.addSource(elem);
             })
 
             vm.options.targetMarkers.forEach(function(elem, index, array) {
+                elem.id = 'target' + index;
                 travelOptions.addTarget(elem);
             })
 
@@ -1012,7 +1015,11 @@ angular.module('r360DemoApp')
 
             r360.RouteService.getRoutes(travelOptions, function(routes) {
 
+                debugger;
+
                 vm.states.requestPending = false;
+
+                RoutesService.routes = routes;
 
                 routes.forEach(function(elem, index, array) {
                     r360.LeafletUtil.fadeIn(vm.layerGroups.routeLayerGroup, elem, 500, "travelDistance", {
