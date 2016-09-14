@@ -14,6 +14,7 @@ angular.module('r360DemoApp')
         var lastRelatedTarget;
 
         vm.mdMedia = $mdMedia;
+        vm.optsOpen = (ENV.name == "development" ? true : false);
 
         // init function
         function init() {
@@ -64,7 +65,8 @@ angular.module('r360DemoApp')
                 "placesLimit" : 100,
                 "transition" : true,
                 "mapstyle" : "light",
-                "showAdvanced" : false
+                "showAdvanced" : (ENV.name == "development" ? true : false),
+                "elevation" : true
             };
 
             vm.prefs = {
@@ -854,6 +856,7 @@ angular.module('r360DemoApp')
             var travelOptions = r360.travelOptions();
             travelOptions.setServiceUrl(r360.config.serviceUrl);
             travelOptions.setServiceKey(r360.config.serviceKey);
+            travelOptions.setElevationEnabled(vm.options.elevation);
 
             if ( travelOptions.getServiceUrl().indexOf("https://service.route360.net/na_") > -1 ) {
 
@@ -1015,6 +1018,8 @@ angular.module('r360DemoApp')
                 vm.states.requestPending = false;
 
                 routes.forEach(function(elem, index, array) {
+
+                    console.log(elem);
                     r360.LeafletUtil.fadeIn(vm.layerGroups.routeLayerGroup, elem, 500, "travelDistance", {
                         color: "red",
                         haloColor: "#fff"

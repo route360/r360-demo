@@ -109,7 +109,17 @@
                                 <md-option ng-repeat="range in map.prefs.colorRanges" value="{{range.id}}">{{range.name}}</md-option>
                             </md-select>
                         </md-list-item>
-                        <md-divider style="margin-top:1rem;"></md-divider>
+                        <md-list-item>
+                            <p>Intersection Mode</p>
+                            <md-select style="margin: 0" ng-model="map.options.intersection" aria-label="Intersection Mode" ng-change="map.updateView()">
+                                <md-option ng-repeat="type in map.prefs.intersectionTypes" value="{{type.value}}">{{type.name}}</md-option>
+                            </md-select>
+                        </md-list-item>
+                        <md-list-item>
+                            <p>Enable elevation</p>
+                            <md-switch class="md-primary" aria-label="Elevation Switch" ng-model="map.options.elevation" ng-change="map.updateView()"/>
+                        </md-list-item>
+                        <md-divider style="margin-top:1rem;" ng-show="map.options.travelType == 'transit' && (map.options.areaID == 'germany' || map.options.areaID == 'denmark') "></md-divider>
                         <!-- <md-subheader class="md-no-sticky">Travel Type</md-subheader>
 
                     <md-list-item>
@@ -121,6 +131,13 @@
                             </md-option>
                         </md-select>
                     </md-list-item> -->
+                        <md-list-item ng-show="map.options.travelType == 'transit' && (map.options.areaID == 'germany' || map.options.areaID == 'denmark') ">
+                            <p>Transit Mode</p>
+                            <md-select style="margin: 0" ng-model="map.options.reverse" aria-label="Departure or Arrival Mode Select" ng-change="map.updateView()">
+                                <md-option value="false">Departure</md-option>
+                                <md-option value="true">Arrival</md-option>
+                            </md-select>
+                        </md-list-item>
                         <md-list-item ng-show="map.options.travelType == 'transit' && (map.options.areaID == 'germany' || map.options.areaID == 'denmark') ">
                             <p>Travel Date</p>
                             <md-datepicker ng-model="map.options.queryDate" md-placeholder="Travel Date" aria-label="Datepicker" ng-change="map.updateView()"></md-datepicker>
@@ -135,18 +152,14 @@
                                 <md-option ng-repeat="minute in map.prefs.queryTimeRange.minute" value="{{minute}}">{{minute}}</md-option>
                             </md-select>
                         </md-list-item>
-                        <md-list-item>
-                            <p>Intersection Mode</p>
-                            <md-select style="margin: 0" ng-model="map.options.intersection" aria-label="Intersection Mode" ng-change="map.updateView()">
-                                <md-option ng-repeat="type in map.prefs.intersectionTypes" value="{{type.value}}">{{type.name}}</md-option>
-                            </md-select>
-                        </md-list-item>
+                        
                         <!-- <md-list-item>
                             <p>Map Provider</p>
                             <md-select style="margin: 0" ng-model="map.options.mapProvider" aria-label="Map Provider">
                                 <md-option ng-repeat="provider in map.prefs.mapProviderList" value="{{provider.value}}">{{provider.name}}</md-option>
                             </md-select>
                     </md-list-item> -->
+                        <md-divider style="margin-top:1rem;"></md-divider>
                         <md-list-item>
                             <p>Map transition (Menu open)</p>
                             <md-switch class="md-primary" aria-label="Transition Switch" ng-model="map.options.transition" />
