@@ -8,7 +8,7 @@
  * Map Controller of the r360DemoApp
  */
 angular.module('r360DemoApp')
-    .controller('MapCtrl', function($document,$scope,$route, $location, $routeParams, $timeout, $mdSidenav, $mdUtil, $log, $mdDialog, $http, $q, $mdToast, ENV, $mdMedia) {
+    .controller('MapCtrl', function($document,$scope,$route, $location, $routeParams, $timeout, $mdSidenav, $mdUtil, $log, $mdDialog, $http, $q, $mdToast, ENV, $mdMedia, RoutesService, Options) {
 
         var vm = this;
         var lastRelatedTarget;
@@ -27,48 +27,7 @@ angular.module('r360DemoApp')
 
             $scope.pageClass = 'map-page';
 
-            var now = new Date();
-            var hour = now.getHours();
-            var minute = (now.getMinutes() + (5 - now.getMinutes() % 5)) % 60;
-
-            if (minute == 0) {
-                hour++;
-            };
-            if (hour == 24) {
-                hour = 0;
-            };
-
-            vm.options = {
-                "areaID": "germany",
-                "cityID" : undefined,  // legacy
-                "travelTime": 30,
-                "travelTimeRangeID": 0,
-                "travelType": "bike",
-                "queryDate": now,
-                "queryTime": {
-                    "h": hour,
-                    "m": minute
-                },
-                "colorRangeID": 0,
-                "mapProvider": "osm",
-                "sourceMarkers": [],
-                "maxSourceMarkers" : 3,
-                "targetMarkers": [],
-                "maxTargetMarkers" : 3,
-                "groups" : [],
-                "intersection": "union",
-                "strokeWidth": 30,
-                "extendWidth": 500,
-                "backgroundColor": 'black',
-                "backgroundOpacity": 0,
-                "minPolygonHoleSize": 1000000,
-                "placesLimit" : 100,
-                "transition" : true,
-                "mapstyle" : "light",
-                "showAdvanced" : (ENV.name == "development" ? true : false),
-                "elevation" : true
-            };
-
+            vm.options = Options;
             vm.prefs = {
                 "cities": [{
                     "id"    : "germany",
@@ -260,11 +219,10 @@ angular.module('r360DemoApp')
             parseUrl();
 
             r360.config.serviceUrl = getCity().url;
-            if (angular.isDefined(vm.options.serviceKey))
-                r360.config.serviceKey = vm.options.serviceKey;
+            if (angular.isDefined(Options.serviceKey))
+                r360.config.serviceKey = Options.serviceKey;
             else
                 r360.config.serviceKey = ENV.serviceKey;
-            r360.config.i18n.language = "de";
 
             if (!angular.isDefined(vm.map)) {
                 vm.map = L.map('map', {
@@ -299,7 +257,7 @@ angular.module('r360DemoApp')
 
                 var attribution = "<a href='https://cartodb.com/location-data-services/basemaps/' target='_blank'>© Cartodb © OpenStreetMap</a> | © <a href='https://developers.route360.net/availability.html' target='_blank'>Transit Data</a> | developed by <a href='http://www.route360.net/de/' target='_blank'>Route360°</a>";
 
-                var tileUrl = lookupObject(vm.prefs.mapStyles,'value',vm.options.mapstyle).url;
+                var tileUrl = lookupObject(vm.prefs.mapStyles,'value',Options.mapstyle).url;
 
                 if (isHidpi()) {
                     tileUrl = tileUrl.substring(0,tileUrl.length-4).concat('@2x.png');
@@ -315,7 +273,7 @@ angular.module('r360DemoApp')
                     routeLayerGroup: L.featureGroup().addTo(vm.map),
                     reachableLayerGroup: L.featureGroup().addTo(vm.map),
                     tempLayerGroup: L.featureGroup().addTo(vm.map),
-                    polygonLayerGroup: r360.leafletPolygonLayer({extendWidthX: vm.options.extendWidth, extendWidthY: vm.options.extendWidth}).addTo(vm.map)
+                    polygonLayerGroup: r360.leafletPolygonLayer({extendWidthX: Options.extendWidth, extendWidthY: Options.extendWidth}).addTo(vm.map)
                 };
 
             }
@@ -360,23 +318,23 @@ angular.module('r360DemoApp')
                     case "backgroundOpacity" :
                     case "minPolygonHoleSize" :
                     case "placesLimit" :
-                        vm.options[index] = parseInt(value);
+                        Options[index] = parseInt(value);
                         break;
                     case "areaID" :
                     case "travelType" :
                     case "intersection" :
                     case "serviceKey":
-                        vm.options[index] = value;
+                        Options[index] = value;
                         break;
                     case "mapstyle" :
                         if (value.indexOf('mi.')>-1) {
-                            vm.options[index] = 'light'
+                            Options[index] = 'light'
                         } else {
-                            vm.options[index] = value;
+                            Options[index] = value;
                         }
                         break;
                     case "transition" :
-                        vm.options[index] = (value === "true");
+                        Options[index] = (value === "true");
                     case "sources":
                     case "targets":
                         break;
@@ -387,34 +345,34 @@ angular.module('r360DemoApp')
             }
 
             // legacy ID support
-            if (angular.isDefined(vm.options.cityID) && typeof vm.options.cityID === "number") {
-                switch (vm.options.cityID) {
+            if (angular.isDefined(Options.cityID) && typeof Options.cityID === "number") {
+                switch (Options.cityID) {
                     case 0:
-                        vm.options.areaID = "berlin";
+                        Options.areaID = "berlin";
                         break;
                     case 1:
-                        vm.options.areaID = "norway";
+                        Options.areaID = "norway";
                         break;
                     case 2:
-                        vm.options.areaID = "france";
+                        Options.areaID = "france";
                         break;
                     case 3:
-                        vm.options.areaID = "canada";
+                        Options.areaID = "canada";
                         break;
                     case 4:
-                        vm.options.areaID = "denmark";
+                        Options.areaID = "denmark";
                         break;
                     case 5:
-                        vm.options.areaID = "britishisles";
+                        Options.areaID = "britishisles";
                         break;
                     case 6:
-                        vm.options.areaID = "switzerland";
+                        Options.areaID = "switzerland";
                         break;
                     case 7:
-                        vm.options.areaID = "austria";
+                        Options.areaID = "austria";
                         break;
                     case 8:
-                        vm.options.areaID = "newyork";
+                        Options.areaID = "newyork";
                         break;
                 }
             }
@@ -425,7 +383,7 @@ angular.module('r360DemoApp')
 
 
             removeAllMarkers();
-            if(!angular.isDefined(getCity())) vm.options.areaID = "germany";
+            if(!angular.isDefined(getCity())) Options.areaID = "germany";
 
             // Check if sources are available in GET params
             if (angular.isDefined($routeParams.targets)) {
@@ -457,7 +415,7 @@ angular.module('r360DemoApp')
          */
         vm.updateTileStyle = updateTileStyle;
         function updateTileStyle() {
-            var tileUrl = lookupObject(vm.prefs.mapStyles,'value',vm.options.mapstyle).url;
+            var tileUrl = lookupObject(vm.prefs.mapStyles,'value',Options.mapstyle).url;
 
             if (isHidpi()) {
                 tileUrl = tileUrl.substring(0,tileUrl.length-4).concat('@2x.png');
@@ -465,14 +423,14 @@ angular.module('r360DemoApp')
 
             vm.layerGroups.tileLayer.setUrl(tileUrl);
             vm.layerGroups.tileLayer.redraw();
-            $routeParams.mapstyle = vm.options.mapstyle;
+            $routeParams.mapstyle = Options.mapstyle;
             $route.updateParams($routeParams);
         }
 
         function getCity() {
             var result = undefined;
             vm.prefs.cities.forEach(function(city){
-                if(city.id == vm.options.areaID) result = city;
+                if(city.id == Options.areaID) result = city;
             });
             return result;
         }
@@ -591,11 +549,11 @@ angular.module('r360DemoApp')
 
             switch (type) {
                 case 'source':
-                    if (vm.options.sourceMarkers.length >= vm.options.maxSourceMarkers) {
-                        showToast('Maximum number of source Markers reached (' + vm.options.maxSourceMarkers + ")");
+                    if (Options.sourceMarkers.length >= Options.maxSourceMarkers) {
+                        showToast('Maximum number of source Markers reached (' + Options.maxSourceMarkers + ")");
                         return;
                     };
-                    markerArray = vm.options.sourceMarkers;
+                    markerArray = Options.sourceMarkers;
                     markerIcon = L.icon({
                         iconUrl: './images/icons/marker_source.svg',
                         shadowUrl: './images/icons/shadow.png',
@@ -607,11 +565,11 @@ angular.module('r360DemoApp')
                     })
                     break;
                 case 'target':
-                    if (vm.options.targetMarkers.length >= vm.options.maxTargetMarkers) {
-                        showToast('Maximum number of target Markers reached (' + vm.options.maxSourceMarkers + ")");
+                    if (Options.targetMarkers.length >= Options.maxTargetMarkers) {
+                        showToast('Maximum number of target Markers reached (' + Options.maxSourceMarkers + ")");
                         return;
                     };
-                    markerArray = vm.options.targetMarkers;
+                    markerArray = Options.targetMarkers;
                     markerIcon = L.icon({
                         iconUrl: './images/icons/marker_target.svg',
                         shadowUrl: './images/icons/shadow.png',
@@ -810,8 +768,8 @@ angular.module('r360DemoApp')
 
             vm.layerGroups.markerLayerGroup.removeLayer(marker);
 
-            if (vm.options.sourceMarkers != undefined) {
-                vm.options.sourceMarkers.forEach(function(elem, index, array) {
+            if (Options.sourceMarkers != undefined) {
+                Options.sourceMarkers.forEach(function(elem, index, array) {
                     if (elem == marker) {
                         array.splice(index, 1);
                         console.log("source Marker deleted");
@@ -819,8 +777,8 @@ angular.module('r360DemoApp')
                 })
             }
 
-            if (vm.options.targetMarkers != []) {
-                vm.options.targetMarkers.forEach(function(elem, index, array) {
+            if (Options.targetMarkers != []) {
+                Options.targetMarkers.forEach(function(elem, index, array) {
                     if (elem == marker) {
                         array.splice(index, 1);
                         console.log("target Marker deleted");
@@ -843,8 +801,8 @@ angular.module('r360DemoApp')
             vm.layerGroups.polygonLayerGroup.clearLayers();
             vm.layerGroups.routeLayerGroup.clearLayers();
             vm.layerGroups.tempLayerGroup.clearLayers();
-            vm.options.sourceMarkers = [];
-            vm.options.targetMarkers = [];
+            Options.sourceMarkers = [];
+            Options.targetMarkers = [];
         }
 
         /**
@@ -860,8 +818,8 @@ angular.module('r360DemoApp')
 
             if ( travelOptions.getServiceUrl().indexOf("https://service.route360.net/na_") > -1 ) {
 
-                var lat = vm.options.sourceMarkers[0].getLatLng().lat;
-                var lng = vm.options.sourceMarkers[0].getLatLng().lng;
+                var lat = Options.sourceMarkers[0].getLatLng().lat;
+                var lng = Options.sourceMarkers[0].getLatLng().lng;
 
                 var context = "";
 
@@ -876,15 +834,15 @@ angular.module('r360DemoApp')
                 travelOptions.setServiceUrl(r360.config.serviceUrl);
             }
 
-            var travelTime = vm.options.travelTime * 60;
+            var travelTime = Options.travelTime * 60;
             var travelTimes=[];
             var defaultColors =[];
 
-            vm.prefs.travelTimeRanges[vm.options.travelTimeRangeID].times.forEach(function(elem, index, array) {
+            vm.prefs.travelTimeRanges[Options.travelTimeRangeID].times.forEach(function(elem, index, array) {
                 var dataSet = {};
                 dataSet.time  = elem*60;
-                dataSet.color = vm.prefs.colorRanges[vm.options.colorRangeID].colors[index];
-                dataSet.opacity = vm.prefs.colorRanges[vm.options.colorRangeID].opacities[index];
+                dataSet.color = vm.prefs.colorRanges[Options.colorRangeID].colors[index];
+                dataSet.opacity = vm.prefs.colorRanges[Options.colorRangeID].opacities[index];
                 defaultColors.push(dataSet);
             })
 
@@ -898,39 +856,41 @@ angular.module('r360DemoApp')
 
             travelOptions.setTravelTimes(travelTimes);
 
-            travelOptions.setTravelType(vm.options.travelType);
+            travelOptions.setTravelType(Options.travelType);
 
-            vm.options.sourceMarkers.forEach(function(elem, index, array) {
+            Options.sourceMarkers.forEach(function(elem, index, array) {
+                elem.id = 'source' + index;
                 travelOptions.addSource(elem);
             })
 
-            vm.options.targetMarkers.forEach(function(elem, index, array) {
+            Options.targetMarkers.forEach(function(elem, index, array) {
+                elem.id = 'target' + index;
                 travelOptions.addTarget(elem);
             })
 
-            travelOptions.extendWidthX = vm.options.extendWidth * 2;
-            travelOptions.extendWidthY = vm.options.extendWidth * 2;
+            travelOptions.extendWidthX = Options.extendWidth * 2;
+            travelOptions.extendWidthY = Options.extendWidth * 2;
 
-            if (vm.options.colorRangeID == 3) {
+            if (Options.colorRangeID == 3) {
                 vm.layerGroups.polygonLayerGroup.setInverse(true);
             } else {
                 vm.layerGroups.polygonLayerGroup.setInverse(false);
             };
 
-            travelOptions.backgroundColor = vm.options.backgroundColor;
-            travelOptions.setIntersectionMode(vm.options.intersection);
+            travelOptions.backgroundColor = Options.backgroundColor;
+            travelOptions.setIntersectionMode(Options.intersection);
             //travelOptions.setWaitControl(vm.waitControl);
 
-            var rawDate = vm.options.queryDate; // @jan: month is zero based, so we have to add one
+            var rawDate = Options.queryDate; // @jan: month is zero based, so we have to add one
             // for the future: please use r360.Util.getDateXX and getTimeXX methods
             var date = String(rawDate.getFullYear()) + ('0' + String(rawDate.getMonth() + 1)).slice(-2) + ('0' + String(rawDate.getDate())).slice(-2);
             travelOptions.setDate(date);
 
-            var rawTime = vm.options.queryTime;
+            var rawTime = Options.queryTime;
             var time = rawTime.h * 3600 + rawTime.m * 60;
 
             travelOptions.setTime(time);
-            travelOptions.setMinPolygonHoleSize(vm.options.minPolygonHoleSize);
+            travelOptions.setMinPolygonHoleSize(Options.minPolygonHoleSize);
 
             if (vm.travelType == 'car') travelOptions.setMinPolygonHoleSize(10000000);
 
@@ -944,7 +904,7 @@ angular.module('r360DemoApp')
 
             vm.states.requestPending = true;
 
-            if (vm.options.sourceMarkers.length == 0) {
+            if (Options.sourceMarkers.length == 0) {
                 vm.layerGroups.polygonLayerGroup.clearLayers();
                 vm.states.requestPending = false;
                 if (angular.isDefined(callback)) callback();
@@ -1002,20 +962,24 @@ angular.module('r360DemoApp')
 
             vm.layerGroups.routeLayerGroup.clearLayers();
 
-            if (vm.options.targetMarkers.length == 0 || vm.options.sourceMarkers.length == 0) {
+            if (Options.targetMarkers.length == 0 || Options.sourceMarkers.length == 0) {
                 vm.states.requestPending = false;
                 if(angular.isDefined(callback)) callback();
                 return;
             }
             //vm.srcTrgLayer.clearLayers();
             //vm.srcTrgLayer.addLayer(vm.source);
-            //vm.srcTrgLayer.addLayer(vm.options.place.marker);
+            //vm.srcTrgLayer.addLayer(Options.place.marker);
 
             var travelOptions = buildTravelOptions();
 
             r360.RouteService.getRoutes(travelOptions, function(routes) {
 
                 vm.states.requestPending = false;
+
+                RoutesService.routes = routes;
+
+                console.log(RoutesService.routes);
 
                 routes.forEach(function(elem, index, array) {
 
@@ -1026,8 +990,8 @@ angular.module('r360DemoApp')
                     });
                 })
 
-                //vm.options.place.travelTime = routes[0].travelTime - 4 == vm.options.place.travelTime ? vm.options.place.travelTime - 4 : vm.options.place.travelTime;
-                //vm.options.place.distance   = routes[0].getDistance().toFixed(3);
+                //Options.place.travelTime = routes[0].travelTime - 4 == Options.place.travelTime ? Options.place.travelTime - 4 : Options.place.travelTime;
+                //Options.place.distance   = routes[0].getDistance().toFixed(3);
 
                 // vm.map.fitBounds(vm.srcTrgLayer.getBounds(), { paddingBottomRight : [500, 0]});
 
@@ -1091,7 +1055,7 @@ angular.module('r360DemoApp')
         function getPlaces() {
             vm.layerGroups.reachableLayerGroup.clearLayers();
 
-            vm.options.requestPending = true;
+            Options.requestPending = true;
 
             var bounds = vm.layerGroups.polygonLayerGroup.getBoundingBox4326();
             var SW = bounds.getSouthWest(), NE = bounds.getNorthEast();
@@ -1103,8 +1067,8 @@ angular.module('r360DemoApp')
             });
 
             var params = [
-                "lat="+vm.options.sourceMarkers[0].getLatLng().lat,
-                "lng="+vm.options.sourceMarkers[0].getLatLng().lng,
+                "lat="+Options.sourceMarkers[0].getLatLng().lat,
+                "lng="+Options.sourceMarkers[0].getLatLng().lng,
                 "radius=500",
                 "northEast="+NE.lat+'|'+NE.lng,
                 "southWest="+SW.lat+'|'+SW.lng,
@@ -1120,20 +1084,20 @@ angular.module('r360DemoApp')
 
                 if ( places.length == 0 ) { vm.requestPending = false; return; }
 
-                vm.options.groups = [];
+                Options.groups = [];
 
                 var travelOptions = r360.travelOptions();
-                travelOptions.setTravelType(vm.options.travelType);
-                travelOptions.addSource(vm.options.sourceMarkers[0]);
+                travelOptions.setTravelType(Options.travelType);
+                travelOptions.addSource(Options.sourceMarkers[0]);
                 travelOptions.setTargets(places);
-                travelOptions.setTravelTimes([vm.options.travelTime*60]);
-                var rawDate = vm.options.queryDate;
+                travelOptions.setTravelTimes([Options.travelTime*60]);
+                var rawDate = Options.queryDate;
                 var date = String(rawDate.getFullYear()) + ('0' + String(rawDate.getMonth())).slice(-2) + ('0' + String(rawDate.getDate())).slice(-2);
                 travelOptions.setDate(date);
-                var rawTime = vm.options.queryTime;
+                var rawTime = Options.queryTime;
                 var time = rawTime.h * 3600 + rawTime.m * 60;
                 travelOptions.setTime(time);
-                travelOptions.setMaxRoutingTime(vm.options.travelTime*60);
+                travelOptions.setMaxRoutingTime(Options.travelTime*60);
 
 
                 // call the service
@@ -1172,17 +1136,17 @@ angular.module('r360DemoApp')
                     });
 
                     var errors = [];
-                    vm.options.groups.forEach(function(group){ if ( _.has(group, 'error')) errors.push( group.key ); })
+                    Options.groups.forEach(function(group){ if ( _.has(group, 'error')) errors.push( group.key ); })
 
                     if ( errors.length > 0 ) {
 
                         var message;
-                        if ( errors.length == 1 ) message = "Für den Objekttyp " + errors[0] + " wurden sehe viele Ergebnisse gefunden. Es werden daher nur die Top " + vm.options.placesLimit + " angezeigt!";
-                        else message = "Für die Objekttypen '" + errors.join(', ') + "'' wurden sehe viele Ergebnisse gefunden. Es werden daher nur die Top " + vm.options.placesLimit + " angezeigt!";
+                        if ( errors.length == 1 ) message = "Für den Objekttyp " + errors[0] + " wurden sehe viele Ergebnisse gefunden. Es werden daher nur die Top " + Options.placesLimit + " angezeigt!";
+                        else message = "Für die Objekttypen '" + errors.join(', ') + "'' wurden sehe viele Ergebnisse gefunden. Es werden daher nur die Top " + Options.placesLimit + " angezeigt!";
                         // TODO notification
                     }
 
-                    vm.options.requestPending = false;
+                    Options.requestPending = false;
                     //vm.buildGraphs(); TODO
                     //vm.buildTableParams(); TODO
                     //vm.showSearchOrResult(false); TODO
@@ -1195,11 +1159,11 @@ angular.module('r360DemoApp')
 
             var inserted = false;
 
-            vm.options.groups.forEach(function(group){
+            Options.groups.forEach(function(group){
                 // group was previously defined
                 if ( group.key == place.type ) {
 
-                    if ( group.data.length >= vm.options.placesLimit ) {
+                    if ( group.data.length >= Options.placesLimit ) {
 
                         place.error = "too-many-objects";
                         group.error = "too-many-objects";
@@ -1214,7 +1178,7 @@ angular.module('r360DemoApp')
 
             // group has not yet been initialized
             if ( !inserted && !place.error )
-                vm.options.groups.push({ key : place.type, data : [place], tableParams : undefined });
+                Options.groups.push({ key : place.type, data : [place], tableParams : undefined });
 
             return !(_.has(place, 'error') && "too-many-objects" == place.error);
         }
@@ -1240,7 +1204,7 @@ angular.module('r360DemoApp')
                     $("#pageslide").animate({ scrollTop: offset }, 500);
                 }, 500);
 
-                vm.options.place = place;
+                Options.place = place;
                 vm.paintRoute();
             }
         }
@@ -1257,8 +1221,8 @@ angular.module('r360DemoApp')
         }
 
         function changeTravelTime(time) {
-            if(vm.options.travelTime == time) return;
-            vm.options.travelTime = time;
+            if(Options.travelTime == time) return;
+            Options.travelTime = time;
             getPolygons();
             updateURL();
         };
@@ -1266,19 +1230,19 @@ angular.module('r360DemoApp')
         vm.changeTravelTime = changeTravelTime;
         function changeTravelTimeRange() {
 
-            var rngId = vm.options.travelTimeRangeID;
+            var rngId = Options.travelTimeRangeID;
 
             var dist = 999999;
             var nextVal = 30;
 
             vm.prefs.travelTimeRanges[rngId].times.forEach(function(elem, index, array) {
-                if (dist > Math.abs(elem - vm.options.travelTime)) {
-                    dist = Math.abs(elem - vm.options.travelTime)
+                if (dist > Math.abs(elem - Options.travelTime)) {
+                    dist = Math.abs(elem - Options.travelTime)
                     nextVal = elem;
                 }
             });
 
-            vm.options.travelTime = nextVal;
+            Options.travelTime = nextVal;
             if (!vm.states.init) getPolygons();
             updateURL();
         };
@@ -1286,15 +1250,15 @@ angular.module('r360DemoApp')
         function changeColorRange() {
 
             var colors = [];
-            vm.prefs.travelTimeRanges[vm.options.travelTimeRangeID].times.forEach(function(elem, index, array) {
+            vm.prefs.travelTimeRanges[Options.travelTimeRangeID].times.forEach(function(elem, index, array) {
                 var dataSet = {};
                 dataSet.time  = elem*60;
-                dataSet.color = vm.prefs.colorRanges[vm.options.colorRangeID].colors[index];
-                dataSet.opacity = vm.prefs.colorRanges[vm.options.colorRangeID].opacities[index];
+                dataSet.color = vm.prefs.colorRanges[Options.colorRangeID].colors[index];
+                dataSet.opacity = vm.prefs.colorRanges[Options.colorRangeID].opacities[index];
                 colors.push(dataSet);
             })
 
-            if (vm.options.colorRangeID == 3) {
+            if (Options.colorRangeID == 3) {
                 vm.layerGroups.polygonLayerGroup.setInverse(true);
             } else {
                 vm.layerGroups.polygonLayerGroup.setInverse(false);
@@ -1308,10 +1272,10 @@ angular.module('r360DemoApp')
         vm.changeTravelTimeRange = changeTravelTimeRange;
         function changeTravelType(type) {
 
-            if(vm.options.travelType == type) return;
-            vm.options.travelType = type;
+            if(Options.travelType == type) return;
+            Options.travelType = type;
             vm.prefs.travelTypes.forEach(function(elem,index,array){
-                if (elem['value'] == type) vm.options.travelTypeIcon = elem['icon'];
+                if (elem['value'] == type) Options.travelTypeIcon = elem['icon'];
             });
             getPolygons(function() {getRoutes()});
             updateURL();
@@ -1323,17 +1287,17 @@ angular.module('r360DemoApp')
 
             vm.states.urlModified = true;
 
-            for (var index in vm.options) {
+            for (var index in Options) {
                 switch (index) {
                     case 'sourceMarkers':
-                        if (vm.options.sourceMarkers.length == 0)  {
+                        if (Options.sourceMarkers.length == 0)  {
                             // $routeParams.sources = null;
                             // $route.updateParams($routeParams);
                             $location.search("sources", null);
                             break;
                         }
                         var sources = [];
-                        vm.options.sourceMarkers.forEach(function(elem,index,array){
+                        Options.sourceMarkers.forEach(function(elem,index,array){
                             sources.push(elem._latlng.lat + "," + elem._latlng.lng);
                         });
                         // $routeParams.sources = sources.join(";");
@@ -1341,14 +1305,14 @@ angular.module('r360DemoApp')
                         $location.search("sources", sources.join(";"));
                         break;
                     case 'targetMarkers':
-                        if (vm.options.targetMarkers.length == 0) {
+                        if (Options.targetMarkers.length == 0) {
                             // $routeParams.targets = null;
                             // $route.updateParams($routeParams);
                              $location.search("targets", null);
                             break;
                         };
                         var targets = [];
-                        vm.options.targetMarkers.forEach(function(elem,index,array){
+                        Options.targetMarkers.forEach(function(elem,index,array){
                             targets.push(elem._latlng.lat + "," + elem._latlng.lng);
                         });
                         $location.search("targets", targets.join(";"));
@@ -1363,10 +1327,10 @@ angular.module('r360DemoApp')
                     case 'intersection':
                     case 'transition':
                     case 'mapstyle':
-                        if (angular.isDefined($routeParams[index]) && $routeParams[index] == vm.options[index]) break;
-                        // $routeParams[index] = String(vm.options[index]);
+                        if (angular.isDefined($routeParams[index]) && $routeParams[index] == Options[index]) break;
+                        // $routeParams[index] = String(Options[index]);
                         // $route.updateParams($routeParams);
-                        $location.search(index, String(vm.options[index]));
+                        $location.search(index, String(Options[index]));
                         break;
                     default:
                         break;
@@ -1382,7 +1346,7 @@ angular.module('r360DemoApp')
 
             if (open) {
 
-                if (vm.options.transition) vm.map.panBy([-275, 0]);
+                if (Options.transition) vm.map.panBy([-275, 0]);
                 vm.map.setActiveArea({
                     position: 'absolute',
                     top: '0',
@@ -1392,7 +1356,7 @@ angular.module('r360DemoApp')
                 });
 
             } else {
-                if (vm.options.transition) vm.map.panBy([275, 0]);
+                if (Options.transition) vm.map.panBy([275, 0]);
                 vm.map.setActiveArea({
                     position: 'absolute',
                     top: '0',

@@ -1,0 +1,115 @@
+travel-plan {
+
+
+
+  .route-item {
+    background: $grey2;
+    margin: 0 0 1px 0;
+    border-bottom: none;
+    @include transition(all, .3s, ease);
+    &.active-route {
+      margin: 1rem 0;
+      box-shadow: 0 3px 5px -1px rgba(0,0,0,.2),0 5px 8px 0 rgba(0,0,0,.14),0 1px 14px 0 rgba(0,0,0,.12);
+    }
+  }
+  .routes-list {
+    padding: 0;
+  }
+
+  .travel-plan {
+
+    font-size: .85rem;
+
+    table {
+      background: #fff;
+      width: 100%;
+      overflow-x: auto;
+      border-collapse: collapse;
+      color: $font-grey;
+      tr, .circle-name {
+        &.block-caption {
+           font-weight: 600;
+        }
+        &.block-info {
+          color: $light-grey;
+        }
+        // border-top: 1px solid #ccc;
+        margin: 5px 0;
+        td {
+          padding: 5px;
+        }
+        // display: block;
+      }
+    }
+
+    .routeSegment {
+      border-top: 1px solid $grey;
+    }
+
+    .routeType-TRANSFER:first-child {
+      display: none;
+    }
+
+    .routeType-TRANSFER:last-child {
+      display: none;
+    }
+
+    // .routeType-TRANSFER, .report {
+    //   background: #fff;
+    // }
+
+    .routeType-WALK, .routeType-TRANSFER, .routeType-CAR, .routeType-BIKE {
+         background: $grey2;
+         border-left: 4px solid $grey2 ;
+      }
+
+      .routeType-100 {
+
+          box-sizing: border-box;
+         -moz-box-sizing: border-box;
+         -webkit-box-sizing: border-box;
+         border-left: 4px solid black;
+      }
+
+      .routeType-109 {
+
+         border-left: 4px solid #006F35 ;
+      }
+
+      .routeType-1000 {
+
+         border-left: 4px solid blue;
+      }
+
+      .routeType-700 {
+
+         border-left: 4px solid #A3007C ;
+      }
+
+      .routeType-900 {
+
+         border-left: 4px solid red;
+      }
+
+      .routeType-3 {
+
+         border-left: 4px solid #A3007C ;
+      }
+
+      .routeType-4 {
+
+         border-left: 4px solid #0089c8 ;
+      }
+
+      .routeType-400 {
+
+         border-left: 4px solid #156ab8 ;
+      }
+
+      .routeType-102 {
+         border-left: 4px solid #006837 ;
+      }
+
+  }
+
+}
