@@ -42,7 +42,9 @@ angular.module('r360DemoApp')
             "transition" : true,
             "mapstyle" : "light",
             "showAdvanced" : (ENV.name == "development" ? true : false),
-                "elevation" : true
+            "elevation" : true,
+            "reverse" : false,
+            "frameDuration" : 7200
         };
 
         return self;

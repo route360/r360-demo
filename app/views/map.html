@@ -140,6 +140,20 @@
                             </md-select>
                         </md-list-item>
                         <md-list-item ng-show="map.options.travelType == 'transit' && (map.options.areaID == 'germany' || map.options.areaID == 'denmark') ">
+                            <p>Time frame</p>
+                            <md-select style="margin: 0" ng-model="map.options.frameDuration" aria-label="Frame duration in which connections are searched" ng-change="map.updateView()">
+                                <md-option value="600">10 min</md-option>
+                                <md-option value="1200">20 min</md-option>
+                                <md-option value="1800">30 min</md-option>
+                                <md-option value="2400">40 min</md-option>
+                                <md-option value="3000">50 min</md-option>
+                                <md-option value="3600">60 min</md-option>
+                                <md-option value="7200">2h</md-option>
+                                <md-option value="10800">3h</md-option>
+                                <md-option value="14000">4h</md-option>
+                            </md-select>
+                        </md-list-item>
+                        <md-list-item ng-show="map.options.travelType == 'transit' && (map.options.areaID == 'germany' || map.options.areaID == 'denmark') ">
                             <p>Travel Date</p>
                             <md-datepicker ng-model="map.options.queryDate" md-placeholder="Travel Date" aria-label="Datepicker" ng-change="map.updateView()"></md-datepicker>
                         </md-list-item>

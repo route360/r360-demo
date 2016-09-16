@@ -815,6 +815,7 @@ angular.module('r360DemoApp')
             travelOptions.setServiceUrl(r360.config.serviceUrl);
             travelOptions.setServiceKey(r360.config.serviceKey);
             travelOptions.setElevationEnabled(vm.options.elevation);
+            travelOptions.setReverse(vm.options.reverse);
 
             if ( travelOptions.getServiceUrl().indexOf("https://service.route360.net/na_") > -1 ) {
 
@@ -890,6 +891,7 @@ angular.module('r360DemoApp')
             var time = rawTime.h * 3600 + rawTime.m * 60;
 
             travelOptions.setTime(time);
+            travelOptions.setFrameDuration(vm.options.frameDuration);
             travelOptions.setMinPolygonHoleSize(Options.minPolygonHoleSize);
 
             if (vm.travelType == 'car') travelOptions.setMinPolygonHoleSize(10000000);

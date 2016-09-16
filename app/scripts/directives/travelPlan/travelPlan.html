@@ -6,7 +6,7 @@
 
         <div class="md-list-item-text" layout="column">
             <h3>{{route.sourceId | idToName}} to {{route.targetId | idToName}}</h3>
-            <p>{{route.travelTime | secToHoursMin}} | {{route.transfers | transferCount}} | {{route.length | distance}}</p>
+            <p>{{route.travelTime | secToHoursMin}} | {{route.transfers | transferCount}} | {{route.length | distance}} | ↑{{ route.uphillMeter | distance }} | ↓{{ route.downhillMeter | distance }}</p>
         </div>
 
         <md-icon class="animate ng-class:{'rotate-180':route.show}" ng-click="travelPlan.showPlan(route)"  md-svg-icon="md:chevron-down"></md-icon>
