@@ -305,8 +305,10 @@ angular.module('r360DemoApp')
                 var value = $routeParams[index];
 
                 switch (index) {
+                    case "reverse" : Options[index] = Boolean(value); break;
                     case "cityID" :
                     case "travelTime" :
+                    case "frameDuration" :
                     case "travelTimeRangeID" :
                     case "colorRangeID" :
                     case "mapProvider" :
@@ -1323,6 +1325,8 @@ angular.module('r360DemoApp')
                         break;
                     case 'areaID':
                     case 'travelTime':
+                    case 'frameDuration':
+                    case 'reverse':
                     case 'travelTimeRangeID':
                     case 'travelType':
                     case 'colorRangeID':
