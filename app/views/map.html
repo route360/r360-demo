@@ -185,6 +185,28 @@
                                 <md-option ng-repeat="style in map.prefs.mapStyles" value="{{style.value}}">{{style.name}}</md-option>
                             </md-select>
                         </md-list-item>
+                        <!-- <pre>{{debugMode}}</pre> -->
+                        <div ng-if="map.options.debugMode">
+                            <md-divider  style="margin-top:1rem;"></md-divider>
+                            <md-list-item>
+                                <p>Number of targets</p>
+                                <md-select ng-init="map.options.randomTargetsSize = 10" ng-model="map.options.randomTargetsSize" aria-label="Number of random targets for TimeService">
+                                    <md-option value="1">1</md-option>
+                                    <md-option value="10">10</md-option>
+                                    <md-option value="20">20</md-option>
+                                    <md-option value="50">50</md-option>
+                                    <md-option value="100">100</md-option>
+                                    <md-option value="500">500</md-option>
+                                    <md-option value="1000">1000</md-option>
+                                </md-select>
+                            </md-list-item>
+                            <md-button aria-label="Add targets" ng-click="map.addTargets(map.options.randomTargetsSize)">
+                                    Add
+                            </md-button>
+                            <md-button aria-label="Clear targets" ng-click="map.clearTiming()">
+                                    Clear
+                            </md-button>
+                        </div>
                 </section>
                 <md-list-item layout-align="center center">
                     <md-button ng-click="map.options.showAdvanced = !map.options.showAdvanced" class="md-primary">{{map.options.showAdvanced && 'Less' || 'More'}}</md-button>

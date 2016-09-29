@@ -15,6 +15,7 @@ angular.module('r360DemoApp')
 
         vm.mdMedia = $mdMedia;
         vm.optsOpen = (ENV.name == "development" ? true : false);
+        vm.debugMode = (ENV.name == "development" ? true : false);
 
         // init function
         function init() {
@@ -270,6 +271,7 @@ angular.module('r360DemoApp')
                 vm.layerGroups = {
                     tileLayer: L.tileLayer(tileUrl, {maxZoom: 18,attribution: attribution}).addTo(vm.map),
                     markerLayerGroup: L.featureGroup().addTo(vm.map),
+                    reachabilityLayerGroup: L.featureGroup().addTo(vm.map),
                     routeLayerGroup: L.featureGroup().addTo(vm.map),
                     reachableLayerGroup: L.featureGroup().addTo(vm.map),
                     tempLayerGroup: L.featureGroup().addTo(vm.map),
@@ -526,7 +528,7 @@ angular.module('r360DemoApp')
          * @param {string} type Either 'source' or 'target'
          * @param {boolean} refresh Optional. If false, the getPolygons/getRoutes functions will not be trigerd. Default: true
          */
-        function addMarker(coords, type, refresh) {
+        function addMarker(coords, type, refresh, timingMarker) {
 
             if (typeof coords[0] != 'undefined' || typeof coords[1] != 'undefined')
                 if (typeof coords.lat != 'undefined' || typeof coords.lng != 'undefined')
@@ -546,7 +548,8 @@ angular.module('r360DemoApp')
 
             var markerArray = undefined;
             var markerIcon = undefined;
-            if (type != 'temp') var markerLayerGroup = vm.layerGroups.markerLayerGroup;
+            if (type != 'temp' && type != 'timing') var markerLayerGroup = vm.layerGroups.markerLayerGroup;
+            else if ( type == 'timing' ) var markerLayerGroup = vm.layerGroups.reachabilityLayerGroup;
             else var markerLayerGroup = vm.layerGroups.tempLayerGroup;
 
             switch (type) {
@@ -568,7 +571,7 @@ angular.module('r360DemoApp')
                     break;
                 case 'target':
                     if (Options.targetMarkers.length >= Options.maxTargetMarkers) {
-                        showToast('Maximum number of target Markers reached (' + Options.maxSourceMarkers + ")");
+                        showToast('Maximum number of target Markers reached (' + Options.maxTargetMarkers + ")");
                         return;
                     };
                     markerArray = Options.targetMarkers;
@@ -581,6 +584,34 @@ angular.module('r360DemoApp')
                         shadowAnchor: [2, 40],
                         popupAnchor:  [0, -43]
                     })
+                    break;
+                case 'timing':
+                    if (Options.timingMarkers.length >= Options.maxTimingTargetMarkers) {
+                        showToast('Maximum number of timing target Markers reached (' + Options.maxTimingTargetMarkers + ")");
+                        return;
+                    };
+                    markerArray = Options.timingMarkers;
+                    if ( coords.travelTime > -1 && coords.travelTime < Options.travelTime*60 ) {
+                         markerIcon = L.icon({
+                            iconUrl: './images/icons/marker_timing_reachable.svg',
+                            shadowUrl: './images/icons/shadow.png',
+                            iconSize:     [28, 40],
+                            shadowSize:   [28, 45],
+                            iconAnchor:   [14, 40],
+                            shadowAnchor: [2, 40],
+                            popupAnchor:  [0, -43]
+                        })
+                    }
+                    else {
+
+                        markerIcon = L.icon({
+                            iconUrl: './images/icons/marker_timing_not_reachable.svg',
+                            iconSize:     [15, 15],
+                            iconAnchor:   [7.5, 7.5],
+                            shadowAnchor: [4, 62],
+                            popupAnchor:  [0, -10]
+                        })
+                    }
                     break;
 
                 case 'temp' :
@@ -617,9 +648,9 @@ angular.module('r360DemoApp')
             } else {
 
                 var newMarker = L.marker(coords, {
-                    draggable: true,
+                    draggable: timingMarker ? false : true,
                     icon: markerIcon,
-                    contextmenu: true,
+                    contextmenu: timingMarker ? false : true,
                     contextmenuItems: [{
                         text: 'Delete Marker',
                         callback: removeMarkerFromContext,
@@ -633,22 +664,25 @@ angular.module('r360DemoApp')
                 .addTo(markerLayerGroup)
                 //.addTo(vm.srcTrgLayer);
 
-                newMarker.on('dragend', function() {
-                    this._latlng.lat = this._latlng.lat.toFixed(6);
-                    this._latlng.lng = this._latlng.lng.toFixed(6);
-                    var promise = reverseGeocode(this._latlng);
-                    promise.then(function(properties){
-                        newMarker.description = buildPlaceDescription(properties);
-                    })
-                    getPolygons(function() {
-                        getRoutes();
-                    });
-                    updateURL();
-                })
+                if ( !timingMarker ) {
 
-                newMarker.on('click', function() {
-                    if (!vm.optsOpen) vm.optsOpen;
-                })
+                    newMarker.on('dragend', function() {
+                        this._latlng.lat = this._latlng.lat.toFixed(6);
+                        this._latlng.lng = this._latlng.lng.toFixed(6);
+                        var promise = reverseGeocode(this._latlng);
+                        promise.then(function(properties){
+                            newMarker.description = buildPlaceDescription(properties);
+                        })
+                        getPolygons(function() {
+                            getRoutes();
+                        });
+                        updateURL();
+                    })
+
+                    newMarker.on('click', function() {
+                        if (!vm.optsOpen) vm.optsOpen;
+                    })
+                }
 
                 markerArray.push(newMarker);
 
@@ -800,6 +834,7 @@ angular.module('r360DemoApp')
          */
         function removeAllMarkers() {
             vm.layerGroups.markerLayerGroup.clearLayers();
+            vm.layerGroups.reachabilityLayerGroup.clearLayers();
             vm.layerGroups.polygonLayerGroup.clearLayers();
             vm.layerGroups.routeLayerGroup.clearLayers();
             vm.layerGroups.tempLayerGroup.clearLayers();
@@ -858,6 +893,7 @@ angular.module('r360DemoApp')
             })
 
             travelOptions.setTravelTimes(travelTimes);
+            travelOptions.setMaxRoutingTime(Options.travelTime*60);
 
             travelOptions.setTravelType(Options.travelType);
 
@@ -1009,6 +1045,8 @@ angular.module('r360DemoApp')
         vm.autocomplete.querySearch = querySearch;
         vm.autocomplete.selectedItemChange = selectedItemChange;
         vm.addAs = addAs;
+        vm.addTargets = addTargets;
+        vm.clearTiming = clearTiming;
 
         function selectedItemChange(item) {
             vm.layerGroups.tempLayerGroup.clearLayers();
@@ -1053,6 +1091,51 @@ angular.module('r360DemoApp')
 
             console.log(deferred.promise);
             return deferred.promise;
+        }
+
+        function clearTiming() {
+
+            vm.layerGroups.reachabilityLayerGroup.clearLayers();
+            Options.timingMarkers = [];
+        }
+
+        function addTargets(numberOfTargets) {
+
+            clearTiming();
+
+            var x_max = vm.map.getBounds().getEast();
+            var x_min = vm.map.getBounds().getWest();
+            var y_max = vm.map.getBounds().getSouth();
+            var y_min = vm.map.getBounds().getNorth();
+
+            var targets = [];
+            for ( var i = 0 ; i < numberOfTargets ; i++) {
+
+                var lat = y_min + (Math.random() * (y_max - y_min));
+                var lng = x_min + (Math.random() * (x_max - x_min));
+
+                targets.push({'lat':lat, 'lng': lng, id: lat+';'+lng});
+            }
+
+            var travelOptions = buildTravelOptions();
+            travelOptions.setTargets(targets);
+
+            r360.TimeService.getRouteTime(travelOptions, function(sources){
+
+                console.log(travelOptions.getMaxRoutingTime());
+
+                sources.forEach(function(source){
+
+                    source.targets.forEach(function(target){
+
+                        var timingTarget = $.grep(targets, function (place, index) { return place.id == target.id } )[0];
+                        target.lat = timingTarget.lat;
+                        target.lng = timingTarget.lng;
+
+                        addMarker(target, "timing", false, true);
+                    })
+                })
+            });
         }
 
         vm.getPlaces = getPlaces;

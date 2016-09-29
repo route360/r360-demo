@@ -31,6 +31,8 @@ angular.module('r360DemoApp')
             "maxSourceMarkers" : 3,
             "targetMarkers": [],
             "maxTargetMarkers" : 3,
+            "timingMarkers" : [],
+            "maxTimingTargetMarkers" : 1000,
             "groups" : [],
             "intersection": "union",
             "strokeWidth": 30,
@@ -42,6 +44,7 @@ angular.module('r360DemoApp')
             "transition" : true,
             "mapstyle" : "light",
             "showAdvanced" : (ENV.name == "development" ? true : false),
+            "debugMode" : (ENV.name == "development" ? true : false),
             "elevation" : true,
             "reverse" : false,
             "frameDuration" : 7200
