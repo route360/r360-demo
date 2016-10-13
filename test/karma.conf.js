@@ -32,7 +32,7 @@ module.exports = function(config) {
       'bower_components/angular-aria/angular-aria.js',
       'bower_components/angular-messages/angular-messages.js',
       'bower_components/angular-material/angular-material.js',
-      'bower_components/r360/dist/r360-src.js',
+      'bower_components/route360/dist/r360-src.js',
       'bower_components/leaflet.contextmenu/dist/leaflet.contextmenu-src.js',
       // endbower
       "app/scripts/**/*.js",

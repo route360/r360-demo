@@ -9,7 +9,7 @@
     "jquery": "~1.11.3",
     "leaflet-active-area": "https://github.com/j-slvr/Leaflet-active-area.git",
     "angular-material": "1.0.9",
-    "r360": "https://github.com/route360/r360-js.git#angular-ready",
+    "route360": "route360#angular-ready",
     "leaflet.contextmenu": "https://github.com/j-slvr/Leaflet.contextmenu.git"
   },
   "devDependencies": {

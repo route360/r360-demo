@@ -61,7 +61,7 @@ module.exports = function (grunt) {
               austria               : "https://service.route360.net/austria/",
               germany               : "https://service.route360.net/germany/",
               // germany               : "https://devnew.route360.net/xxx/",
-              germany               : "http://localhost:8080/",
+              // germany               : "http://localhost:8080/",
               newyork               : "https://service.route360.net/na_northeast/",
               italy                 : "https://service.route360.net/italy/",
               spain                 : "https://service.route360.net/iberia/",

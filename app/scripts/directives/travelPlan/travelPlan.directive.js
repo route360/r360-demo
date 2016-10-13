@@ -4,7 +4,7 @@ angular.module('r360DemoApp')
     .directive('travelPlan', function() {
         return {
             restrict: 'E',
-            templateUrl: 'scripts/directives/travelPlan/travelPlan.html',
+            templateUrl: './templates/travelPlan.html',
             controllerAs : 'travelPlan',
             controller : 'TravelPlanCtrl'
         };

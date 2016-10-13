@@ -884,7 +884,7 @@ angular.module('r360DemoApp')
                 defaultColors.push(dataSet);
             })
 
-            r360.config.defaultTravelTimeControlOptions.travelTimes=defaultColors;
+            vm.layerGroups.polygonLayerGroup.setColors(defaultColors);
 
             defaultColors.forEach(function(elem, index, array) {
                 if (elem.time <= travelTime) {
