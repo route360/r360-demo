@@ -10,7 +10,8 @@
     "leaflet-active-area": "https://github.com/j-slvr/Leaflet-active-area.git",
     "angular-material": "1.0.9",
     "route360": "route360#angular-ready",
-    "leaflet.contextmenu": "https://github.com/j-slvr/Leaflet.contextmenu.git"
+    "leaflet.contextmenu": "https://github.com/j-slvr/Leaflet.contextmenu.git",
+    "r360-angular": "*"
   },
   "devDependencies": {
     "angular-mocks": "^1.3.0"
