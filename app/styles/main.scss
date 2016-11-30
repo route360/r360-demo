@@ -289,9 +289,9 @@ body {
   md-sidenav.md-closed.md-locked-open-add-active {
     // z-index: 1001;
     text-align: left;
-    min-width: 550px !important;
-    width: 550px !important;
-    max-width: 550px !important;
+    min-width: 450px !important;
+    width: 450px !important;
+    max-width: 450px !important;
     @include bp(xs) {
       min-width: 100% !important;
       width: 100% !important;

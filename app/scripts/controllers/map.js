@@ -31,75 +31,89 @@ angular.module('r360DemoApp')
             vm.options = Options;
             vm.prefs = {
                 "cities": [{
-                    "id"    : "germany",
-                    "name"  : "Germany",
-                    "latlng": [52.516221,13.386154],
-                    "url"   : ENV.endpoints.germany
+                    "id"      : "germany",
+                    "name"    : "Germany",
+                    "latlng"  : [52.516221,13.386154],
+                    "url"     : ENV.endpoints.germany,
+                    "showTransit" : true
                 }, {
                     "id"    : "australia",
                     "name"  : "Australia and New Zealand",
                     "latlng": [-33.8675, 151.2070],
-                    "url"   : ENV.endpoints.australia
+                    "url"   : ENV.endpoints.australia,
+                    "showTransit" : true
                 }, {
                     "id"    : "sweden",
                     "name"  : "Sweden",
                     "latlng": [59.3293, 18.0686],
-                    "url"   : ENV.endpoints.sweden
+                    "url"   : ENV.endpoints.sweden,
+                    "showTransit" : true
                 }, {
                     "id"    : "norway",
                     "name"  : "Norway",
                     "latlng": [59.913041,10.740509],
-                    "url"   : ENV.endpoints.norway
+                    "url"   : ENV.endpoints.norway,
+                    "showTransit" : true
                 }, {
                     "id"    : "france",
                     "name"  : "France & Belgium",
                     "latlng": [48.8588589,2.3475569],
-                    "url"   : ENV.endpoints.france
+                    "url"   : ENV.endpoints.france,
+                    "showTransit" : true
                 }, {
                     "id"    : "britishcolumbia",
                     "name": "British Columbia",
                     "latlng": [49.260635,-123.115540],
-                    "url"   : ENV.endpoints.britishcolumbia
+                    "url"   : ENV.endpoints.britishcolumbia,
+                    "showTransit" : true
                 }, {
                     "id"    : "malaysia_singapore",
                     "name": "Malaysia, Singapore, Brunei",
                     "latlng": [1.290613,103.852386],
-                    "url"   : ENV.endpoints.malaysia_singapore
+                    "url"   : ENV.endpoints.malaysia_singapore,
+                    "showTransit" : true
                 }, {
                     "id"    : "denmark",
                     "name"  : "Denmark",
                     "latlng": [55.688424,12.576599],
-                    "url"   : ENV.endpoints.denmark
+                    "url"   : ENV.endpoints.denmark,
+                    "showTransit" : true
                 }, {
                     "id"    : "britishisles",
                     "name"  : "British Isles",
                     "latlng": [51.506606,-0.128403],
-                    "url"   : ENV.endpoints.britishisles
+                    "url"   : ENV.endpoints.britishisles,
+                    "showTransit" : true
                 }, {
                     "id"    : "switzerland",
                     "name"  : "Switzerland",
                     "latlng": [47.370455,8.538437],
-                    "url"   : ENV.endpoints.switzerland
+                    "url"   : ENV.endpoints.switzerland,
+                    "showTransit" : true
                 }, {
                     "id"    : "austria",
                     "name": "Austria",
                     "latlng": [48.209117,16.369629],
-                    "url"   : ENV.endpoints.austria
+                    "url"   : ENV.endpoints.austria,
+                    "showTransit" : false
                 }, {
                     "id"    : "newyork",
                     "name"  : "United States of America",
                     "latlng": [40.731129,-73.987427],
-                    "url"   : ENV.endpoints.newyork
+                    "url"   : ENV.endpoints.newyork,
+                    "showTransit" : true
                 }, {
                     "id"    : "italy",
                     "name"  : "Italy",
                     "latlng": [41.8945503,12.483081],
-                    "url"   : ENV.endpoints.italy
+                    "url"   : ENV.endpoints.italy,
+                    "showTransit" : true
                 }, {
                     "id"    : "spain",
                     "name"  : "Spain",
                     "latlng": [40.472101, -3.682646],
-                    "url"   : ENV.endpoints.spain
+                    "url"   : ENV.endpoints.spain,
+                    "showTransit" : true
                 }, {
                     "id"    : "portugal",
                     "name"  : "Portugal",
@@ -114,7 +128,14 @@ angular.module('r360DemoApp')
                     "id"    : "south_america",
                     "name"  : "South America",
                     "latlng": [-22.9068, -43.1729],
-                    "url"   : ENV.endpoints.south_america
+                    "url"   : ENV.endpoints.south_america,
+                    "showTransit" : true
+                }, {
+                    "id"    : "quebec",
+                    "name"  : "Québec",
+                    "latlng": [45.5017, -73.5673],
+                    "url"   : ENV.endpoints.quebec,
+                    "showTransit" : true
                 }],
                 "travelTypes": [{
                     "name": "Bike",
@@ -218,6 +239,8 @@ angular.module('r360DemoApp')
             };
 
             parseUrl();
+            vm.showTransit = getCity().showTransit;
+            console.log(vm.showTransit)
 
             r360.config.serviceUrl = getCity().url;
             if (angular.isDefined(Options.serviceKey))
