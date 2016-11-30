@@ -120,10 +120,6 @@
                             <p>Enable elevation</p>
                             <md-switch class="md-primary" aria-label="Elevation Switch" ng-model="map.options.elevation" ng-change="map.updateView()"/>
                         </md-list-item>
-                        <md-list-item ng-if="map.options.debugMode">
-                            <p>Use distance instead of time</p>
-                            <md-switch class="md-primary" aria-label="Edge Weight Switch" ng-model="map.options.edgeWeight" ng-change="map.updateView()"/>
-                        </md-list-item>                        
                         <md-divider style="margin-top:1rem;" ng-show="map.options.travelType == 'transit' && map.showTransit "></md-divider>
                         
                         <md-list-item ng-show="map.options.travelType == 'transit' && map.showTransit && map.options.debugMode ">
