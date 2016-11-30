@@ -31,7 +31,7 @@
                 <td ng-if="segment.getType() == 'WALK' && route.getSegments().length == 1"><span class='destination-name center-block' style='margin-top: 8px;'>{{travelPlan.mapStore.currentItem.title}}</span></td>
                 <td ng-if="segment.getType() == 'WALK'">
                     <div style="text-align: center">{{segment.travelTime | secToMin }}min</div>
-                    <div style="text-align: center"><small>{{segment.getDistance() * 1000 | formatMeter }}</small></div>
+                    <div style="text-align: center"><small>{{segment.getLength() * 1000 | formatMeter }}</small></div>
                 </td>
                 <!-- TRANSFER -->
                 <td ng-if="segment.getType() == 'TRANSFER'" class="text-center">
@@ -67,7 +67,7 @@
                 <td ng-if="segment.getType() == 'BIKE' && route.getSegments().length == 1"><span class='destination-name center-block' style='margin-top: 8px;'>{{travelPlan.mapStore.currentItem.title}}</span></td>
                 <td ng-if="segment.getType() == 'BIKE'">
                     <div style="text-align: center">{{segment.travelTime | secToMin }}min</div>
-                    <div style="text-align: center"><small>{{segment.getDistance() * 1000 | formatMeter }}</small></div>
+                    <div style="text-align: center"><small>{{segment.getLength() * 1000 | formatMeter }}</small></div>
                 </td>
                 <!-- FERRY -->
                 <!-- td ng-if="segment.getType() == 'FERRY'" class="">

@@ -38,7 +38,7 @@ angular
             reloadOnSearch: false
         });
 
-        r360.config.requestTimeout = 30000;
+        r360.config.requestTimeout = 300000;
 
     // $locationProvider.html5Mode(true);
 

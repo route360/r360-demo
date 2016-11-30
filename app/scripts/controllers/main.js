@@ -84,6 +84,10 @@ angular.module('r360DemoApp')
         "id"    : "south_america",
         "name"  : "South America",
         "url"   : "images/rio.jpg"
+    }, {
+        "id"    : "quebec",
+        "name"  : "Quebec",
+        "url"   : "images/quebec.jpg"
     }];
 
   	vm.timer = 0;

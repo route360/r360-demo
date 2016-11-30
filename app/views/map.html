@@ -120,26 +120,16 @@
                             <p>Enable elevation</p>
                             <md-switch class="md-primary" aria-label="Elevation Switch" ng-model="map.options.elevation" ng-change="map.updateView()"/>
                         </md-list-item>
-                        <md-divider style="margin-top:1rem;" ng-show="map.options.travelType == 'transit' && (map.options.areaID == 'germany' || map.options.areaID == 'denmark') "></md-divider>
-                        <!-- <md-subheader class="md-no-sticky">Travel Type</md-subheader>
-
-                    <md-list-item>
-                        <p>Travel Type</p>
-                        <md-icon md-svg-icon="{{map.options.travelTypeIcon}}" style="margin-right: 1rem;"></md-icon>
-                        <md-select style="margin: 0" ng-model="map.options.travelType" aria-label="Travel Type">
-                            <md-option ng-repeat="type in map.prefs.travelTypes" value="{{type.value}}" >
-                                <md-icon md-svg-icon="{{type.icon}}"></md-icon> {{type.name}}
-                            </md-option>
-                        </md-select>
-                    </md-list-item> -->
-                        <md-list-item ng-show="map.options.travelType == 'transit' && (map.options.areaID == 'germany' || map.options.areaID == 'denmark') ">
+                        <md-divider style="margin-top:1rem;" ng-show="map.options.travelType == 'transit' && map.showTransit "></md-divider>
+                        
+                        <md-list-item ng-show="map.options.travelType == 'transit' && map.showTransit && map.options.debugMode ">
                             <p>Transit Mode</p>
                             <md-select style="margin: 0" ng-model="map.options.reverse" aria-label="Departure or Arrival Mode Select" ng-change="map.updateView()">
                                 <md-option value="false">Departure</md-option>
                                 <md-option value="true">Arrival</md-option>
                             </md-select>
                         </md-list-item>
-                        <md-list-item ng-show="map.options.travelType == 'transit' && (map.options.areaID == 'germany' || map.options.areaID == 'denmark') ">
+                        <md-list-item ng-show="map.options.travelType == 'transit' && map.showTransit ">
                             <p>Time frame</p>
                             <md-select style="margin: 0" ng-model="map.options.frameDuration" aria-label="Frame duration in which connections are searched" ng-change="map.updateView()">
                                 <md-option value="600">10 min</md-option>
@@ -154,11 +144,11 @@
                                 <md-option value="18000">5h</md-option>
                             </md-select>
                         </md-list-item>
-                        <md-list-item ng-show="map.options.travelType == 'transit' && (map.options.areaID == 'germany' || map.options.areaID == 'denmark') ">
+                        <md-list-item ng-show="map.options.travelType == 'transit' && map.showTransit ">
                             <p>Travel Date</p>
                             <md-datepicker ng-model="map.options.queryDate" md-placeholder="Travel Date" aria-label="Datepicker" ng-change="map.updateView()"></md-datepicker>
                         </md-list-item>
-                        <md-list-item ng-show="map.options.travelType == 'transit' && (map.options.areaID == 'germany' || map.options.areaID == 'denmark') ">
+                        <md-list-item ng-show="map.options.travelType == 'transit' && map.showTransit ">
                             <p>Start Time</p>
                             <md-select style="margin: 0" ng-model="map.options.queryTime.h" aria-label="Start-Time Hour" ng-change="map.updateView()">
                                 <md-option ng-repeat="hour in map.prefs.queryTimeRange.hour" value="{{hour}}">{{hour}}</md-option>
