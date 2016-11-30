@@ -16,8 +16,9 @@ angular
     'ng360',
     'config'
   ])
-   .config(function ($mdIconProvider,$mdThemingProvider,$routeProvider,$locationProvider) {
-
+   .config(function ($mdIconProvider,$mdThemingProvider,$routeProvider,$locationProvider,$mdAriaProvider) {
+    // Globally disables all ARIA warnings.
+    $mdAriaProvider.disableWarnings();
 
    	$mdThemingProvider.theme('default')
     .primaryPalette('teal')
