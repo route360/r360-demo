@@ -34,6 +34,9 @@ module.exports = function(config) {
       'bower_components/angular-material/angular-material.js',
       'bower_components/route360/dist/r360-src.js',
       'bower_components/leaflet.contextmenu/dist/leaflet.contextmenu-src.js',
+      'bower_components/angular-sanitize/angular-sanitize.js',
+      'bower_components/angular-touch/angular-touch.js',
+      'bower_components/r360-angular/dist/r360-angular.js',
       // endbower
       "app/scripts/**/*.js",
       "test/mock/**/*.js",

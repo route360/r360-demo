@@ -98,7 +98,7 @@
                 <section ng-show="map.options.showAdvanced">
                     <md-subheader class="md-no-sticky">Advanced</md-subheader>
                     <md-list>
-                        <md-list-item>
+                        <md-list-item ng-show="map.options.edgeWeight != 'distance'">
                             <p>Travel Time Range</p>
                             <md-select style="margin: 0" ng-model="map.options.travelTimeRangeID" aria-label="Travel Time Range" ng-change="map.changeTravelTimeRange()">
                                 <md-option ng-repeat="range in map.prefs.travelTimeRanges" value="{{range.id}}">{{range.name}}</md-option>
@@ -162,7 +162,7 @@
                                 <md-option ng-repeat="minute in map.prefs.queryTimeRange.minute" value="{{minute}}">{{minute}}</md-option>
                             </md-select>
                         </md-list-item>
-                        
+
                         <!-- <md-list-item>
                             <p>Map Provider</p>
                             <md-select style="margin: 0" ng-model="map.options.mapProvider" aria-label="Map Provider">
@@ -210,7 +210,7 @@
             </md-content>
         </md-sidenav>
         <section id="fab-bounds" class="overlay-speeddials" layout="column" layout-xs="row" layout-align="start end" layout-align-xs="end start">
-            <md-fab-speed-dial md-open="false" md-direction="{{ map.mdMedia('xs') ? 'down' : 'left'}}" class="md-scale">
+            <md-fab-speed-dial ng-if="map.options.edgeWeight == 'time'" md-open="false" md-direction="{{ map.mdMedia('xs') ? 'down' : 'left'}}" class="md-scale">
                 <md-fab-trigger>
                     <md-button aria-label="Travel Type" class="md-fab md-accent md-hue-2">
                         {{map.options.travelTime}} Min.
@@ -223,6 +223,9 @@
                     </md-button>
                 </md-fab-actions>
             </md-fab-speed-dial>
+
+            <travel-distance-fab ng-if="map.options.edgeWeight == 'distance'" md-animation="md-scale" label="Travel Distance" md-direction="left" model="map.options.travelDistance" travel-distance-range="map.prefs.travelDistanceRange" color-range="map.prefs.colorRanges[map.options.colorRangeID]"></travel-distance-fab>
+
             <md-fab-speed-dial md-open="false" md-direction="{{ map.mdMedia('xs') ? 'down' : 'left'}}" class="md-scale">
                 <md-fab-trigger>
                     <md-button aria-label="Travel Type" class="md-fab md-accent md-hue-2">
@@ -252,6 +255,28 @@
                     </md-button>
                 </md-fab-actions>
             </md-fab-speed-dial>
+
+            <md-fab-speed-dial md-open="false" md-direction="{{ map.mdMedia('xs') ? 'down' : 'left'}}" class="md-scale">
+                <md-fab-trigger>
+                    <md-button aria-label="Routing Type" class="md-fab md-accent md-hue-2">
+                        <md-icon ng-if="map.options.edgeWeight != 'distance'" md-svg-icon="md:timer"></md-icon>
+                        <md-icon ng-if="map.options.edgeWeight == 'distance'" md-svg-icon="md:directions"></md-icon>
+                        <md-tooltip hide show-gt-xs>Routing Type</md-tooltip>
+                    </md-button>
+                </md-fab-trigger>
+                <md-fab-actions>
+                    <md-button ng-click="map.changeEdgeWeight('time')" aria-label="Time" class="md-fab md-mini">
+                        <md-icon md-svg-icon="md:timer"></md-icon>
+                        <md-tooltip hide show-gt-xs>Time</md-tooltip>
+                    </md-button>
+                    <md-button ng-click="map.changeEdgeWeight('distance')" aria-label="Distance" class="md-fab md-mini">
+                        <md-icon md-svg-icon="md:directions"></md-icon>
+                        <md-tooltip hide show-gt-xs>Distance</md-tooltip>
+                    </md-button>
+                </md-fab-actions>
+            </md-fab-speed-dial>
+
+
         </section>
         <section class="overlay-controls" layout="column">
             <md-button class="md-fab md-primary overlay-btn md-hue-2" ng-click="map.toggleOptions()" aria-label="Open Menu">
@@ -259,12 +284,14 @@
                 <!--<md-tooltip>Options</md-tooltip>-->
             </md-button>
         </section>
-        <section id="overlay-legend" style="margin-left: {{(map.prefsOpen || map.optsOpen) && '550px' || 0}}" layout="column" layout-align="center center">
+        <section id="overlay-legend" style="margin-left: {{(map.prefsOpen || map.optsOpen) && '450px' || 0}}" layout="column" layout-align="center center">
             <div class="progress-box md-whiteframe-z2" ng-show="map.states.requestPending">
                 <p>loading...</p>
                 <md-progress-linear md-mode="indeterminate"></md-progress-linear>
             </div>
-            <r360-rainbow travel-time="map.options.travelTime" travel-time-range="map.prefs.travelTimeRanges[map.options.travelTimeRangeID].times" color-range="map.prefs.colorRanges[map.options.colorRangeID].colors" />
+
+          <r360-rainbow ng-if="map.options.edgeWeight == 'distance'" travel-time="map.options.travelDistance" label="m" travel-time-range="map.prefs.travelDistanceRange" color-range="map.prefs.colorRanges[map.options.colorRangeID]"></r360-rainbow>
+          <r360-rainbow ng-if="map.options.edgeWeight != 'distance'" travel-time="map.options.travelTime"  travel-time-range="map.prefs.travelTimeRanges[map.options.travelTimeRangeID]" color-range="map.prefs.colorRanges[map.options.colorRangeID]"></r360-rainbow>
         </section>
         <md-content flex layout="row" id="map">
     </section>

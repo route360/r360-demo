@@ -13,6 +13,7 @@ angular
     'ngAnimate',
     'ngRoute',
     'ngMaterial',
+    'ng360',
     'config'
   ])
    .config(function ($mdIconProvider,$mdThemingProvider,$routeProvider,$locationProvider) {

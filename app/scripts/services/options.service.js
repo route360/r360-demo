@@ -20,6 +20,8 @@ angular.module('r360DemoApp')
             "travelTime": 30,
             "travelTimeRangeID": 0,
             "travelType": "bike",
+            "travelDistance": 1500,
+            "edgeWeight": "time",
             "queryDate": now,
             "queryTime": {
                 "h": hour,

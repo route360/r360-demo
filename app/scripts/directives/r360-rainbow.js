@@ -7,7 +7,7 @@
  * # r360Rainbow
  */
 angular.module('r360DemoApp')
-  .directive('r360Rainbow', function () {
+  .directive('r360RainbowLocal', function () {
     return {
       restrict: 'E',
       templateUrl: './templates/r360-rainbow-template.html',

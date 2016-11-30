@@ -175,6 +175,9 @@ angular.module('r360DemoApp')
                     "name": "Average",
                     "value": "average"
                 }, ],
+                "travelDistanceRange": {
+                  "times":  [500, 1000, 1500, 2000, 3000, 4000]
+                },
                 "travelTimeRanges" : [{
                     "name" : "5 Min - 30 Min",
                     "id"   : 0,
@@ -334,6 +337,7 @@ angular.module('r360DemoApp')
                     case "edgeWeight": Options[index] = Boolean(value); break;
                     case "cityID" :
                     case "travelTime" :
+                    case "travelDistance" :
                     case "frameDuration" :
                     case "travelTimeRangeID" :
                     case "colorRangeID" :
@@ -348,6 +352,7 @@ angular.module('r360DemoApp')
                     case "placesLimit" :
                         Options[index] = parseInt(value);
                         break;
+                    case "edgeWeight" :
                     case "areaID" :
                     case "travelType" :
                     case "intersection" :
@@ -877,6 +882,7 @@ angular.module('r360DemoApp')
             travelOptions.setServiceKey(r360.config.serviceKey);
             travelOptions.setElevationEnabled(vm.options.elevation);
             travelOptions.setReverse(vm.options.reverse);
+            travelOptions.setEdgeWeight(vm.options.edgeWeight);
 
             if ( travelOptions.getServiceUrl().indexOf("https://service.route360.net/na_") > -1 ) {
 
@@ -908,6 +914,7 @@ angular.module('r360DemoApp')
                 defaultColors.push(dataSet);
             })
 
+            if (Options.edgeWeight != 'distance')
             vm.layerGroups.polygonLayerGroup.setColors(defaultColors);
 
             defaultColors.forEach(function(elem, index, array) {
@@ -916,8 +923,14 @@ angular.module('r360DemoApp')
                 }
             })
 
-            travelOptions.setTravelTimes(travelTimes);
-            travelOptions.setMaxRoutingTime(Options.travelTime*60);
+
+            if (Options.edgeWeight == 'distance') {
+              travelOptions.setTravelTimes(vm.prefs.travelDistanceRange.times.slice(0, vm.prefs.travelDistanceRange.times.indexOf(Options.travelDistance) + 1));
+              travelOptions.setMaxRoutingTime(Options.travelDistance);
+            } else {
+              travelOptions.setTravelTimes(travelTimes);
+              travelOptions.setMaxRoutingTime(Options.travelTime*60);
+            }
 
             travelOptions.setTravelType(Options.travelType);
 
@@ -982,6 +995,8 @@ angular.module('r360DemoApp')
             r360.PolygonService.getTravelTimePolygons(travelOptions,
 
                 function(polygons) {
+                    changeColorRange()
+
                     if (!$scope.$$phase) {
                         $scope.$apply(function(){
                             vm.layerGroups.polygonLayerGroup.clearAndAddLayers(polygons, true);
@@ -1361,16 +1376,36 @@ angular.module('r360DemoApp')
             updateURL();
         };
 
-        function changeColorRange() {
 
+        $scope.$watch('map.options.travelDistance', function(value, oldValue) {
+          if (!value)
+            return
+
+          if (!vm.states.init) getPolygons();
+          updateURL();
+        })
+
+        function changeColorRange() {
             var colors = [];
-            vm.prefs.travelTimeRanges[Options.travelTimeRangeID].times.forEach(function(elem, index, array) {
-                var dataSet = {};
-                dataSet.time  = elem*60;
-                dataSet.color = vm.prefs.colorRanges[Options.colorRangeID].colors[index];
-                dataSet.opacity = vm.prefs.colorRanges[Options.colorRangeID].opacities[index];
-                colors.push(dataSet);
-            })
+
+            if (Options.edgeWeight == 'distance') {
+              vm.prefs.travelDistanceRange.times.forEach(function(elem, index, array) {
+                  var dataSet = {};
+                  dataSet.time  = elem;
+                  dataSet.color = vm.prefs.colorRanges[Options.colorRangeID].colors[index];
+                  dataSet.opacity = vm.prefs.colorRanges[Options.colorRangeID].opacities[index];
+                  colors.push(dataSet);
+              })
+
+            } else {
+              vm.prefs.travelTimeRanges[Options.travelTimeRangeID].times.forEach(function(elem, index, array) {
+                  var dataSet = {};
+                  dataSet.time  = elem*60;
+                  dataSet.color = vm.prefs.colorRanges[Options.colorRangeID].colors[index];
+                  dataSet.opacity = vm.prefs.colorRanges[Options.colorRangeID].opacities[index];
+                  colors.push(dataSet);
+              })
+            }
 
             if (Options.colorRangeID == 3) {
                 vm.layerGroups.polygonLayerGroup.setInverse(true);
@@ -1396,6 +1431,12 @@ angular.module('r360DemoApp')
 
         };
         vm.changeTravelType = changeTravelType;
+
+        vm.changeEdgeWeight = function(type) {
+            Options.edgeWeight = type;
+            getPolygons(function() {getRoutes()});
+            updateURL();
+        }
 
         function updateURL() {
 
@@ -1433,8 +1474,10 @@ angular.module('r360DemoApp')
                         // $routeParams.targets = targets.join(";");
                         // $route.updateParams($routeParams);
                         break;
+                    case 'edgeWeight':
                     case 'areaID':
                     case 'travelTime':
+                    case 'travelDistance':
                     case 'frameDuration':
                     case 'reverse':
                     case 'travelTimeRangeID':
@@ -1466,7 +1509,7 @@ angular.module('r360DemoApp')
                 vm.map.setActiveArea({
                     position: 'absolute',
                     top: '0',
-                    left: '550px',
+                    left: '450px',
                     right: '0',
                     bottom: '0'
                 });
