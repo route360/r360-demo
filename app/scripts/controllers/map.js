@@ -410,6 +410,13 @@ angular.module('r360DemoApp')
                 }
             }
 
+          if (Options.edgeWeight != 'distance' && Options.edgeWeight != 'time') {
+            Options.edgeWeight = 'time'
+          }
+
+          if (Options.edgeWeight == 'distance' && Options.travelType == 'transit') {
+            Options.travelType = 'car'
+          }
         }
 
         function addMarkersFromUrl() {
@@ -1434,6 +1441,11 @@ angular.module('r360DemoApp')
 
         vm.changeEdgeWeight = function(type) {
             Options.edgeWeight = type;
+
+            if (type == 'distance' && Options.travelType == 'transit') {
+              Options.travelType = 'car'
+            }
+
             getPolygons(function() {getRoutes()});
             updateURL();
         }
