@@ -216,7 +216,7 @@
             </md-content>
         </md-sidenav>
         <section id="fab-bounds" class="overlay-speeddials" layout="column" layout-xs="row" layout-align="start end" layout-align-xs="end start">
-            <md-fab-speed-dial ng-if="map.options.edgeWeight == 'time'" md-open="false" md-direction="{{ map.mdMedia('xs') ? 'down' : 'left'}}" class="md-scale">
+            <md-fab-speed-dial ng-if="map.options.edgeWeight != 'distance'" md-open="false" md-direction="{{ map.mdMedia('xs') ? 'down' : 'left'}}" class="md-scale">
                 <md-fab-trigger>
                     <md-button aria-label="Travel Type" class="md-fab md-accent md-hue-2">
                         {{map.options.travelTime}} Min.
@@ -255,7 +255,7 @@
                         <md-icon md-svg-icon="md:car"></md-icon>
                         <md-tooltip hide show-gt-xs>Car</md-tooltip>
                     </md-button>
-                    <md-button ng-click="map.changeTravelType('transit')" aria-label="Transit" class="md-fab md-mini">
+                    <md-button ng-show="map.options.edgeWeight != 'distance'" ng-click="map.changeTravelType('transit')" aria-label="Transit" class="md-fab md-mini">
                         <md-icon md-svg-icon="md:train"></md-icon>
                         <md-tooltip hide show-gt-xs>Transit</md-tooltip>
                     </md-button>
