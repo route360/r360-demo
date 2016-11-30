@@ -334,7 +334,6 @@ angular.module('r360DemoApp')
 
                 switch (index) {
                     case "reverse" : Options[index] = Boolean(value); break;
-                    case "edgeWeight": Options[index] = Boolean(value); break;
                     case "cityID" :
                     case "travelTime" :
                     case "travelDistance" :
@@ -977,8 +976,6 @@ angular.module('r360DemoApp')
             travelOptions.setMinPolygonHoleSize(Options.minPolygonHoleSize);
 
             if (vm.travelType == 'car') travelOptions.setMinPolygonHoleSize(10000000);
-            
-            travelOptions.setEdgeWeight(Boolean(Options.edgeWeight) ? "distance" : "time");
 
             return travelOptions;
         }
@@ -1234,7 +1231,7 @@ angular.module('r360DemoApp')
                 var time = rawTime.h * 3600 + rawTime.m * 60;
                 travelOptions.setTime(time);
                 travelOptions.setMaxRoutingTime(Options.travelTime*60);
-                travelOptions.setEdgeWeight(Boolean(Options.edgeWeight) ? "distance" : "time");
+                travelOptions.setEdgeWeight(Options.edgeWeight);
 
 
                 // call the service
