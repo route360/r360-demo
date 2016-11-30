@@ -4,7 +4,7 @@ angular.module('r360DemoApp')
     .filter('formatMeter', function(){
         return function (kilometer) {
 
-            var approxMeters = kilometer.toFixed(3);
+            var approxMeters = (kilometer || 0).toFixed(3);
             if ( approxMeters < 1000 ) return Math.round(approxMeters/10)*10 + "m";
             else {
 

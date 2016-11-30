@@ -1034,6 +1034,7 @@ angular.module('r360DemoApp')
             //vm.srcTrgLayer.addLayer(Options.place.marker);
 
             var travelOptions = buildTravelOptions();
+            travelOptions.setEdgeWeight('time')
 
             r360.RouteService.getRoutes(travelOptions, function(routes) {
 
