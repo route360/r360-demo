@@ -1482,7 +1482,7 @@ angular.module('r360DemoApp')
                 vm.map.setActiveArea({
                     position: 'absolute',
                     top: '0',
-                    left: '550px',
+                    left: '450px',
                     right: '0',
                     bottom: '0'
                 });

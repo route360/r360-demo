@@ -265,7 +265,7 @@
             <md-fab-speed-dial md-open="false" md-direction="{{ map.mdMedia('xs') ? 'down' : 'left'}}" class="md-scale">
                 <md-fab-trigger>
                     <md-button aria-label="Routing Type" class="md-fab md-accent md-hue-2">
-                        <md-icon ng-if="map.options.edgeWeight == 'time'" md-svg-icon="md:timer"></md-icon>
+                        <md-icon ng-if="map.options.edgeWeight != 'distance'" md-svg-icon="md:timer"></md-icon>
                         <md-icon ng-if="map.options.edgeWeight == 'distance'" md-svg-icon="md:directions"></md-icon>
                         <md-tooltip hide show-gt-xs>Routing Type</md-tooltip>
                     </md-button>
@@ -290,7 +290,7 @@
                 <!--<md-tooltip>Options</md-tooltip>-->
             </md-button>
         </section>
-        <section id="overlay-legend" style="margin-left: {{(map.prefsOpen || map.optsOpen) && '550px' || 0}}" layout="column" layout-align="center center">
+        <section id="overlay-legend" style="margin-left: {{(map.prefsOpen || map.optsOpen) && '450px' || 0}}" layout="column" layout-align="center center">
             <div class="progress-box md-whiteframe-z2" ng-show="map.states.requestPending">
                 <p>loading...</p>
                 <md-progress-linear md-mode="indeterminate"></md-progress-linear>
