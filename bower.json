@@ -8,7 +8,7 @@
     "angular-route": "~1.4.5",
     "jquery": "~1.11.3",
     "leaflet-active-area": "https://github.com/j-slvr/Leaflet-active-area.git",
-    "angular-material": "1.0.9",
+    "angular-material": "1.1.0",
     "route360": "route360#angular-ready",
     "leaflet.contextmenu": "https://github.com/j-slvr/Leaflet.contextmenu.git",
     "r360-angular": "*"

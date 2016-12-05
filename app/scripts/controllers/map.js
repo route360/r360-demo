@@ -243,7 +243,6 @@ angular.module('r360DemoApp')
 
             parseUrl();
             vm.showTransit = getCity().showTransit;
-            console.log(vm.showTransit)
 
             r360.config.serviceUrl = getCity().url;
             if (angular.isDefined(Options.serviceKey))
@@ -659,7 +658,7 @@ angular.module('r360DemoApp')
                     })
                     break;
                 default:
-                    console.log('addMarker error');
+                    // console.log('addMarker error');
                     showToast('The Marker could not be added');
                     break;
             }
@@ -843,7 +842,7 @@ angular.module('r360DemoApp')
                 Options.sourceMarkers.forEach(function(elem, index, array) {
                     if (elem == marker) {
                         array.splice(index, 1);
-                        console.log("source Marker deleted");
+                        // console.log("source Marker deleted");
                     }
                 })
             }
@@ -852,7 +851,7 @@ angular.module('r360DemoApp')
                 Options.targetMarkers.forEach(function(elem, index, array) {
                     if (elem == marker) {
                         array.splice(index, 1);
-                        console.log("target Marker deleted");
+                        // console.log("target Marker deleted");
                     }
                 })
             }
@@ -1015,8 +1014,8 @@ angular.module('r360DemoApp')
                 },
                 function(status,message) {
 
-                    console.log(status);
-                    console.log(message);
+                    // console.log(status);
+                    // console.log(message);
 
                     vm.states.requestPending = false;
                     $mdDialog.show(
@@ -1065,11 +1064,11 @@ angular.module('r360DemoApp')
 
                 RoutesService.routes = routes;
 
-                console.log(RoutesService.routes);
+                // console.log(RoutesService.routes);
 
                 routes.forEach(function(elem, index, array) {
 
-                    console.log(elem);
+                    // console.log(elem);
                     r360.LeafletUtil.fadeIn(vm.layerGroups.routeLayerGroup, elem, 500, "travelDistance", {
                         color: "red",
                         haloColor: "#fff"
@@ -1119,7 +1118,7 @@ angular.module('r360DemoApp')
                 results = response.data.features.map(function(result) {
                     result.value = result.properties.osm_id;
                     result.description = buildPlaceDescription(result.properties);
-                    console.log(result.description);
+                    // console.log(result.description);
                     return result;
                 });
                 deferred.resolve(results);
@@ -1135,7 +1134,7 @@ angular.module('r360DemoApp')
                 );
             });
 
-            console.log(deferred.promise);
+            // console.log(deferred.promise);
             return deferred.promise;
         }
 
@@ -1168,7 +1167,7 @@ angular.module('r360DemoApp')
 
             r360.TimeService.getRouteTime(travelOptions, function(sources){
 
-                console.log(travelOptions.getMaxRoutingTime());
+                // console.log(travelOptions.getMaxRoutingTime());
 
                 sources.forEach(function(source){
 
@@ -1319,7 +1318,7 @@ angular.module('r360DemoApp')
 
         function highlight(place) {
 
-            if (clickedMarker != null) { console.log("clickedMarker");clickedMarker.setIcon(vm.getIcon(place))};
+            if (clickedMarker != null) { /*console.log("clickedMarker");*/clickedMarker.setIcon(vm.getIcon(place))};
             clickedMarker = place.marker;
             clickedMarker.setIcon(vm.getSelectIcon(place));
 
