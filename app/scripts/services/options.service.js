@@ -41,7 +41,7 @@ angular.module('r360DemoApp')
             "extendWidth": 500,
             "backgroundColor": 'black',
             "backgroundOpacity": 0,
-            "minPolygonHoleSize": 1000000,
+            "minPolygonHoleSize": 10000000,
             "placesLimit" : 100,
             "transition" : true,
             "mapstyle" : "light",
