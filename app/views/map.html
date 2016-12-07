@@ -121,7 +121,7 @@
                             <md-switch class="md-primary" aria-label="Elevation Switch" ng-model="map.options.elevation" ng-change="map.updateView()"/>
                         </md-list-item>
                         <md-divider style="margin-top:1rem;" ng-show="map.options.travelType == 'transit' && map.showTransit "></md-divider>
-                        
+
                         <md-list-item ng-show="map.options.travelType == 'transit' && map.showTransit && map.options.debugMode ">
                             <p>Transit Mode</p>
                             <md-select style="margin: 0" ng-model="map.options.reverse" aria-label="Departure or Arrival Mode Select" ng-change="map.updateView()">
@@ -252,7 +252,7 @@
                 </md-fab-actions>
             </md-fab-speed-dial>
 
-            <md-fab-speed-dial md-open="false" md-direction="{{ map.mdMedia('xs') ? 'down' : 'left'}}" class="md-scale">
+            <md-fab-speed-dial ng-if="false" md-open="false" md-direction="{{ map.mdMedia('xs') ? 'down' : 'left'}}" class="md-scale">
                 <md-fab-trigger>
                     <md-button aria-label="Routing Type" class="md-fab md-accent md-hue-2">
                         <md-icon ng-if="map.options.edgeWeight != 'distance'" md-svg-icon="md:timer"></md-icon>
