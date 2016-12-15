@@ -252,7 +252,7 @@
                 </md-fab-actions>
             </md-fab-speed-dial>
 
-            <md-fab-speed-dial ng-if="false" md-open="false" md-direction="{{ map.mdMedia('xs') ? 'down' : 'left'}}" class="md-scale">
+            <md-fab-speed-dial md-open="false" md-direction="{{ map.mdMedia('xs') ? 'down' : 'left'}}" class="md-scale">
                 <md-fab-trigger>
                     <md-button aria-label="Routing Type" class="md-fab md-accent md-hue-2">
                         <md-icon ng-if="map.options.edgeWeight != 'distance'" md-svg-icon="md:timer"></md-icon>
@@ -276,7 +276,7 @@
         </section>
         <section class="overlay-controls" layout="column">
             <md-button class="md-fab md-primary overlay-btn md-hue-2" ng-click="map.toggleOptions()" aria-label="Open Menu">
-                <md-icon md-svg-icon="md-menu"></md-icon>
+                <md-icon md-svg-icon="md:menu"></md-icon>
                 <!--<md-tooltip>Options</md-tooltip>-->
             </md-button>
         </section>
