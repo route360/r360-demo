@@ -176,7 +176,8 @@ angular.module('r360DemoApp')
                     "value": "average"
                 }, ],
                 "travelDistanceRange": {
-                  "times":  [500, 1000, 1500, 2000, 3000, 4000]
+                  "times":  [500, 1000, 1500, 2000, 3000, 4000],
+                  "labels":  [0.5, 1, 1.5, 2, 3, 4]
                 },
                 "travelTimeRanges" : [{
                     "name" : "5 Min - 30 Min",
