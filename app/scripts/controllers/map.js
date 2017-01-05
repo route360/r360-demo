@@ -365,6 +365,7 @@ angular.module('r360DemoApp')
               }
               break;
             case "transition":
+            case "zoomAllTheTime":
               Options[index] = (value === "true");
               break;
             case "sources":
@@ -1017,7 +1018,7 @@ angular.module('r360DemoApp')
             }
 
             $timeout(function() {
-                vm.layerGroups.polygonLayerGroup.clearAndAddLayers(polygons, true);
+                vm.layerGroups.polygonLayerGroup.clearAndAddLayers(polygons, Options.zoomAllTheTime);
                 changeColorRange();
             });
 
@@ -1536,6 +1537,7 @@ function updateURL() {
       case 'colorRangeID':
       case 'intersection':
       case 'transition':
+      case 'zoomAllTheTime':
       case 'mapstyle':
         if (angular.isDefined($routeParams[index]) && $routeParams[index] === Options[index]) break;
         // $routeParams[index] = String(Options[index]);

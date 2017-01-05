@@ -44,6 +44,7 @@ angular.module('r360DemoApp')
             "minPolygonHoleSize": 10000000,
             "placesLimit" : 100,
             "transition" : true,
+            "zoomAllTheTime": true,
             "mapstyle" : "light",
             "showAdvanced" : (ENV.name === "development" ? true : false),
             "debugMode" : (ENV.name === "development" ? true : false),

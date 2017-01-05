@@ -171,6 +171,10 @@
                             <md-switch class="md-primary" aria-label="Transition Switch" ng-model="map.options.transition" />
                         </md-list-item>
                         <md-list-item>
+                            <p>Zoom after Request</p>
+                            <md-switch class="md-primary" aria-label="Transition Switch" ng-model="map.options.zoomAllTheTime" />
+                        </md-list-item>
+                        <md-list-item>
                             <p>Map Style</p>
                             <md-select style="margin: 0" ng-model="map.options.mapstyle" aria-label="Map Style Select" ng-change="map.updateTileStyle()">
                                 <md-option ng-repeat="style in map.prefs.mapStyles" value="{{style.value}}">{{style.name}}</md-option>
