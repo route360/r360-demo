@@ -233,6 +233,10 @@ body {
 
 .map-page {
 
+  .md-errors-spacer {
+    display: none;
+  }
+
   .overlay-controls {
     position: absolute;
     top: 2rem;
