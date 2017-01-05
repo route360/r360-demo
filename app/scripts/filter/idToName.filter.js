@@ -8,16 +8,16 @@ angular.module('r360DemoApp')
 
             if (id.indexOf('source' > -1)) {
                 Options.sourceMarkers.forEach(function(src) {
-                    if (src.id == id)
+                    if (src.id === id)
                         result = src.description && src.description.title || '';
-                })
+                });
             }
 
             if (id.indexOf('target' > -1)) {
                 Options.targetMarkers.forEach(function(src) {
-                    if (src.id == id)
+                    if (src.id === id)
                         result = src.description && src.description.title || '';
-                })
+                });
             }
 
             return result;

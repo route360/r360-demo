@@ -7,12 +7,12 @@ angular.module('r360DemoApp')
         var hour = now.getHours();
         var minute = (now.getMinutes() + (5 - now.getMinutes() % 5)) % 60;
 
-        if (minute == 0) {
+        if (minute === 0) {
             hour++;
-        };
-        if (hour == 24) {
+        }
+        if (hour === 24) {
             hour = 0;
-        };
+        }
 
         var self = {
             "areaID": "germany",
@@ -45,8 +45,8 @@ angular.module('r360DemoApp')
             "placesLimit" : 100,
             "transition" : true,
             "mapstyle" : "light",
-            "showAdvanced" : (ENV.name == "development" ? true : false),
-            "debugMode" : (ENV.name == "development" ? true : false),
+            "showAdvanced" : (ENV.name === "development" ? true : false),
+            "debugMode" : (ENV.name === "development" ? true : false),
             "elevation" : true,
             "reverse" : false,
             "frameDuration" : 18000

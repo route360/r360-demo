@@ -10,11 +10,11 @@ angular.module('r360DemoApp')
             minutes = minutes - hours * 60;
             var timeString = "";
 
-            if (hours != 0){
+            if (hours !== 0){
                 timeString += (hours + "h ");
             }
 
             timeString += (minutes + "min");
             return timeString;
-        }
+        };
     });

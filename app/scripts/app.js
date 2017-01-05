@@ -56,7 +56,7 @@ angular
         //.iconSet('icons', '../styles/icons/icons-icons.svg', 24)
         //.iconSet('image', '../styles/icons/image-icons.svg', 24)
         //.iconSet('maps', '../styles/icons/maps-icons.svg', 24)
-        .iconSet('md', './images/icons/mdi-icons.svg', 24)
+        .iconSet('md', './images/icons/mdi-icons.svg', 24);
         //.iconSet('navigation', '../styles/icons/navigation-icons.svg', 24)
         //.iconSet('notification', '../styles/icons/notification-icons.svg', 24)
         //.iconSet('social', '../styles/icons/social-icons.svg', 24)

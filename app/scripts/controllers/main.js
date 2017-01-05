@@ -98,13 +98,13 @@ angular.module('r360DemoApp')
 
   	timer1 = $interval(function(){
   		if (i < vm.cities.length-1) {
-        i++
+        i++;
         vm.city = vm.cities[i].id;
       }
   			else {
           i = 0;
-          vm.city = 'germany'
-        };
+          vm.city = 'germany';
+        }
   		vm.timer = 0;
   		vm.mode = 'determinate';
   	},5000);
@@ -117,6 +117,6 @@ angular.module('r360DemoApp')
   		$interval.cancel(timer1);
   		$interval.cancel(timer2);
   		vm.mode = '';
-  	}
+  	};
 
-  })
+  });
