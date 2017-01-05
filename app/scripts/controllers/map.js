@@ -270,7 +270,7 @@ angular.module('r360DemoApp')
                 .setActiveArea({
                     position: 'absolute',
                     top: '0',
-                    left: '0',
+                    left: (ENV.name == "development" ? '450px' : '0'),
                     right: '0',
                     bottom: '0'
                 })
@@ -1111,6 +1111,21 @@ angular.module('r360DemoApp')
             var center = vm.map.getCenter();
             var results = [];
             var deferred = $q.defer();
+
+            var matches = query.match(/^[-+]?([1-8]?\d(\.\d+)?|90(\.0+)?),\s*[-+]?(180(\.0+)?|((1[0-7]\d)|([1-9]?\d))(\.\d+)?)$/g);
+
+            if (matches && matches.length > 0) return Promise.resolve([{
+                geometry : {
+                    coordinates : [
+                        parseFloat(query.split(",")[1]),
+                        parseFloat(query.split(",")[0])
+                    ]
+                },
+                properties : {
+                    name : query
+                },
+                description : buildPlaceDescription({ name : query })
+            }]);
 
             $http({
                 method: 'GET',
