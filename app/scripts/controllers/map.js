@@ -8,7 +8,7 @@
  * Map Controller of the r360DemoApp
  */
 angular.module('r360DemoApp')
-  .controller('MapCtrl', function($document, $scope, $route, $location, $routeParams, $timeout, $mdSidenav, $mdUtil, $log, $mdDialog, $http, $q, $mdToast, ENV, $mdMedia, RoutesService, Options) {
+  .controller('MapCtrl', function(Meta,$document, $scope, $route, $location, $routeParams, $timeout, $mdSidenav, $mdUtil, $log, $mdDialog, $http, $q, $mdToast, ENV, $mdMedia, RoutesService, Options) {
 
       var vm = this;
       var lastRelatedTarget;
@@ -251,6 +251,8 @@ angular.module('r360DemoApp')
           r360.config.serviceKey = Options.serviceKey;
         else
           r360.config.serviceKey = ENV.serviceKey;
+
+        Meta.fetchMetadata();
 
         if (!angular.isDefined(vm.map)) {
           vm.map = L.map('map', {
@@ -516,9 +518,11 @@ angular.module('r360DemoApp')
         if (vm.states.init) {
           $timeout(function() { vm.states.init = false; });
         } else {
+          Options.areaID = areaID;
           $routeParams.areaID = areaID;
           $route.updateParams($routeParams);
           removeAllMarkers();
+          Meta.fetchMetadata();
           r360.config.serviceUrl = getCity().url;
           vm.map.setView(getCity().latlng, 10, { animate: true, duration: 1 });
           addMarker(getCity().latlng, 'source');
