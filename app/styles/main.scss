@@ -68,6 +68,7 @@ body {
 }
 
 
+
 /* PAGE ANIMATION */
 .page        {
     bottom:0;
@@ -117,6 +118,7 @@ body {
 
 .md-select-menu-container {
   z-index: 99;
+  font-size: 1rem !important;
 }
 
 .main-page {
@@ -235,6 +237,10 @@ body {
 
   .md-errors-spacer {
     display: none;
+  }
+
+  .geocoder-wrapper {
+    padding: 1rem ;
   }
 
   .overlay-controls {

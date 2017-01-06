@@ -17,6 +17,8 @@ angular.module('r360DemoApp')
       vm.optsOpen = (ENV.name === "development" ? true : false);
       vm.debugMode = (ENV.name === "development" ? true : false);
 
+      vm.Meta = Meta;
+
       // init function
       function init() {
 
@@ -33,87 +35,73 @@ angular.module('r360DemoApp')
           "cities": [{
             "id": "germany",
             "name": "Germany",
-            "latlng": [52.516221, 13.386154],
+            "latlng": [52.516051,13.37776],
             "url": ENV.endpoints.germany,
-            "showTransit": true
           }, {
             "id": "australia",
             "name": "Australia and New Zealand",
             "latlng": [-33.8675, 151.2070],
             "url": ENV.endpoints.australia,
-            "showTransit": true
           }, {
             "id": "sweden",
             "name": "Sweden",
             "latlng": [59.3293, 18.0686],
             "url": ENV.endpoints.sweden,
-            "showTransit": true
           }, {
             "id": "norway",
             "name": "Norway",
             "latlng": [59.913041, 10.740509],
             "url": ENV.endpoints.norway,
-            "showTransit": true
           }, {
             "id": "france",
             "name": "France & Belgium",
             "latlng": [48.8588589, 2.3475569],
             "url": ENV.endpoints.france,
-            "showTransit": true
           }, {
             "id": "britishcolumbia",
             "name": "British Columbia",
             "latlng": [49.260635, -123.115540],
             "url": ENV.endpoints.britishcolumbia,
-            "showTransit": true
           }, {
             "id": "malaysia_singapore",
             "name": "Malaysia, Singapore, Brunei",
             "latlng": [1.290613, 103.852386],
             "url": ENV.endpoints.malaysia_singapore,
-            "showTransit": true
           }, {
             "id": "denmark",
             "name": "Denmark",
             "latlng": [55.688424, 12.576599],
             "url": ENV.endpoints.denmark,
-            "showTransit": true
           }, {
             "id": "britishisles",
             "name": "British Isles",
             "latlng": [51.506606, -0.128403],
             "url": ENV.endpoints.britishisles,
-            "showTransit": true
           }, {
             "id": "switzerland",
             "name": "Switzerland",
             "latlng": [47.370455, 8.538437],
             "url": ENV.endpoints.switzerland,
-            "showTransit": true
           }, {
             "id": "austria",
             "name": "Austria",
             "latlng": [48.209117, 16.369629],
             "url": ENV.endpoints.austria,
-            "showTransit": false
           }, {
             "id": "newyork",
             "name": "United States of America",
             "latlng": [40.731129, -73.987427],
             "url": ENV.endpoints.newyork,
-            "showTransit": true
           }, {
             "id": "italy",
             "name": "Italy",
             "latlng": [41.8945503, 12.483081],
             "url": ENV.endpoints.italy,
-            "showTransit": true
           }, {
             "id": "spain",
             "name": "Spain",
             "latlng": [40.472101, -3.682646],
             "url": ENV.endpoints.spain,
-            "showTransit": true
           }, {
             "id": "portugal",
             "name": "Portugal",
@@ -129,13 +117,11 @@ angular.module('r360DemoApp')
             "name": "South America",
             "latlng": [-22.9068, -43.1729],
             "url": ENV.endpoints.south_america,
-            "showTransit": true
           }, {
             "id": "quebec",
             "name": "Québec",
             "latlng": [45.5017, -73.5673],
             "url": ENV.endpoints.quebec,
-            "showTransit": true
           }],
           "travelTypes": [{
             "name": "Bike",
@@ -204,7 +190,6 @@ angular.module('r360DemoApp')
             "opacities": [1, 1, 1, 1, 1, 1]
           }, {
             "name": "Greyscale",
-            "id": 2,
             "colors": ["#d2d2d2", "#b2b2b2", "#999999", "#777777", "#555555", "#333333"],
             "opacities": [1, 0.8, 0.6, 0.4, 0.2, 0]
           }, {
@@ -241,7 +226,6 @@ angular.module('r360DemoApp')
         };
 
         parseUrl();
-        vm.showTransit = getCity().showTransit;
 
         r360.config.serviceUrl = getCity().url;
 
@@ -252,7 +236,6 @@ angular.module('r360DemoApp')
         else
           r360.config.serviceKey = ENV.serviceKey;
 
-        Meta.fetchMetadata();
 
         if (!angular.isDefined(vm.map)) {
           vm.map = L.map('map', {
@@ -313,7 +296,9 @@ angular.module('r360DemoApp')
           lastRelatedTarget = e.relatedTarget;
         });
 
-        addMarkersFromUrl();
+        Meta.fetchMetadata().then(function(){
+          addMarkersFromUrl();
+        });
 
         $timeout(function() { vm.states.init = false; }, 2000);
         var toastmsg = is_touch_device() ? 'long-pressing' : 'right-clicking';
@@ -522,10 +507,11 @@ angular.module('r360DemoApp')
           $routeParams.areaID = areaID;
           $route.updateParams($routeParams);
           removeAllMarkers();
-          Meta.fetchMetadata();
           r360.config.serviceUrl = getCity().url;
           vm.map.setView(getCity().latlng, 10, { animate: true, duration: 1 });
-          addMarker(getCity().latlng, 'source');
+          Meta.fetchMetadata().then(function(){
+            addMarker(getCity().latlng, 'source');
+          });
         }
       }
 
@@ -951,6 +937,15 @@ angular.module('r360DemoApp')
           travelOptions.setMaxRoutingTime(Options.travelTime * 60);
         }
 
+        if (Options.travelType === 'transit' && !Meta.data.transit.available) {
+          Options.travelType = 'walk';
+          $mdToast.show(
+            $mdToast.simple()
+            .content('Transit is not available. Switched to Walk')
+            .position('bottom right')
+            .hideDelay(3000)
+          );
+        }
         travelOptions.setTravelType(Options.travelType);
 
         Options.sourceMarkers.forEach(function(elem, index) {
@@ -976,6 +971,9 @@ angular.module('r360DemoApp')
         travelOptions.setIntersectionMode(Options.intersection);
         //travelOptions.setWaitControl(vm.waitControl);
 
+
+        if (Options.travelType === 'transit' && Options.queryDate > Meta.data.transit.max_date)
+          Options.queryDate = Meta.data.transit.max_date;
         var rawDate = Options.queryDate; // @jan: month is zero based, so we have to add one
         // for the future: please use r360.Util.getDateXX and getTimeXX methods
         var date = String(rawDate.getFullYear()) + ('0' + String(rawDate.getMonth() + 1)).slice(-2) + ('0' + String(rawDate.getDate())).slice(-2);
@@ -1593,7 +1591,7 @@ init();
 $scope.$on('$routeUpdate', function() {
 if (!vm.states.urlModified) {
   parseUrl();
-  addMarkersFromUrl();
+  //addMarkersFromUrl();
 } else {
   vm.states.urlModified = false;
 }

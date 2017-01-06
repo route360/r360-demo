@@ -15,9 +15,9 @@
                     </md-button>
                 </div>
             </md-toolbar>
-            <md-content layout-padding>
+            <md-content>
                 <md-list>
-                    <md-list-item>
+                    <md-list-item class="geocoder-wrapper">
                         <form flex ng-submit="$event.preventDefault()">
                             <md-autocomplete md-no-cache="map.autocomplete.noCache" md-selected-item="map.autocomplete.selectedItem" md-search-text="map.autocomplete.searchText" md-selected-item-change="map.autocomplete.selectedItemChange(item)" md-items="item in map.autocomplete.querySearch(map.autocomplete.searchText)" md-item-text="item.description.full" md-min-length="3" placeholder="Add marker..." md-menu-class="r360-autocomplete">
                                 <md-item-template>
@@ -39,14 +39,14 @@
                             </md-autocomplete>
                         </form>
                     </md-list-item>
-                    <md-list-item ng-show="map.autocomplete.selectedItem" layout-align="space-around center" layout="row">
+                    <div class="geocoder-wrapper" ng-show="map.autocomplete.selectedItem" layout-align="space-around center" layout="row">
                         <md-button class="md-raised" aria-label="Add as Source" ng-click="map.addAs('source')">
                             Add as source
                         </md-button>
                         <md-button class="md-raised" aria-label="Add as Target" ng-click="map.addAs('target')">
                             Add as target
                         </md-button>
-                    </md-list-item>
+                    </div>
                     <!-- <md-list-item ng-repeat="poi in map.prefs.pois">
 
                 <p>{{poi.name}}</p>
@@ -93,7 +93,6 @@
                         </div>
                     </md-list-item>
                 </md-list>
-                <md-divider></md-divider>
                 <travel-plan></travel-plan>
                 <section ng-show="map.options.showAdvanced">
                     <md-subheader class="md-no-sticky">Advanced</md-subheader>
@@ -132,16 +131,16 @@
                             <input  aria-label="Custom URL" ng-model="map.options.customURL" ng-change="map.updateView()">
                             </md-input-container>
                         </md-list-item>
-                        <md-divider style="margin-top:1rem;" ng-show="map.options.travelType == 'transit' && map.showTransit "></md-divider>
+                        <md-divider style="margin-top:1rem;" ng-show="map.options.travelType == 'transit' "></md-divider>
 
-                        <md-list-item ng-show="map.options.travelType == 'transit' && map.showTransit && map.options.debugMode ">
+                        <md-list-item ng-show="map.options.travelType == 'transit' && map.options.debugMode ">
                             <p>Transit Mode</p>
                             <md-select style="margin: 0" ng-model="map.options.reverse" aria-label="Departure or Arrival Mode Select" ng-change="map.updateView()">
                                 <md-option value="false">Departure</md-option>
                                 <md-option value="true">Arrival</md-option>
                             </md-select>
                         </md-list-item>
-                        <md-list-item ng-show="map.options.travelType == 'transit' && map.showTransit ">
+                        <md-list-item ng-show="map.options.travelType == 'transit' ">
                             <p>Time frame</p>
                             <md-select style="margin: 0" ng-model="map.options.frameDuration" aria-label="Frame duration in which connections are searched" ng-change="map.updateView()">
                                 <md-option value="600">10 min</md-option>
@@ -156,11 +155,11 @@
                                 <md-option value="18000">5h</md-option>
                             </md-select>
                         </md-list-item>
-                        <md-list-item ng-show="map.options.travelType == 'transit' && map.showTransit ">
+                        <md-list-item ng-show="map.options.travelType == 'transit' ">
                             <p>Travel Date</p>
-                            <md-datepicker ng-model="map.options.queryDate" md-placeholder="Travel Date" aria-label="Datepicker" ng-change="map.updateView()"></md-datepicker>
+                            <md-datepicker ng-model="map.options.queryDate" md-placeholder="Travel Date" aria-label="Datepicker" md-min-date="map.Meta.data.transit.min_date" md-max-date="map.Meta.data.transit.max_date" ng-change="map.updateView()"></md-datepicker>
                         </md-list-item>
-                        <md-list-item ng-show="map.options.travelType == 'transit' && map.showTransit ">
+                        <md-list-item ng-show="map.options.travelType == 'transit' ">
                             <p>Start Time</p>
                             <md-select style="margin: 0" ng-model="map.options.queryTime.h" aria-label="Start-Time Hour" ng-change="map.updateView()">
                                 <md-option ng-repeat="hour in map.prefs.queryTimeRange.hour" value="{{hour}}">{{hour}}</md-option>
@@ -215,9 +214,9 @@
                             </md-button>
                         </div>
                 </section>
-                <md-list-item layout-align="center center">
-                    <md-button ng-click="map.options.showAdvanced = !map.options.showAdvanced" class="md-primary">{{map.options.showAdvanced && 'Less' || 'More'}}</md-button>
-                </md-list-item>
+                <div layout-align="center center" layout="row">
+                    <md-button ng-click="map.options.showAdvanced = !map.options.showAdvanced" class="md-primary" layout="row" layout-align="center center"><span>{{map.options.showAdvanced && 'Less' || 'More'}}</span> <md-icon md-svg-icon="md:chevron-{{map.options.showAdvanced && 'up' || 'down'}}"></md-icon></md-button>
+                </div>
                 </md-list>
             </md-content>
         </md-sidenav>
@@ -253,7 +252,7 @@
                         <md-icon md-svg-icon="md:walk"></md-icon>
                         <md-tooltip hide show-gt-xs>Walk</md-tooltip>
                     </md-button>
-                    <md-button ng-click="map.changeTravelType('bike')" aria-label="Bike" class="md-fab md-mini">
+                    <md-button  ng-click="map.changeTravelType('bike')" aria-label="Bike" class="md-fab md-mini">
                         <md-icon md-svg-icon="md:bike"></md-icon>
                         <md-tooltip hide show-gt-xs>Bike</md-tooltip>
                     </md-button>
@@ -261,9 +260,10 @@
                         <md-icon md-svg-icon="md:car"></md-icon>
                         <md-tooltip hide show-gt-xs>Car</md-tooltip>
                     </md-button>
-                    <md-button ng-show="map.options.edgeWeight != 'distance'" ng-click="map.changeTravelType('transit')" aria-label="Transit" class="md-fab md-mini">
+                    <md-button ng-disabled="!map.Meta.data.transit.available" ng-show="map.options.edgeWeight != 'distance'" ng-click="map.changeTravelType('transit')" aria-label="Transit" class="md-fab md-mini">
                         <md-icon md-svg-icon="md:train"></md-icon>
-                        <md-tooltip hide show-gt-xs>Transit</md-tooltip>
+                        <md-tooltip ng-if="map.Meta.data.transit.available" hide show-gt-xs>Transit</md-tooltip>
+                        <md-tooltip ng-if="!map.Meta.data.transit.available" hide show-gt-xs>Transit is not yet available for this region.</md-tooltip>
                     </md-button>
                 </md-fab-actions>
             </md-fab-speed-dial>
