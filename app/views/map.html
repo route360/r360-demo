@@ -135,11 +135,16 @@
                         <md-list-item>
                             <p>Custom Service URL</p>
                             <md-input-container style="margin:0; width: 150px;">
-                            <input  aria-label="Custom URL" ng-model="map.options.customURL" ng-change="map.updateView()">
+                            <input  aria-label="Custom URL" ng-model="map.options.customUrl" ng-change="map.updateView()">
+                            </md-input-container>
+                        </md-list-item>
+                        <md-list-item>
+                            <p>Custom Service Key</p>
+                            <md-input-container style="margin:0; width: 150px;">
+                            <input  aria-label="Custom Key" ng-model="map.options.customKey" ng-change="map.updateView()">
                             </md-input-container>
                         </md-list-item>
                         <md-divider style="margin-top:1rem;" ng-show="map.options.travelType == 'transit' "></md-divider>
-
                         <md-list-item ng-show="map.options.travelType == 'transit' && map.options.debugMode ">
                             <p>Transit Mode</p>
                             <md-select style="margin: 0" ng-model="map.options.reverse" aria-label="Departure or Arrival Mode Select" ng-change="map.updateView()">

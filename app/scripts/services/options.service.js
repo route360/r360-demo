@@ -44,6 +44,7 @@ angular.module('r360DemoApp')
             "backgroundOpacity": 0,
             "minPolygonHoleSize": 10000000,
             "customURL" : undefined,
+            "customURL" : undefined,
             "placesLimit" : 100,
             "transition" : true,
             "zoomAllTheTime": true,

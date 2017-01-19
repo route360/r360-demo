@@ -237,13 +237,14 @@ angular.module('r360DemoApp')
 
         r360.config.serviceUrl = getCity().url;
 
+        debugger;
+
         if (angular.isDefined(Options.customURL) && Options.customURL)
             r360.config.serviceUrl = Options.customURL;
-        if (angular.isDefined(Options.serviceKey))
-          r360.config.serviceKey = Options.serviceKey;
+        if (angular.isDefined(Options.serviceKey) && Options.customKey)
+            r360.config.serviceKey = Options.customKey;
         else
-          r360.config.serviceKey = ENV.serviceKey;
-
+            r360.config.serviceKey = ENV.serviceKey;
 
         if (!angular.isDefined(vm.map)) {
           vm.map = L.map('map', {
@@ -893,7 +894,8 @@ angular.module('r360DemoApp')
         travelOptions.setServiceUrl(r360.config.serviceUrl);
         if (Options.customURL && angular.isDefined(Options.customURL))
             travelOptions.setServiceUrl(Options.customURL);
-        travelOptions.setServiceKey(r360.config.serviceKey);
+        if (Options.customKey && angular.isDefined(Options.customKey))
+            travelOptions.setServiceKey(Options.customKey);
         travelOptions.setElevationEnabled(vm.options.elevation);
         travelOptions.setReverse(vm.options.reverse);
         travelOptions.setEdgeWeight(vm.options.edgeWeight);
