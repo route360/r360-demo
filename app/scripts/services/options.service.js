@@ -19,6 +19,7 @@ angular.module('r360DemoApp')
             "cityID" : undefined,  // legacy
             "travelTime": 30,
             "travelTimeRangeID": 0,
+            "travelDistanceRangeID": 0,
             "travelType": "bike",
             "travelDistance": 1500,
             "edgeWeight": "time",

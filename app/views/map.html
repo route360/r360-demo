@@ -96,11 +96,18 @@
                 <travel-plan></travel-plan>
                 <section ng-show="map.options.showAdvanced">
                     <md-subheader class="md-no-sticky">Advanced</md-subheader>
+
                     <md-list>
                         <md-list-item ng-show="map.options.edgeWeight != 'distance'">
                             <p>Travel Time Range</p>
                             <md-select style="margin: 0" ng-model="map.options.travelTimeRangeID" aria-label="Travel Time Range" ng-change="map.changeTravelTimeRange()">
                                 <md-option ng-repeat="range in map.prefs.travelTimeRanges" value="{{range.id}}">{{range.name}}</md-option>
+                            </md-select>
+                        </md-list-item>
+                        <md-list-item ng-show="map.options.edgeWeight == 'distance'">
+                            <p>Travel Distance Range</p>
+                            <md-select style="margin: 0" ng-model="map.options.travelDistanceRangeID" aria-label="Travel distance Range" ng-change="map.changeTravelDistanceRange()">
+                                <md-option ng-repeat="range in map.prefs.travelDistanceRanges" value="{{range.id}}">{{range.name}}</md-option>
                             </md-select>
                         </md-list-item>
                         <md-list-item>
@@ -235,7 +242,7 @@
                 </md-fab-actions>
             </md-fab-speed-dial>
 
-            <travel-distance-fab ng-if="map.options.edgeWeight == 'distance'" md-animation="md-scale" unit-label="km" label="Travel Distance" md-direction="left" model="map.options.travelDistance" travel-distance-range="map.prefs.travelDistanceRange" color-range="map.prefs.colorRanges[map.options.colorRangeID]"></travel-distance-fab>
+            <travel-distance-fab ng-if="map.options.edgeWeight == 'distance'" md-animation="md-scale" unit-label="km" label="Travel Distance" md-direction="left" model="map.options.travelDistance" travel-distance-range="map.prefs.travelDistanceRanges[map.options.travelDistanceRangeID]" color-range="map.prefs.colorRanges[map.options.colorRangeID]"></travel-distance-fab>
 
             <md-fab-speed-dial md-open="false" md-direction="{{ map.mdMedia('xs') ? 'down' : 'left'}}" class="md-scale">
                 <md-fab-trigger>
@@ -302,7 +309,7 @@
                 <md-progress-linear md-mode="indeterminate"></md-progress-linear>
             </div>
 
-          <r360-rainbow ng-if="map.options.edgeWeight == 'distance'" travel-time="map.options.travelDistance" label="km" travel-time-range="map.prefs.travelDistanceRange" color-range="map.prefs.colorRanges[map.options.colorRangeID]"></r360-rainbow>
+          <r360-rainbow ng-if="map.options.edgeWeight == 'distance'" travel-time="map.options.travelDistance" label="km" travel-time-range="map.prefs.travelDistanceRanges[map.options.travelDistanceRangeID]" color-range="map.prefs.colorRanges[map.options.colorRangeID]"></r360-rainbow>
           <r360-rainbow ng-if="map.options.edgeWeight != 'distance'" travel-time="map.options.travelTime"  travel-time-range="map.prefs.travelTimeRanges[map.options.travelTimeRangeID]" color-range="map.prefs.colorRanges[map.options.colorRangeID]"></r360-rainbow>
         </section>
         <md-content flex layout="row" id="map">

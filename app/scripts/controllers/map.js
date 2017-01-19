@@ -161,10 +161,18 @@ angular.module('r360DemoApp')
             "name": "Average",
             "value": "average"
           }, ],
-          "travelDistanceRange": {
-            "times": [500, 1000, 1500, 2000, 3000, 4000],
-            "labels": [0.5, 1, 1.5, 2, 3, 4]
+          "travelDistanceRanges": [{
+            "id": 0,
+            "name": "1 Km - 100 Km",
+            "times": [1000, 5000, 10000, 25000, 50000, 100000],
+            "labels": [1, 5, 10, 25, 50, 100]
+          },{
+            "id": 1,
+            "name": "10 Km - 60 Km",
+            "times": [10000, 20000, 30000, 40000, 50000, 60000],
+            "labels": [10, 20, 30, 40, 50, 60]
           },
+          ],
           "travelTimeRanges": [{
             "name": "5 Min - 30 Min",
             "id": 0,
@@ -328,6 +336,7 @@ angular.module('r360DemoApp')
             case "travelDistance":
             case "frameDuration":
             case "travelTimeRangeID":
+            case "travelDistanceRangeID":
             case "colorRangeID":
             case "mapProvider":
             case "maxSourceMarkers":
@@ -930,7 +939,7 @@ angular.module('r360DemoApp')
 
 
         if (Options.edgeWeight === 'distance') {
-          travelOptions.setTravelTimes(vm.prefs.travelDistanceRange.times.slice(0, vm.prefs.travelDistanceRange.times.indexOf(Options.travelDistance) + 1));
+          travelOptions.setTravelTimes(vm.prefs.travelDistanceRanges[Options.travelDistanceRangeID].times.slice(0, vm.prefs.travelDistanceRanges[Options.travelDistanceRangeID].times.indexOf(Options.travelDistance) + 1));
           travelOptions.setMaxRoutingTime(Options.travelDistance);
         } else {
           travelOptions.setTravelTimes(travelTimes);
@@ -1430,6 +1439,25 @@ function changeTravelTimeRange() {
   updateURL();
 }
 
+function changeDistanceTimeRange() {
+
+  var rngId = Options.travelDistanceRangeID;
+
+  var dist = 999999;
+  var nextVal = 30;
+
+  vm.prefs.travelDistanceRanges[rngId].times.forEach(function(elem) {
+    if (dist > Math.abs(elem - Options.travelTime)) {
+      dist = Math.abs(elem - Options.travelTime);
+      nextVal = elem;
+    }
+  });
+
+  Options.travelTime = nextVal;
+  if (!vm.states.init) getPolygons();
+  updateURL();
+}
+
 
 $scope.$watch('map.options.travelDistance', function(value) {
   if (!value)
@@ -1442,7 +1470,7 @@ function changeColorRange() {
   var colors = [];
 
   if (Options.edgeWeight === 'distance') {
-    vm.prefs.travelDistanceRange.times.forEach(function(elem, index) {
+    vm.prefs.travelDistanceRanges[Options.travelDistanceRangeID].times.forEach(function(elem, index) {
       var dataSet = {};
       dataSet.time = elem;
       dataSet.color = vm.prefs.colorRanges[Options.colorRangeID].colors[index];
