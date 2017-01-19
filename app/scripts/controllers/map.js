@@ -1442,10 +1442,10 @@ function changeTravelDistanceRange() {
   var rngId = Options.travelDistanceRangeID;
 
   var newTimes = vm.prefs.travelDistanceRanges[rngId].times.filter(function(time) {
-    return time > Options.travelDistance
-  })
+    return time > Options.travelDistance;
+  });
 
-  Options.travelDistance = newTimes.length ? newTimes[0] : vm.prefs.travelDistanceRanges[rngId][0]
+  Options.travelDistance = newTimes.length ? newTimes[0] : vm.prefs.travelDistanceRanges[rngId][0];
 
   if (!vm.states.init) getPolygons();
   updateURL();
