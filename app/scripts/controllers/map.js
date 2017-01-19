@@ -31,6 +31,7 @@ angular.module('r360DemoApp')
         $scope.pageClass = 'map-page';
 
         vm.options = Options;
+        vm.options.poiQueries = ENV.poiQueries;
         vm.prefs = {
           "cities": [{
             "id": "germany",
@@ -236,8 +237,6 @@ angular.module('r360DemoApp')
         parseUrl();
 
         r360.config.serviceUrl = getCity().url;
-
-        debugger;
 
         if (angular.isDefined(Options.customURL) && Options.customURL)
             r360.config.serviceUrl = Options.customURL;
@@ -896,6 +895,8 @@ angular.module('r360DemoApp')
             travelOptions.setServiceUrl(Options.customURL);
         if (Options.customKey && angular.isDefined(Options.customKey))
             travelOptions.setServiceKey(Options.customKey);
+        else
+            travelOptions.setServiceKey(ENV.serviceKey)
         travelOptions.setElevationEnabled(vm.options.elevation);
         travelOptions.setReverse(vm.options.reverse);
         travelOptions.setEdgeWeight(vm.options.edgeWeight);
@@ -1063,6 +1064,38 @@ angular.module('r360DemoApp')
       }
     );
   }
+
+vm.queryPois = function queryPois(query) {
+
+    console.log(query.replace(/ /g, ''));
+
+    var travelOptions = buildTravelOptions();
+    travelOptions.setPoiServiceUrl("http://localhost:3000/poi");
+    travelOptions.setPoiQuery(query.replace(/  +/g, ' '));
+    travelOptions.setPoiQueryFormat('geojson');
+
+    r360.PointOfInterestService.getRouteTime(travelOptions, function(result) {
+
+        // var myLayer = L.geoJSON().addTo(vm.map);
+        // myLayer.addData(result);
+
+        L.geoJson(result, {
+            style: function (feature) {
+                return {color: "#000000"};
+            },
+            onEachFeature: function (feature, layer) {
+                layer.bindPopup(feature.properties.tags.name);
+            }
+        }).addTo(vm.map);
+
+        // console.log("success")
+        // console.log(result)
+    }, function(error) {
+
+        console.log("error")
+        console.log(error)
+    });
+}
 
 vm.updateView = function updateView() {
 

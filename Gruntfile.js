@@ -72,7 +72,19 @@ module.exports = function (grunt) {
               quebec                : "https://service.route360.net/quebec/",
 
               geocoder        : "https://service.route360.net/geocode/"
-            }
+            },
+            poiQueries : [{
+                "name"  : "Postbank",
+                "query" : "(\
+                              way[\"amenity\"=\"bank\"][\"name\"=\"Postbank\"]\
+                              (52.338234,13.088346,52.6754542,13.7611176);\
+                              >;\
+                              node[\"amenity\"=\"bank\"][\"name\"=\"Postbank\"]\
+                              (52.338234,13.088346,52.6754542,13.7611176);\
+                            )\
+                            ;\
+                            out center;"
+            }]
           }
         }
       },

@@ -9,7 +9,7 @@
     "jquery": "~1.11.3",
     "leaflet-active-area": "https://github.com/j-slvr/Leaflet-active-area.git",
     "angular-material": "1.1.0",
-    "route360": "^0.3.0",
+    "route360": "https://github.com/route360/r360-js.git#D_nodejs",
     "leaflet.contextmenu": "https://github.com/j-slvr/Leaflet.contextmenu.git",
     "r360-angular": "*"
   },
@@ -19,7 +19,8 @@
   "appPath": "app",
   "moduleName": "r360DemoApp",
   "resolutions": {
-    "angular": "1.5.8",
-    "leaflet.contextmenu": "master"
+    "angular": "1.6.1",
+    "leaflet.contextmenu": "master",
+    "route360": "D_nodejs"
   }
 }

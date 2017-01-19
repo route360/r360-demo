@@ -92,6 +92,24 @@
                             <span>No target Markers defined</span>
                         </div>
                     </md-list-item>
+                    <md-subheader class="md-no-sticky">Point of interests</md-subheader>
+                        <md-list-item layout="row" layout-align="center center">
+                            <md-input-container class="md-block">
+                                <label>Query</label>
+                                <textarea ng-model="map.options.poiQuery" md-maxlength="400" rows="5" md-select-on-focus></textarea>
+                            </md-input-container>
+                        </md-list-item>
+
+                        <md-list-item ng-repeat="query in map.options.poiQueries">
+                            <md-button aria-label="Add {{query.name}}" ng-click="map.options.poiQuery = query.query">
+                                {{query.name}}
+                            </md-button>
+                        </md-list-item>
+                        <md-list-item>
+                            <md-button aria-label="Query" ng-click="map.queryPois(map.options.poiQuery)">
+                                Query
+                            </md-button>
+                        </md-list-item>
                 </md-list>
                 <travel-plan></travel-plan>
                 <section ng-show="map.options.showAdvanced">
