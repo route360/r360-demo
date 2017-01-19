@@ -5,7 +5,7 @@
     <md-list-item class="md-2-line" ng-click="travelPlan.showPlan(route)">
 
         <div class="md-list-item-text" layout="column">
-            <h3>{{route.sourceId | idToName}} to {{route.targetId | idToName}}</h3>
+            <h3>{{travelPlan.getMarkerDescription(route.sourceId)}} to {{travelPlan.getMarkerDescription(route.targetId)}}</h3>
             <p>{{route.travelTime | secToHoursMin}} | {{route.transfers | transferCount}} | {{route.length | distance}}</p>
         </div>
 

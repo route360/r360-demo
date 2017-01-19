@@ -1421,7 +1421,6 @@ function changeTravelTime(time) {
 vm.changeTravelTime = changeTravelTime;
 
 function changeTravelTimeRange() {
-
   var rngId = Options.travelTimeRangeID;
 
   var dist = 999999;
@@ -1439,21 +1438,15 @@ function changeTravelTimeRange() {
   updateURL();
 }
 
-function changeDistanceTimeRange() {
-
+function changeTravelDistanceRange() {
   var rngId = Options.travelDistanceRangeID;
 
-  var dist = 999999;
-  var nextVal = 30;
+  var newTimes = vm.prefs.travelDistanceRanges[rngId].times.filter(function(time) {
+    return time > Options.travelDistance
+  })
 
-  vm.prefs.travelDistanceRanges[rngId].times.forEach(function(elem) {
-    if (dist > Math.abs(elem - Options.travelTime)) {
-      dist = Math.abs(elem - Options.travelTime);
-      nextVal = elem;
-    }
-  });
+  Options.travelDistance = newTimes.length ? newTimes[0] : vm.prefs.travelDistanceRanges[rngId][0]
 
-  Options.travelTime = nextVal;
   if (!vm.states.init) getPolygons();
   updateURL();
 }
@@ -1500,6 +1493,7 @@ function changeColorRange() {
 vm.changeColorRange = changeColorRange;
 
 vm.changeTravelTimeRange = changeTravelTimeRange;
+vm.changeTravelDistanceRange = changeTravelDistanceRange;
 
 function changeTravelType(type) {
 

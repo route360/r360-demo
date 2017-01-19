@@ -1,7 +1,7 @@
 'use strict';
 
 angular.module('r360DemoApp')
-    .controller('TravelPlanCtrl', ['$timeout', 'RoutesService', function ($timeout, RoutesService) {
+    .controller('TravelPlanCtrl', ['$timeout', 'RoutesService', 'Options', function ($timeout, RoutesService, Options) {
 
         var vm = this;
 
@@ -25,4 +25,23 @@ angular.module('r360DemoApp')
         }
 
 
+        vm.getMarkerDescription= function (id) {
+            var result = id + "";
+
+            if (id.indexOf('source' > -1)) {
+                Options.sourceMarkers.forEach(function(src) {
+                    if (src.id === id)
+                        result = src.description && src.description.title || '';
+                });
+            }
+
+            if (id.indexOf('target' > -1)) {
+                Options.targetMarkers.forEach(function(src) {
+                    if (src.id === id)
+                        result = src.description && src.description.title || '';
+                });
+            }
+
+            return result;
+        }
     }]);

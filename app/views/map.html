@@ -309,7 +309,7 @@
                 <md-progress-linear md-mode="indeterminate"></md-progress-linear>
             </div>
 
-          <r360-rainbow ng-if="map.options.edgeWeight == 'distance'" travel-time="map.options.travelDistance" label="km" travel-time-range="map.prefs.travelDistanceRanges[map.options.travelDistanceRangeID]" color-range="map.prefs.colorRanges[map.options.colorRangeID]"></r360-rainbow>
+          <r360-rainbow ng-if="map.options.edgeWeight == 'distance'" travel-time="map.options.travelDistance / 1000" label="km" travel-time-range="map.prefs.travelDistanceRanges[map.options.travelDistanceRangeID]" color-range="map.prefs.colorRanges[map.options.colorRangeID]"></r360-rainbow>
           <r360-rainbow ng-if="map.options.edgeWeight != 'distance'" travel-time="map.options.travelTime"  travel-time-range="map.prefs.travelTimeRanges[map.options.travelTimeRangeID]" color-range="map.prefs.colorRanges[map.options.colorRangeID]"></r360-rainbow>
         </section>
         <md-content flex layout="row" id="map">
