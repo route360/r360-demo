@@ -93,22 +93,30 @@
                         </div>
                     </md-list-item>
                     <md-subheader class="md-no-sticky">Point of interests</md-subheader>
-                        <md-list-item layout="row" layout-align="center center">
-                            <md-input-container class="md-block">
-                                <label>Query</label>
-                                <textarea ng-model="map.options.poiQuery" md-maxlength="400" rows="5" md-select-on-focus></textarea>
-                            </md-input-container>
+                        <md-list-item>
+                            <label>Load an Example</label>
                         </md-list-item>
-
-                        <md-list-item ng-repeat="query in map.options.poiQueries">
-                            <md-button aria-label="Add {{query.name}}" ng-click="map.options.poiQuery = query.query">
+                        <md-list-item>
+                            <md-button ng-repeat="query in map.options.poiQueries" aria-label="Add {{query.name}}" ng-click="map.options.poiQuery = query.query">
                                 {{query.name}}
                             </md-button>
                         </md-list-item>
+                        <md-list-item layout="row" layout-align="center center">
+                            <md-input-container class="md-block" style="width: 100%">
+                                <label>Query</label>
+                                <textarea ng-model="map.options.poiQuery" md-maxlength="400" rows="8"  md-select-on-focus></textarea>
+                            </md-input-container>
+                        </md-list-item>
                         <md-list-item>
-                            <md-button aria-label="Query" ng-click="map.queryPois(map.options.poiQuery)">
+                            <md-button aria-label="Query" ng-click="map.clearPois()">
+                                Clear
+                            </md-button>
+                            <md-button aria-label="Query" ng-click="map.getPois()">
                                 Query
                             </md-button>
+                        </md-list-item>
+                        <md-list-item>
+                            
                         </md-list-item>
                 </md-list>
                 <travel-plan></travel-plan>

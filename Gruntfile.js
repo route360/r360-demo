@@ -74,16 +74,55 @@ module.exports = function (grunt) {
               geocoder        : "https://service.route360.net/geocode/"
             },
             poiQueries : [{
-                "name"  : "Postbank",
-                "query" : "(\
-                              way[\"amenity\"=\"bank\"][\"name\"=\"Postbank\"]\
-                              (52.338234,13.088346,52.6754542,13.7611176);\
-                              >;\
-                              node[\"amenity\"=\"bank\"][\"name\"=\"Postbank\"]\
-                              (52.338234,13.088346,52.6754542,13.7611176);\
-                            )\
-                            ;\
-                            out center;"
+                "name"  : "Banks",
+                "query" : "(\n" +
+                          "  way[\"amenity\"=\"bank\"]\n" +
+                          "     (52.338,13.088,52.675,13.761);\n" +
+                          // "  >;\n" +
+                          "  node[\"amenity\"=\"bank\"]\n"+
+                          "      (52.338,13.088346,52.675,13.761);\n" +
+                          ");\n" +
+                          "out center;"
+            },{
+                "name"  : "McDonald's",
+                "query" : "(\n" +
+                          "  way[\"name\"=\"McDonald's\"]\n" +
+                          "     (52.338,13.088,52.675,13.761);\n" +
+                          // "  >;\n" +
+                          "  node[\"name\"=\"McDonald's\"]\n"+
+                          "      (52.338,13.088346,52.675,13.761);\n" +
+                          ");\n" +
+                          "out center;"
+            },{
+                "name"  : "Museums",
+                "query" : "(\n" +
+                          "  way[\"tourism\"=\"museum\"]\n" +
+                          "     (52.338,13.088,52.675,13.761);\n" +
+                          // "  >;\n" +
+                          "  node[\"tourism\"=\"museum\"]\n"+
+                          "      (52.338,13.088346,52.675,13.761);\n" +
+                          ");\n" +
+                          "out center;"
+            },{
+                "name"  : "Gas stations",
+                "query" : "(\n" +
+                          "  way[\"amenity\"=\"fuel\"]\n" +
+                          "     (52.338,13.088,52.675,13.761);\n" +
+                          // "  >;\n" +
+                          "  node[\"amenity\"=\"fuel\"]\n"+
+                          "      (52.338,13.088346,52.675,13.761);\n" +
+                          ");\n" +
+                          "out center;"
+            },{
+                "name"  : "Public toilets",
+                "query" : "(\n" +
+                          "  way[\"amenity\"=\"toilets\"]\n" +
+                          "     (52.338,13.088,52.675,13.761);\n" +
+                          // "  >;\n" +
+                          "  node[\"amenity\"=\"toilets\"]\n"+
+                          "      (52.338,13.088346,52.675,13.761);\n" +
+                          ");\n" +
+                          "out center;"
             }]
           }
         }

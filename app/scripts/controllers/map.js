@@ -717,6 +717,7 @@ angular.module('r360DemoApp')
               });
               getPolygons(function() {
                 getRoutes();
+                queryPois();
               });
               updateURL();
             });
@@ -1065,41 +1066,86 @@ angular.module('r360DemoApp')
     );
   }
 
-vm.queryPois = function queryPois(query) {
+    function clearPois() {
 
-    console.log(query.replace(/ /g, ''));
+        if ( vm.reachablePois ) vm.reachablePois.clearLayers();
+        if ( vm.unReachablePois ) vm.unReachablePois.clearLayers();
+    }
 
-    var travelOptions = buildTravelOptions();
-    travelOptions.setPoiServiceUrl("http://localhost:3000/poi");
-    travelOptions.setPoiQuery(query.replace(/  +/g, ' '));
-    travelOptions.setPoiQueryFormat('geojson');
+    function queryPois() {
 
-    r360.PointOfInterestService.getRouteTime(travelOptions, function(result) {
+        if ( vm.options.poiQuery ) {
 
-        // var myLayer = L.geoJSON().addTo(vm.map);
-        // myLayer.addData(result);
+            vm.states.requestPending = true;
+            var travelOptions = buildTravelOptions();
+            travelOptions.setPoiServiceUrl("http://localhost:3000/poi");
+            travelOptions.setPoiQuery(vm.options.poiQuery.replace(/  +/g, ' '));
+            travelOptions.setPoiQueryFormat('geojson');
 
-        L.geoJson(result, {
-            style: function (feature) {
-                return {color: "#000000"};
-            },
-            onEachFeature: function (feature, layer) {
-                layer.bindPopup(feature.properties.tags.name);
-            }
-        }).addTo(vm.map);
+            r360.PointOfInterestService.getRouteTime(travelOptions, function(result) {
 
-        // console.log("success")
-        // console.log(result)
-    }, function(error) {
+                vm.states.requestPending = false;
+                if (!$scope.$$phase) $scope.$apply();
 
-        console.log("error")
-        console.log(error)
-    });
+                if ( vm.reachablePois ) vm.reachablePois.clearLayers();
+                if ( vm.unReachablePois ) vm.unReachablePois.clearLayers();
+
+                vm.reachablePois = L.geoJson(result, {
+                    "filter" : function (feature, layer){
+                        return feature.properties.travelTime > -1;
+                    },
+                    "pointToLayer": function (feature, latlng) {
+                        return L.circleMarker(latlng, {
+                            "color" : "green",
+                            "fill" : true,
+                            "fillOpacity": 0.7
+                        });
+                    },
+                    "onEachFeature": function (feature, layer) {
+                        layer.bindPopup(
+                            ((feature.properties.tags && feature.properties.tags.name) ? feature.properties.tags.name : " ") + ": " + feature.properties.travelTime + "s<br>" +
+                            "<a href='http://www.openstreetmap.org/edit?editor=id&node=" + feature.properties.id + "'>Edit</a>"
+                        );
+                    }
+                });
+                vm.unReachablePois = L.geoJson(result, {
+                    "filter" : function (feature, layer){
+                        return feature.properties.travelTime == -1;
+                    },
+                    "pointToLayer": function (feature, latlng) {
+                        return L.circleMarker(latlng, {
+                            "color" : "grey",
+                            "fill" : true,
+                            "fillOpacity": 0.7
+                        });
+                    },
+                    "onEachFeature": function (feature, layer) {
+                        layer.bindPopup((feature.properties.tags && feature.properties.tags.name) ? feature.properties.tags.name + " not reachable!" : "");
+                    }
+                });
+
+                vm.reachablePois.addTo(vm.map);
+                vm.unReachablePois.addTo(vm.map);
+            }, function(error) {
+
+                console.log("error")
+                console.log(error)
+            });
+        }
+    }       
+
+vm.getPois = function getPois(){
+    queryPois();
+}
+
+vm.clearPois = function clearPois(){
+    clearPois();
 }
 
 vm.updateView = function updateView() {
 
   getPolygons();
+  queryPois();
   updateURL();
 };
 
@@ -1449,7 +1495,7 @@ vm.focus = focus;
 function changeTravelTime(time) {
   if (Options.travelTime === time) return;
   Options.travelTime = time;
-  getPolygons();
+  getPolygons(function(){ queryPois(); });
   updateURL();
 }
 
@@ -1537,7 +1583,7 @@ function changeTravelType(type) {
   vm.prefs.travelTypes.forEach(function(elem) {
     if (elem.value === type) Options.travelTypeIcon = elem.icon;
   });
-  getPolygons(function() { getRoutes(); });
+  getPolygons(function() { getRoutes(); queryPois(); });
   updateURL();
 
 }
@@ -1550,7 +1596,7 @@ vm.changeEdgeWeight = function(type) {
     Options.travelType = 'car';
   }
 
-  getPolygons(function() { getRoutes(); });
+  getPolygons(function() { getRoutes();queryPois(); });
   updateURL();
 };
 
