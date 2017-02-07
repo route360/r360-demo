@@ -5,7 +5,6 @@ version 0.12.1.
 
 ## Project requirements
 - [nodejs, npm](https://nodejs.org/)
-- grunt `npm install grunt -g`
 - bower `npm install bower -g`
 - compass gem `gem install compass`
 

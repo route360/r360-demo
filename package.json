@@ -42,6 +42,8 @@
     "test": "grunt test"
   },
   "dependencies": {
-    "grunt-ng-constant": "^2.0.1"
+    "grunt-ng-constant": "^2.0.1",
+    "jasmine-core": "^2.5.2",
+    "karma": "^1.4.1"
   }
 }
