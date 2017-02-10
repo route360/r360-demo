@@ -25,6 +25,10 @@ angular.module('r360DemoApp')
         "name"  : "Germany",
         "url"	: "images/germany.jpg"
     }, {
+        "id"    :  "netherlands",
+        "name"  : "Netherlands",
+        "url" : "images/amsterdam.jpg"
+    }, {
         "id"    :  "malaysia_singapore",
         "name"  : "Malaysia, Singapore, Brunei",
         "url"	: "images/singapore.jpg"
@@ -56,6 +60,18 @@ angular.module('r360DemoApp')
         "id"    : "austria",
         "name": "Austria",
         "url"	: "images/vienna.jpg"
+    }, {
+        "id"    : "hungary",
+        "name": "Hungary",
+        "url" : "images/budapest.jpg"
+    }, {
+        "id"    : "poland",
+        "name": "Poland",
+        "url" : "images/warsaw.jpg"
+    }, {
+        "id"    : "slovakia",
+        "name": "Slovakia",
+        "url" : "images/bratislava.jpg"
     }, {
         "id"    : "newyork",
         "name"  : "USA and Mexico",

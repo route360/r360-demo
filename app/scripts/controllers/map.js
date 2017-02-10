@@ -122,6 +122,26 @@ angular.module('r360DemoApp')
             "name": "Québec",
             "latlng": [45.5017, -73.5673],
             "url": ENV.endpoints.quebec,
+          }, {
+            "id": "netherlands",
+            "name": "Netherlands",
+            "latlng": [52.3705, 4.8936],
+            "url": ENV.endpoints.netherlands,
+          }, {
+            "id": "poland",
+            "name": "Poland",
+            "latlng": [52.2301, 21.0120],
+            "url": ENV.endpoints.poland,
+          }, {
+            "id": "hungary",
+            "name": "Hungary",
+            "latlng": [47.4949, 19.0533],
+            "url": ENV.endpoints.hungary,
+          }, {
+            "id": "slovakia",
+            "name": "Slovakia",
+            "latlng": [48.1423, 17.1093],
+            "url": ENV.endpoints.slovakia,
           }],
           "travelTypes": [{
             "name": "Bike",
