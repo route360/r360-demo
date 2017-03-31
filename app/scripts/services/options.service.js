@@ -52,7 +52,8 @@ angular.module('r360DemoApp')
             "debugMode" : (ENV.name === "development" ? true : false),
             "elevation" : true,
             "reverse" : false,
-            "frameDuration" : 18000
+            "frameDuration" : 18000,
+            "congestion": false
         };
 
         return self;
