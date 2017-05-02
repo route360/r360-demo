@@ -97,6 +97,10 @@ angular.module('r360DemoApp')
         "name"  : "Sweden",
         "url"   : "images/sweden.jpg"
     }, {
+        "id"    : "israel_palestine",
+        "name"  : "Israel & Palestine",
+        "url"   : "images/jerusalem.jpg"        
+    }, {      
         "id"    : "south_america",
         "name"  : "South America",
         "url"   : "images/rio.jpg"

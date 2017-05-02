@@ -138,6 +138,11 @@ angular.module('r360DemoApp')
             "latlng": [47.4949, 19.0533],
             "url": ENV.endpoints.hungary,
           }, {
+            "id": "israel_palestine",
+            "name": "Israel & Palestine",
+            "latlng": [31.7885, 35.2003],
+            "url": ENV.endpoints.israel_palestine,
+          }, {            
             "id": "slovakia",
             "name": "Slovakia",
             "latlng": [48.1423, 17.1093],

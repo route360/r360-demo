@@ -71,6 +71,8 @@ module.exports = function (grunt) {
               hungary               : "https://service.route360.net/centraleurope/",
               poland                : "https://service.route360.net/centraleurope/",
 
+              israel_palestine      : "https://service.route360.net/israel_palestine/",
+
               south_america         : "https://service.route360.net/south_america/",
               sweden                : "https://service.route360.net/sweden/",
               malaysia_singapore    : "https://service.route360.net/malaysia_singapore/",
@@ -98,6 +100,7 @@ module.exports = function (grunt) {
                 austria               : "https://service.route360.net/centraleurope/",
                 netherlands           : "https://service.route360.net/centraleurope/",
                 newyork               : "https://service.route360.net/na_northeast/",
+                israel_palestine      : "https://service.route360.net/israel_palestine/",
                 italy                 : "https://service.route360.net/italy/",
                 spain                 : "https://service.route360.net/iberia/",
                 portugal              : "https://service.route360.net/iberia/",
