@@ -1,0 +1,5 @@
+<div fxLayout="column" fxLayoutAlign="center center" fxFill fxLayoutMargin>
+  <pre>{{ (currentRegion | async).name }}</pre>
+  <button md-raised-button (click)="previousRegion()">prev</button>
+  <button md-raised-button (click)="nextRegion()">next</button>
+</div>
