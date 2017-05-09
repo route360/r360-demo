@@ -1,0 +1,41 @@
+// Import theming functions
+@import '~@angular/material/theming';
+// Import your custom theme
+@import '../../styles.scss';
+
+:host {
+
+  &>div.lp-background,
+  &>div.lp-bg-overlay {
+    position: fixed;
+    top: 0;
+    left: 0;
+    height: 100%;
+    width: 100%;
+    background-size: cover;
+  }
+
+  &>div.lp-background {
+    z-index: -10;
+  }
+  &>div.lp-bg-overlay {
+    z-index: -9;
+    background-color: fade-out($dark,0.5);
+  }
+
+  .slideIn {
+    animation: slideIn 1s;
+  }
+
+  
+}
+
+@keyframes slideIn {
+  0% {
+    transform: translate(0,100%);
+  }
+  100% {
+    transform: translate(0,0);
+  }
+}
+

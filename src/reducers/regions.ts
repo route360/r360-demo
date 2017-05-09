@@ -112,6 +112,10 @@ export const currentRegion = (state: any = _initialRegion, action: any) => {
   }
 };
 
+export const nextRegion = (state: any = _initialRegion, action: any) => {
+    return _regionList[(_regionList.findIndex( region => region.id === state.id) + 1) % _regionList.length];
+}
+
 export const regionList = (state: any[] = _regionList, action: any) => {
   return state;
 };

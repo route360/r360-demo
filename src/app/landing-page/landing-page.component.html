@@ -1,5 +1,24 @@
-<div fxLayout="column" fxLayoutAlign="center center" fxFill fxLayoutMargin>
-  <pre>{{ (currentRegion | async).name }}</pre>
-  <button md-raised-button (click)="previousRegion()">prev</button>
-  <button md-raised-button (click)="nextRegion()">next</button>
+<div fxLayout="column" fxLayoutAlign="center center" fxFill>
+  <!--<pre>{{ (currentRegion | async).name }}</pre>-->
+
+  <div class="logo-wrapper">
+    <img src="assets/images/r360.svg" alt="logo">
+  </div>
+  <div class="welcome-msg" fxLayout="column" fxLayout.gt-xs="row">
+    <span>
+    Route360° is currently available in 
+    </span>
+    <md-select class="dark-theme" [ngModel]="(currentRegion | async)?.id" [multiple]="false" (click)="stopTimer()" (ngModel)="localRegion" (ngModelChange)="changeCurrentRegion($event)">
+    <md-option *ngFor="let region of (regionList | async)" [value]="region.id">{{ region.name }}</md-option>
+    </md-select>
+  </div>
+
+  <button md-raised-button>Launch Demo</button>
+
+  <!--<div fxLayout="row" class="dark theme">
+    <button md-button (click)="previousRegion()">prev</button>
+    <button md-button (click)="nextRegion()">next</button>
+  </div>-->
+
 </div>
+<app-lp-background [imageUrl]="(currentRegion | async).url" [preloadUrl]="(nextRegion | async).url"></app-lp-background>

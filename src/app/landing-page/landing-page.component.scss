@@ -1,0 +1,35 @@
+@import '../../styles.scss';
+
+:host {
+  color: $light;
+  text-align: center;
+  .logo-wrapper {
+    max-width: 400px;
+    width: 70%;
+  }
+  .welcome-msg {
+      margin: 1rem;
+      font-weight: 300;
+      font-size: 1.5rem;
+      @include bp(gt-xs) {
+        font-size: 2rem;
+        margin: 3rem 1rem;
+      }
+  }
+  & /deep/ md-select {
+    margin-left: .5rem;
+    .mat-select-value {
+      font-size: 1.5rem;
+      @include bp(gt-xs) {
+        font-size: 2rem;
+      }
+      min-width: 20px;
+      position: relative;
+    }
+    .mat-select-trigger {
+      @include bp(gt-xs) {
+        height: 40px;
+      }
+    }
+  }
+}

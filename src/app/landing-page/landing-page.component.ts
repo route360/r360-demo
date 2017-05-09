@@ -1,6 +1,6 @@
 import { Component, OnInit } from '@angular/core';
 import {Store} from '@ngrx/store';
-import {Observable} from 'rxjs/Rx';
+import {Observable, Subscription} from 'rxjs/Rx';
 import * as actions from '../../actions/region.actions';
 
 @Component({
@@ -12,22 +12,31 @@ export class LandingPageComponent implements OnInit {
 
   regionList: Observable<any>;
   currentRegion: Observable<any>;
+  nextRegion: Observable<any>;
+
+  private timer: Subscription;
 
   constructor(public store: Store<any>) {
     this.regionList = store.select('regionList');
     this.currentRegion = store.select('currentRegion');
+    this.nextRegion = store.select('nextRegion');
+    this.timer = Observable.timer(5000, 5000).subscribe(() => this.selectNextRegion());;
   }
 
-  nextRegion() {
+  selectNextRegion() {
     this.store.dispatch(actions.nextRegion());
   }
 
-  previousRegion() {
+  selectPreviousRegion() {
     this.store.dispatch(actions.prevoiusRegion());
   }
 
   changeCurrentRegion(id: string) {
     this.store.dispatch(actions.getById(id));
+  }
+
+  stopTimer() {
+    this.timer.unsubscribe();
   }
 
   ngOnInit() {
