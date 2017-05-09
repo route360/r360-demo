@@ -1,4 +1,4 @@
-import { Component, OnInit } from '@angular/core';
+import { Component, OnInit, OnDestroy } from '@angular/core';
 import {Store} from '@ngrx/store';
 import {Observable, Subscription} from 'rxjs/Rx';
 import * as actions from '../../actions/region.actions';
@@ -8,7 +8,7 @@ import * as actions from '../../actions/region.actions';
   templateUrl: './landing-page.component.html',
   styleUrls: ['./landing-page.component.scss']
 })
-export class LandingPageComponent implements OnInit {
+export class LandingPageComponent implements OnInit, OnDestroy {
 
   regionList: Observable<any>;
   currentRegion: Observable<any>;
@@ -40,6 +40,10 @@ export class LandingPageComponent implements OnInit {
   }
 
   ngOnInit() {
+  }
+
+  ngOnDestroy() {
+    this.stopTimer();
   }
 
 }

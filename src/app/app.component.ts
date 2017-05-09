@@ -1,6 +1,7 @@
 import { Component } from '@angular/core';
 import {RouterModule, Routes} from '@angular/router';
 import {LandingPageComponent} from './landing-page/landing-page.component';
+import {MapViewComponent} from './map-view/map-view.component';
 
 @Component({
   selector: 'app-root',
@@ -13,6 +14,10 @@ export const routes: Routes = [
   {
     path: '',
     component: LandingPageComponent
+  },
+  {
+    path: 'map',
+    component: MapViewComponent
   }
 ];
 

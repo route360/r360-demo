@@ -13,12 +13,14 @@ import { store } from '../reducers';
 import { routing, AppComponent } from './app.component';
 import { LandingPageComponent } from './landing-page/landing-page.component';
 import { LpBackgroundComponent } from './lp-background/lp-background.component';
+import { MapViewComponent } from './map-view/map-view.component';
 
 @NgModule({
   declarations: [
     AppComponent,
     LandingPageComponent,
-    LpBackgroundComponent
+    LpBackgroundComponent,
+    MapViewComponent,
   ],
   imports: [
     BrowserModule,
