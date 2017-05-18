@@ -354,7 +354,7 @@ angular.module('r360DemoApp')
 
           switch (index) {
             case "reverse":
-            case "congestion":
+            case "rushHour":
               Options[index] = Boolean(value);
               break;
             case "cityID":
@@ -1023,7 +1023,7 @@ angular.module('r360DemoApp')
 
         if (vm.options.travelType === 'car') {
           travelOptions.setMinPolygonHoleSize(10000000);
-          travelOptions.setCongestionEnabled(vm.options.congestion);
+          travelOptions.setRushHour(vm.options.rushHour);
         }
 
         return travelOptions;
@@ -1598,7 +1598,7 @@ function updateURL() {
       case 'transition':
       case 'zoomAllTheTime':
       case 'mapstyle':
-      case 'congestion':
+      case 'rushHour':
         if (angular.isDefined($routeParams[index]) && $routeParams[index] === Options[index]) break;
         // $routeParams[index] = String(Options[index]);
         // $route.updateParams($routeParams);

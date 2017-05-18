@@ -127,8 +127,8 @@
                             <md-switch class="md-primary" aria-label="Elevation Switch" ng-model="map.options.elevation" ng-change="map.updateView()"/>
                         </md-list-item>
                         <md-list-item ng-show="map.Meta.data.general.congestion == true && map.options.travelType == 'car' ">
-                            <p>Enable congestion</p>
-                            <md-switch class="md-primary" aria-label="Congestion Switch" ng-model="map.options.congestion" ng-change="map.updateView()"/>
+                            <p>Rush-hour</p>
+                            <md-switch class="md-primary" aria-label="Rush-hour Switch" ng-model="map.options.rushHour" ng-change="map.updateView()"/>
                         </md-list-item>
                         <md-list-item>
                             <p>Min. Polygon Hole Size (m²)</p>

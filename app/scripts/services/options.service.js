@@ -53,7 +53,7 @@ angular.module('r360DemoApp')
             "elevation" : true,
             "reverse" : false,
             "frameDuration" : 18000,
-            "congestion": false
+            "rushHour": false
         };
 
         return self;
