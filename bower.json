@@ -11,7 +11,8 @@
     "angular-material": "1.1.0",
     "route360": "https://github.com/route360/r360-js.git#D_nodejs",
     "leaflet.contextmenu": "https://github.com/j-slvr/Leaflet.contextmenu.git",
-    "r360-angular": "*"
+    "r360-angular": "*",
+    "ang-accordion": "*"
   },
   "devDependencies": {
     "angular-mocks": "^1.3.0"

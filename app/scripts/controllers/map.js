@@ -1090,6 +1090,11 @@ angular.module('r360DemoApp')
                 if ( vm.reachablePois ) vm.reachablePois.clearLayers();
                 if ( vm.unReachablePois ) vm.unReachablePois.clearLayers();
 
+                if ( angular.equals(result, {}) ) {
+                    showToast("Result was empty. Nothing to show!")
+                    return;
+                }
+
                 vm.reachablePois = L.geoJson(result, {
                     "filter" : function (feature, layer){
                         return feature.properties.travelTime > -1;
@@ -1138,7 +1143,7 @@ vm.getPois = function getPois(){
     queryPois();
 }
 
-vm.clearPois = function clearPois(){
+vm.emptyPois = function emptyPois(){
     clearPois();
 }
 

@@ -48,6 +48,7 @@ module.exports = function (grunt) {
         constants: {
           ENV: {
             name       : 'development',
+            // serviceKey : "RAYJXZBFVCAZTVCDHHPN",
             serviceKey : "uhWrWpUhyZQy8rPfiC7X",
             endpoints  : {
               australia             : "https://service.route360.net/australia/",
@@ -59,11 +60,12 @@ module.exports = function (grunt) {
               britishisles          : "https://service.route360.net/britishisles/",
               switzerland           : "https://service.route360.net/switzerland/",
               austria               : "https://service.route360.net/austria/",
-              germany               : "https://service.route360.net/germany/",
-              // germany               : "https://devnew.route360.net/xxx/",
+              germany               : "https://dev.route360.net/xxx/",
+              // germany               : "http://localhost:8080/",
               newyork               : "https://service.route360.net/na_northeast/",
               italy                 : "https://service.route360.net/italy/",
               spain                 : "https://service.route360.net/iberia/",
+              spain                 : "https://dev.route360.net/xxx/",
               portugal              : "https://service.route360.net/iberia/",
               czech_republic        : "https://service.route360.net/czech_republic/",
               south_america         : "https://service.route360.net/south_america/",
@@ -78,21 +80,17 @@ module.exports = function (grunt) {
                 "query" : "(\n" +
                           "  way[\"amenity\"=\"bank\"]\n" +
                           "     (52.338,13.088,52.675,13.761);\n" +
-                          // "  >;\n" +
                           "  node[\"amenity\"=\"bank\"]\n"+
                           "      (52.338,13.088346,52.675,13.761);\n" +
-                          ");\n" +
-                          "out center;"
+                          ");"
             },{
-                "name"  : "McDonald's",
+                "name"  : "McDonald\'s",
                 "query" : "(\n" +
                           "  way[\"name\"=\"McDonald's\"]\n" +
                           "     (52.338,13.088,52.675,13.761);\n" +
-                          // "  >;\n" +
                           "  node[\"name\"=\"McDonald's\"]\n"+
                           "      (52.338,13.088346,52.675,13.761);\n" +
-                          ");\n" +
-                          "out center;"
+                          ");"
             },{
                 "name"  : "Museums",
                 "query" : "(\n" +
@@ -101,8 +99,7 @@ module.exports = function (grunt) {
                           // "  >;\n" +
                           "  node[\"tourism\"=\"museum\"]\n"+
                           "      (52.338,13.088346,52.675,13.761);\n" +
-                          ");\n" +
-                          "out center;"
+                          ");"
             },{
                 "name"  : "Gas stations",
                 "query" : "(\n" +
@@ -111,8 +108,7 @@ module.exports = function (grunt) {
                           // "  >;\n" +
                           "  node[\"amenity\"=\"fuel\"]\n"+
                           "      (52.338,13.088346,52.675,13.761);\n" +
-                          ");\n" +
-                          "out center;"
+                          ");"
             },{
                 "name"  : "Public toilets",
                 "query" : "(\n" +
@@ -121,8 +117,7 @@ module.exports = function (grunt) {
                           // "  >;\n" +
                           "  node[\"amenity\"=\"toilets\"]\n"+
                           "      (52.338,13.088346,52.675,13.761);\n" +
-                          ");\n" +
-                          "out center;"
+                          ");"
             }]
           }
         }

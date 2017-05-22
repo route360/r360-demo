@@ -37,6 +37,7 @@ module.exports = function(config) {
       'bower_components/angular-sanitize/angular-sanitize.js',
       'bower_components/angular-touch/angular-touch.js',
       'bower_components/r360-angular/dist/r360-angular.js',
+      'bower_components/ang-accordion/js/ang-accordion.js',
       // endbower
       "app/scripts/**/*.js",
       "test/mock/**/*.js",
