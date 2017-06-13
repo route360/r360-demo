@@ -1,5 +1,7 @@
 import 'hammerjs';
 
+import {Route360CommonsModule} from 'r360-commons-js/client';
+
 import { BrowserModule } from '@angular/platform-browser';
 import { NgModule } from '@angular/core';
 import { FormsModule } from '@angular/forms';
@@ -27,6 +29,7 @@ import { MapViewComponent } from './map-view/map-view.component';
     BrowserAnimationsModule,
     FlexLayoutModule,
     MaterialModule.forRoot(),
+    Route360CommonsModule,
     FormsModule,
     HttpModule,
     routing,
