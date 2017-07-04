@@ -5,10 +5,13 @@ version 0.12.1.
 
 ## Project requirements
 - [nodejs, npm](https://nodejs.org/)
-- bower `npm install bower -g`
-- compass gem `gem install compass`
+- [ruby](https://www.ruby-lang.org/en/downloads/)
+- bower: `npm install bower -g`
+- compass gem: `gem install compass`
 
 ## Install and setup
+
+Go to project workspace folder 
 
 Run `npm install` followed by `bower install`
 
