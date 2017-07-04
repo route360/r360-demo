@@ -7,6 +7,7 @@ version 0.12.1.
 - [nodejs, npm](https://nodejs.org/)
 - [ruby](https://www.ruby-lang.org/en/downloads/)
 - bower: `npm install bower -g`
+- grunt: `npm install grunt-cli -g`
 - compass gem: `gem install compass`
 
 ## Install and setup
