@@ -329,8 +329,11 @@ angular.module('r360DemoApp')
           lastRelatedTarget = e.relatedTarget;
         });
 
+        var routeSources = $routeParams.sources
+        var routeTargets = $routeParams.targets
+        
         Meta.fetchMetadata().then(function(){
-          addMarkersFromUrl();
+          addMarkersFromUrl(routeSources, routeTargets);
         });
 
         $timeout(function() { vm.states.init = false; }, 2000);
@@ -444,23 +447,23 @@ angular.module('r360DemoApp')
         }
       }
 
-      function addMarkersFromUrl() {
+      function addMarkersFromUrl(sources, targets) {
 
 
         removeAllMarkers();
         if (!angular.isDefined(getCity())) Options.areaID = "germany";
 
         // Check if sources are available in GET params
-        if (angular.isDefined($routeParams.targets)) {
-          parseAndAddMarkers($routeParams.targets, "target");
+        if (angular.isDefined(targets)) {
+          parseAndAddMarkers(targets, "target");
         }
 
-        if (angular.isDefined($routeParams.sources)) {
-          parseAndAddMarkers($routeParams.sources, "source");
+        if (angular.isDefined(sources)) {
+          parseAndAddMarkers(sources, "source");
           getPolygons(function() { getRoutes(); });
         }
 
-        if (!angular.isDefined($routeParams.sources) && !angular.isDefined($routeParams.targets)) addMarker(getCity().latlng, 'source');
+        if (!angular.isDefined(sources) && !angular.isDefined(targets)) addMarker(getCity().latlng, 'source');
       }
 
       function isHidpi() {
