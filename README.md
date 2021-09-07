@@ -1,3 +1,5 @@
+# Important notice: Route360° is now called Targomo. The specific code here will no longer be maintained.
+
 # r360-demo
 
 This project is generated with [yo angular generator](https://github.com/yeoman/generator-angular)
